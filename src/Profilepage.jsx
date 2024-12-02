@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Profile from "./assets/Image/Profile.svg";
 import Verify from "./assets/image/Verify.svg";
 import Ellipse from "./assets/image/Ellipse.svg";
@@ -28,13 +27,18 @@ const ProfilePagePersonalInfo = () => {
           return;
         }
 
-        const response = await axios.get("https://campushub.web.id/api/user", {
+        const response = await fetch("https://campushub.web.id/api/user", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
-        setUser(response.data);
+        if (!response.ok) {
+          throw new Error("Gagal mengambil data pengguna.");
+        }
+
+        const data = await response.json();
+        setUser(data);
       } catch (error) {
         console.error("Gagal mengambil data pengguna:", error);
         alert("Gagal memuat data pengguna. Silakan coba lagi.");
@@ -76,7 +80,7 @@ const ProfilePagePersonalInfo = () => {
               <div className="profile flex flex-col lg:flex-row lg:items-start justify-center lg:justify-between lg:w-10/12 py-10">
                 <div className="profile-picture w-[120px] lg:w-2/12 mx-auto lg:mx-0 rounded-full">
                   <img
-                    src={user?.profile_image || Profile}
+                    src={user?.photo || Profile}
                     alt="Foto Profil"
                     className="w-full rounded-full"
                   />
@@ -113,7 +117,7 @@ const ProfilePagePersonalInfo = () => {
                           Nama
                         </label>
                         <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
-                          <span>{user ? user.name : "Memuat..."}</span>
+                          <span>{user ? user.fullname : "Memuat..."}</span>
                         </div>
                       </div>
                       <div className="relative">
@@ -127,18 +131,6 @@ const ProfilePagePersonalInfo = () => {
                           <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
                             <span>{user ? user.email : "Memuat..."}</span>
                           </div>
-                          {user?.email_verified && (
-                            <span
-                              className="absolute right-3 py-2 animate-fade-in"
-                              style={{ animationDuration: "1s" }}
-                            >
-                              <img
-                                src={Verify}
-                                alt="Email Tervalidasi"
-                                className="w-6 h-6"
-                              />
-                            </span>
-                          )}
                         </div>
                       </div>
                       <div className="relative">
@@ -149,14 +141,13 @@ const ProfilePagePersonalInfo = () => {
                           Nomor Telepon
                         </label>
                         <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
-                          <span>{user ? user.phone : "Memuat..."}</span>
+                          <span>{user ? user.nomor_telepon : "Memuat..."}</span>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div className="action-list flex flex-col lg:text-right text-center gap-6 lg:gap-11">
                 <ul className="flex flex-col gap-4 lg:gap-11">
                   <li>

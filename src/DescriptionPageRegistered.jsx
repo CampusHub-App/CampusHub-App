@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import Poster from "./assets/image/Poster.svg";
 import Ellipse from "./assets/image/Ellipse.svg";
 import Lecturer from "./assets/image/lecturer.svg";
@@ -8,6 +7,7 @@ import PopUpCancel from "./components/PopUpCancel";
 import "./css/DescriptionPageRegistered.css";
 
 const DescriptionPageRegistered = () => {
+  const { id } = useParams();
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,10 +19,26 @@ const DescriptionPageRegistered = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch("https://your-api-url.com/event"); 
+        // Retrieve access token from localStorage
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setError("No token found. Please log in again.");
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch("https://campushub.web.id/api/events/${id}/view", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token for authentication
+          },
+        });
+
         if (!response.ok) {
           throw new Error("Failed to fetch event data");
         }
+
         const data = await response.json();
         setEventData(data);
         setLoading(false);
@@ -35,9 +51,10 @@ const DescriptionPageRegistered = () => {
 
     fetchEventData();
 
+    // Retrieve the unique code from localStorage
     const storedCode = localStorage.getItem("uniqueCode");
     if (storedCode) {
-      setCode(storedCode.split(""));
+      setCode(storedCode.split("")); // Assuming the code is stored as a string
     }
   }, []);
 
@@ -91,15 +108,15 @@ const DescriptionPageRegistered = () => {
           <div className="PosterEvent w-full lg:w-1/2 h-auto lg:h-1/2">
             <img
               className="w-full h-auto object-cover rounded-2xl shadow-lg"
-              src={eventData.poster || Poster}
+              src={eventData.foto_event || Poster}
               alt="Poster Event"
             />
           </div>
           <div className="description text-left mt-6 lg:mt-0 lg:mx-8">
             <span className="bg-customBlue font-regular px-4 py-1 lg:px-8 lg:py-1 rounded-full text-white text-[12px] lg:text-[14px]">
-              {eventData.type}
+            {eventData.category_name}
             </span>
-            <h1 className="font-bold text-[20px] lg:text-[32px] py-4">{eventData.title}</h1>
+            <h1 className="font-bold text-[20px] lg:text-[32px] py-4">{eventData.judul}</h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div className="flex flex-wrap gap-2 ml-2">
               <img
@@ -108,16 +125,16 @@ const DescriptionPageRegistered = () => {
                 className="w-5 lg:w-8"
               />
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-                {eventData.date}
+              {eventData.date}
               </span>
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2 ml-auto">
-                {eventData.time}
+              {eventData.start_time} - {eventData.end_time}
               </span>
             </div>
             <div className="flex flex-wrap gap-2 ml-1 my-4">
               <i className="ri-map-pin-2-fill w-5 lg:w-8 text-xl"></i>
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-                {eventData.location}
+              {eventData.tempat}
               </span>
               <img
                 src="src/assets/chair.svg"
@@ -125,29 +142,29 @@ const DescriptionPageRegistered = () => {
                 className="w-5 lg:w-8 ml-auto"
               />
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-                {eventData.seatsAvailable} Kursi
+              {eventData.available_slot} Kursi
               </span>
             </div>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div className="lecturer flex gap-2 ml-2">
               <img
-                src={eventData.lecturer.profileImage || Lecturer}
+                src={eventData.foto_pembicara || Lecturer}
                 alt="Profile"
                 className="w-8 lg:w-12"
               />
               <div className="lecturername flex flex-col ml-4">
                 <span className="font-semibold text-[14px] lg:text-[16px]">
-                  {eventData.lecturer.name}
+                {eventData.pembicara}
                 </span>
                 <span className="text-regular text-[12px] lg:text-[14px]">
-                  {eventData.lecturer.position}
+                {eventData.role}
                 </span>
               </div>
             </div>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div>
               <p className="eventdescription font-regular text-wrap text-[14px] lg:text-[16px] block w-full lg:max-w-[486px]">
-                {eventData.description}
+              {eventData.deskripsi}
               </p>
             </div>
           </div>

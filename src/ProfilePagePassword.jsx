@@ -79,7 +79,7 @@ const ProfilePagePassword = () => {
   return (
     <div>
       <Navbar/>
-    <div className="profile-page h-screen pt-10 mx-4 sm:mx-10 md:mx-20 lg:mx-32">
+    <div className="profile-page h-screen mx-4 sm:mx-10 md:mx-20 lg:mx-32">
       <div className={`container ${showAnimation ? "animate-slide-up" : ""}`}
       style={{
         transition: "transform 0.8s ease-out",

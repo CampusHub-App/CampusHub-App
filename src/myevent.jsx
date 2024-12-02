@@ -4,6 +4,7 @@ import Menu from "../src/assets/Image/menu.svg";
 import "./css/MyEvents.css";
 
 const MyEvents = () => {
+  const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("date");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -12,30 +13,40 @@ const MyEvents = () => {
 
   const navigate = useNavigate();
 
-  
-  const events = [
-    {
-      id: 1,
-      title: "React Workshop",
-      date: "2024-12-05",
-      image: "https://via.placeholder.com/150",
-      status: "Registered",
-    },
-    {
-      id: 2,
-      title: "Node.js Seminar",
-      date: "2024-11-30",
-      image: "https://via.placeholder.com/150",
-      status: "Canceled",
-    },
-    {
-      id: 3,
-      title: "JavaScript Bootcamp",
-      date: "2024-12-10",
-      image: "https://via.placeholder.com/150",
-      status: "Registered",
-    },
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found. Redirecting to login...");
+        navigate("/Loginpeserta");
+        return;
+      }
+
+      try {
+        const response = await fetch("https://campushub.web.id/api/my-events/all", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+        } else {
+          console.error("Failed to fetch events:", response.status);
+          if (response.status === 401) {
+            // Token tidak valid atau sudah kadaluarsa
+            localStorage.removeItem("token");
+            navigate("/Loginpeserta");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, [navigate]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -52,22 +63,28 @@ const MyEvents = () => {
 
   const filteredEvents = events
     .filter((event) =>
-      event.title.toLowerCase().includes(searchQuery.toLowerCase())
+      event.judul.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .filter((event) => (statusFilter === "All" ? true : event.status === statusFilter));
+    .filter((event) =>
+      statusFilter === "All" ? true : event.status.toLowerCase() === statusFilter.toLowerCase()
+    );
 
   const sortedEvents = [...filteredEvents].sort((a, b) => {
     if (sortOption === "date") {
-      return new Date(a.date) - new Date(b.date);
+      return new Date(a.join_date) - new Date(b.join_date);
     } else if (sortOption === "title") {
-      return a.title.localeCompare(b.title);
+      return a.judul.localeCompare(b.judul);
     }
     return 0;
   });
 
   const allCount = events.length;
-  const registeredCount = events.filter((event) => event.status === "Registered").length;
-  const canceledCount = events.filter((event) => event.status === "Canceled").length;
+  const registeredCount = events.filter(
+    (event) => event.status.toLowerCase() === "registered"
+  ).length;
+  const canceledCount = events.filter(
+    (event) => event.status.toLowerCase() === "canceled"
+  ).length;
 
   return (
     <div className="myevents py-4">
@@ -84,9 +101,6 @@ const MyEvents = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <button className="search-btn ml-2">
-                  <i className="ri-search-line"></i>
-                </button>
               </div>
               <div className="sort relative sm:max-w-[200px] lg:max-w-[150px]" ref={dropdownRef}>
                 <div
@@ -146,25 +160,25 @@ const MyEvents = () => {
               sortedEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="event-box p-4 border border-customBlue rounded-2xl shadow-md hover:shadow-lg transition duration-300 px-4 py-2 flex justify-between items-center"
-                  onClick={() => navigate("/myeventsregister")}
+                  className="event-box p-4 border border-[#027FFF] rounded-2xl shadow-md hover:shadow-lg transition duration-300 px-4 py-2 flex justify-between items-center"
+                  onClick={() => navigate(`/event/${event.id}`)}
                 >
                   <div className="event-data flex items-center">
                     <img
-                      src={event.image}
-                      alt={event.title}
+                      src={event.foto_event}
+                      alt={event.judul}
                       className="w-20 h-20 object-cover rounded-full my-2"
                     />
                     <div className="event-details flex flex-col px-4">
                       <span className="event-title block font-semibold text-lg mb-2">
-                        {event.title}
+                        {event.judul}
                       </span>
                       <span className="event-date text-sm text-gray-500 mb-1 block">
-                        Join date: {new Date(event.date).toLocaleDateString()}
+                        Join date: {new Date(event.join_date).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
-                  <Link to="/description-registered">
+                  <Link to={`/myeventsregister/${event.id}`}>
                     <i className="ri-more-fill text-4xl"></i>
                   </Link>
                 </div>

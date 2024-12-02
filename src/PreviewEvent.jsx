@@ -75,7 +75,7 @@ const PreviewEvent = () => {
       if (response.ok) {
         setShowPopup(true);
         setTimeout(() => {
-          navigate("/kode-unik");
+          navigate(`/kode-unik/${eventData.id}`);
         }, 2000);
       } else {
         alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
