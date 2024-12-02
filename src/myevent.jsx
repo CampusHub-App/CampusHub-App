@@ -18,7 +18,7 @@ const MyEvents = () => {
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found. Redirecting to login...");
-        navigate("/Loginpeserta");
+        navigate("/user/login");
         return;
       }
 
@@ -37,7 +37,7 @@ const MyEvents = () => {
           if (response.status === 401) {
             // Token tidak valid atau sudah kadaluarsa
             localStorage.removeItem("token");
-            navigate("/Loginpeserta");
+            navigate("/user/login");
           }
         }
       } catch (error) {
@@ -83,7 +83,7 @@ const MyEvents = () => {
     (event) => event.status.toLowerCase() === "registered"
   ).length;
   const canceledCount = events.filter(
-    (event) => event.status.toLowerCase() === "canceled"
+    (event) => event.status.toLowerCase() === "cancelled"
   ).length;
 
   return (
@@ -148,7 +148,7 @@ const MyEvents = () => {
               </li>
               <li
                 className={`cursor-pointer ${statusFilter === "Canceled" ? "font-bold underline" : ""}`}
-                onClick={() => handleStatusFilter("Canceled")}
+                onClick={() => handleStatusFilter("Cancelled")}
               >
                 Canceled ({canceledCount})
               </li>
@@ -161,7 +161,7 @@ const MyEvents = () => {
                 <div
                   key={event.id}
                   className="event-box p-4 border border-[#027FFF] rounded-2xl shadow-md hover:shadow-lg transition duration-300 px-4 py-2 flex justify-between items-center"
-                  onClick={() => navigate(`/event/${event.id}`)}
+                  onClick={() => navigate(`/myeventsregister/${event.id}`)}
                 >
                   <div className="event-data flex items-center">
                     <img

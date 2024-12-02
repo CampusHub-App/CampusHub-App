@@ -6,6 +6,7 @@ import circle5 from "../assets/Image/circle5.svg";
 import circle from "../assets/Image/adminimage/circleadmin.svg";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const pageVariants = {
   initial: { y: "100%" },
@@ -45,7 +46,12 @@ function Adminpage() {
               </li>
             </ul>
             <div className="flex items-center gap-3">
-              <img src={profile} alt="Profile" className="hidden sm:block" />
+            <Link to="/profile"> <img
+                src={profile}
+                alt="Profile"
+                className=" hidden sm:block"
+              />
+              </Link>
               <button
                 onClick={toggleMenu}
                 type="button"

@@ -123,7 +123,6 @@ function Homepage() {
                 alt="Profile"
                 className=" hidden sm:block"
               /></Link>
-
               
               <button
                 onClick={toggleMenu}
