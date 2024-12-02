@@ -55,11 +55,10 @@ function Loginpeserta() {
           // Simpan token dan tipe token
           if (data.access_token) {
             localStorage.setItem('token', data.access_token); // Simpan access_token
-            localStorage.setItem('token_type', data.token_type);
-            localStorage.setItem('is_admin', data.is_admin);
+            localStorage.setItem('token_type', data.token_type); // Simpan tipe token
           }
   
-          navigate('/Homepage');
+          navigate('/home');
         } else {
           console.error('Login failed:', response.status);
           alert('Login gagal, periksa kembali email atau password Anda.');
@@ -70,8 +69,6 @@ function Loginpeserta() {
       }
     }
   };
-  
-  
 
   return (
     <motion.div

@@ -10,7 +10,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch("https://your-backend-api.com/api/user/profile");
+        const response = await fetch("https://campushub.web.id/api/user");
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
@@ -50,7 +50,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center lg:justify-between px-4 sm:px-6 h-full lg:gap-48">
         
         <div className="logo sm:w-auto lg:w-auto mx-auto">
-          <Link to="#" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img
               src={Logo}
               alt="Logo"
@@ -84,12 +84,12 @@ const Navbar = () => {
 
         <ul className="hidden md:flex gap-10 text-white mx-auto">
           <li>
-            <Link to="/Homepage" className="font-medium text-[20px] hover:underline">
+            <Link to="/home" className="font-medium text-[20px] hover:underline">
               Home
             </Link>
           </li>
           <li>
-            <Link to="/Myevent" className="font-medium text-[20px] hover:underline">
+            <Link to="/my-event" className="font-medium text-[20px] hover:underline">
               MyEvent
             </Link>
           </li>
@@ -105,7 +105,7 @@ const Navbar = () => {
           <Link to="/profile-info" className="flex items-center">
             {userData ? (
               <img
-                src={userData.profile_picture || "https://via.placeholder.com/150"}
+                src={userData.photo || "https://via.placeholder.com/150"}
                 alt="profile"
                 className="w-16 h-16 rounded-full hover:scale-105 transition duration-300"
               />
@@ -154,7 +154,7 @@ const Navbar = () => {
 
           <ul className="flex flex-col gap-6 px-4">
             <li>
-              <Link to="#" className="font-medium text-[18px] hover:underline">
+              <Link to="/home" className="font-medium text-[18px] hover:underline">
                 Home
               </Link>
             </li>

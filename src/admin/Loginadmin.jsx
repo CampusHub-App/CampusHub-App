@@ -38,7 +38,7 @@ function Loginadmin() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (isFormValid) {
-      navigate('/Admin');
+      navigate('/admin');
     }
   };
 
@@ -63,7 +63,7 @@ function Loginadmin() {
           <h1 className="font-semibold tengah:text-[48px] sm:text-[40px] text-[#003266]">Selamat Datang!</h1>
           <p className="text-[#003266] font-normal text-[24px] mb-8">
             Tidak punya akun?
-            <a href="/Signinpeserta" className="text-[#027FFF] hover:underline ml-1">
+            <a href="/user/register" className="text-[#027FFF] hover:underline ml-1">
               Daftar
             </a>
           </p>

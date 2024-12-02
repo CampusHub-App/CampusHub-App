@@ -44,7 +44,7 @@ function Welcome() {
               <h1 className="text-[32px] font-semibold text-[#003266]">
                 Sebagai peserta
               </h1>
-              <Link to="/Loginpeserta">
+              <Link to="/user/login">
                 <button className="text-white tengah:w-[440px] sm:w-[400px] px-[24px] py-[16px] text-[20px] font-medium bg-[#003266] rounded-[10px]">
                   Masuk
                 </button>
@@ -53,7 +53,6 @@ function Welcome() {
           </div>
         </div>
 
-        
         <div className="bg-[#003266] h-screen w-full flex flex-col items-center justify-center sm:pb-[70px] md:pb-[0px] sm:relative md:relative lg:static">
           <div className="relative z-10 flex flex-col items-center gap-y-[20px] mt-[34px]">
             <img
@@ -64,11 +63,10 @@ function Welcome() {
             <h1 className="text-[32px] font-semibold text-white">
               Sebagai penyelenggara
             </h1>
-            <Link to="/Loginadmin"><button className="text-white bg-[#027FFF] rounded-[10px] tengah:w-[440px] sm:w-[400px]  px-[24px] py-[16px] text-[20px] font-medium">
+            <Link to="/admin/login"><button className="text-white bg-[#027FFF] rounded-[10px] tengah:w-[440px] sm:w-[400px]  px-[24px] py-[16px] text-[20px] font-medium">
               Masuk
             </button></Link>
           </div>
-
           
           <img
             src={circle}

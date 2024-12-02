@@ -9,40 +9,16 @@ import kuliah from "./assets/Image/kuliah.svg";
 import workshop from "./assets/Image/workshop.svg";
 import sertifikasi from "./assets/Image/sertifikasi.svg";
 import circle5 from "./assets/Image/circle5.svg";
-import Cardpage from "./components/Cardpage";
+import CardPage from "./components/CardPage";
 import circle6 from "./assets/Image/circle6.svg";
 import arrowLeft from "./assets/Image/icon/arrow-circle-left.svg";
 import arrowRight from "./assets/Image/icon/arrow-circle-right.svg";
 import logo from "./assets/Image/logo.svg";
 import Footer from "./components/footer";
 import { motion } from "framer-motion";
-import axios from "axios"
-import { getevents } from "../services/getevents";
 
 function Landingpage() {
-
-  
-  useEffect(() => {
-    setIsLoading(true);
-    getevents((eventsData) => {
-        if (eventsData.length > 0) {
-            setEvents(eventsData); 
-            setTrendingCount(eventsData.length); 
-            setError(null);
-        } else {
-            setError("Tidak ada data acara.");
-        }
-        setIsLoading(false);
-    });
-}, []);
-
-
-  
-  
-  
-  
-
-  
+ 
   const pageVariants = {
     initial: { y: "100%" },
     animate: { y: 0 },
@@ -56,7 +32,27 @@ function Landingpage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [trendingCount, setTrendingCount] = useState(0);
-
+  const [categoryCount, setCategoryCount] = useState(0);
+  
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("https://campushub.web.id/api/events/all") // Ganti dengan URL API Anda
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Terjadi kesalahan saat mengambil data.");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            const { events, trending, category } = data;
+            setEvents(events);
+            setTrendingCount(trending);
+            setCategoryCount(category);
+            setError(null);
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setIsLoading(false));
+}, []);
 
   const maxIndex = 4; 
 
@@ -104,7 +100,7 @@ function Landingpage() {
               </li>
               <li>
               {isLoggedIn ? (
-                  <Link to="/Myevent">MyEvents</Link>
+                  <Link to="/my-event">MyEvents</Link>
                 ) : (
                   <button
                     onClick={handleMyEventClick}
@@ -130,10 +126,10 @@ function Landingpage() {
 
             <div className="flex justify-center gap-x-3 items-center">
             <div className=" sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap">
-              <Link to="/Welcome"><button className="bg-[#027FFF] border rounded-[10px]   text-white  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+              <Link to="/welcome"><button className="bg-[#027FFF] border rounded-[10px]   text-white  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
                 Login
               </button></Link>
-              <Link to="Signinpeserta"><button className="border-[#027FFF] border-2 rounded-[10px]  text-[#027FFF]  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+              <Link to="/user/register"><button className="border-[#027FFF] border-2 rounded-[10px]  text-[#027FFF]  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
                 Sign Up
               </button></Link>
             </div>
@@ -217,12 +213,8 @@ function Landingpage() {
             </div>
 
             <div className="flex flex-col items-center">
-              <h1 className="font-bold text-[38px] sm:text-[20px] lg:text-[38px] md:text-[38px]">10+</h1>
-              <p className="font-normal text-[18px] sm:text-[12px] lg:text-[18px] md:text-[18px]">Subtopik</p>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <h1 className="font-bold text-[38px] sm:text-[20px] lg:text-[38px] md:text-[38px]">5+</h1>
+            <h1 className="font-bold text-[38px] sm:text-[20px] lg:text-[38px] md:text-[38px]">{isLoading ? "..." : categoryCount}
+            </h1>
               <p className="font-normal text-[18px] sm:text-[12px] lg:text-[18px] md:text-[18px]">Kategori Acara</p>
             </div>
             </div>
@@ -240,23 +232,23 @@ function Landingpage() {
         <h1 className="flex justify-center mt-[12px] items-center font-semibold text-[32px]">
           Kategori
         </h1>
-        <ul className="flex gap-x-[64px] justify-center ">
-          <li>
-            <img src={webinar} alt="Webinar" />
-          </li>
-          <li>
-            <img src={seminar} alt="Seminar" />
-          </li>
-          <li>
-            <img src={kuliah} alt="Kuliah" />
-          </li>
-          <li>
-            <img src={workshop} alt="Workshop" />
-          </li>
-          <li>
-            <img src={sertifikasi} alt="Sertifikasi" />
-          </li>
-        </ul>
+        <ul className="flex gap-x-[64px] justify-center">
+            <li>
+            <Link to="/webinar"><img src={webinar} alt="Webinar" /></Link>
+            </li>
+            <li>
+            <Link to="/seminar"><img src={seminar} alt="Seminar" /></Link>
+            </li>
+            <li>
+            <Link to="/kuliahTamu"><img src={kuliah} alt="Kuliah" /></Link>
+            </li>
+            <li>
+            <Link to="/workshop"><img src={workshop} alt="Workshop" /></Link>
+            </li>
+            <li>
+            <Link to="/sertifikasi"><img src={sertifikasi} alt="Sertifikasi" /></Link>
+            </li>
+          </ul>
       </div>
 
       
@@ -265,8 +257,18 @@ function Landingpage() {
           Jelajahi Acara Unggulan
         </h1>
         <div className="flex flex-wrap justify-center">
-          <Cardpage />
-          <img src={circle6} alt="Circle dekorasi" className="absolute left-0 top-[1300px]" />
+            {isLoading ? (
+                <p>Memuat data...</p>
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <CardPage events={events} />
+            )}
+            <img
+                src={circle6}
+                alt="Circle dekorasi"
+                className="absolute left-0 top-[1300px]"
+            />
         </div>
       </div>
       <div id="aboutus">

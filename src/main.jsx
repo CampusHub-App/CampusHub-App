@@ -11,38 +11,40 @@ import Loginpeserta from './Loginpeserta.jsx'
 import Errorpage from './Errorpage.jsx'
 import Homepage from './Homepage.jsx'
 import Landingpage from './Landingpage.jsx'
-import Webinarpage from './Webinar.jsx'
+import WebinarPage from './Webinar.jsx'
+import SeminarPage from './Seminar.jsx'
+import SertifikasiPage from './Sertifikasi.jsx'
+import WorkshopPage from './Workshop.jsx'
+import KuliahTamuPage from './KuliahTamu.jsx'
 import Adminpage from './admin/Homepage.jsx'
 import Uploadevent from './admin/Uploadevent.jsx'
 import Updateevent from './admin/Updateevent.jsx'
 import Loginadmin from './admin/Loginadmin.jsx'
 import MyEvents from './myevent.jsx'
-import Cardpage from './components/Cardpage.jsx'
+import Cardpage from './components/CardPage.jsx'
 import ProfilePagePersonalInfo from './Profilepage.jsx'
 import ProfilePagePassword from './ProfilePagePassword.jsx'
 import DescriptionPageRegistered from './DescriptionPageRegistered.jsx'
 import PreviewEvent from './PreviewEvent.jsx'
 import DetailEvent from './Detailevent.jsx'
-import KodeUnik from './KodeUnik.jsx'
-
 
 const router = createBrowserRouter([
   {
-    path: "/Welcome",
+    path: "/welcome",
     element: <Welcome/>,
     
   },
   {
-    path: "/Homepage",
+    path: "/home",
     element: <Homepage/>,
     
   },
   {
-    path: "/Signinpeserta",
+    path: "/user/register",
     element: <Signinpeserta/>,
   },
   {
-    path:"/Loginpeserta",
+    path:"/user/login",
     element: <Loginpeserta/>,
   },
   {
@@ -52,31 +54,47 @@ const router = createBrowserRouter([
     errorElement: <Errorpage/>,
   },
   {
-    path:"/Webinar",
-    element: <Webinarpage/>
+    path:"/webinar",
+    element: <WebinarPage/>
   },
   {
-    path:"/Admin",
+    path:"/seminar",
+    element:<SeminarPage/>
+  },
+  {
+    path:"/kuliah-tamu",
+    element: <KuliahTamuPage/>
+  },
+  {
+    path:"/workshop",
+    element:<WorkshopPage/>
+  },
+  {
+    path:"/sertifikasi",
+    element: <SertifikasiPage/>
+  },
+  {
+    path:"/admin",
     element:<Adminpage/>
   },
   {
-    path:"/Upload",
+    path:"/upload",
     element:<Uploadevent/>,
   },
   {
-    path:"/Update",
+    path:"/update",
     element:<Updateevent/>
   },
   {
-    path: "/Loginadmin",
+    path: "/admin/login",
     element:<Loginadmin/>
   },
   {
-    path:"/Myevent/:id",
+    path:"/my-event",
     element:<MyEvents/>
   },
   {
-    path:"/Profile",
+    path:"/profile",
     element:<ProfilePagePersonalInfo/>
   },
   {
@@ -88,19 +106,14 @@ const router = createBrowserRouter([
     element:<DescriptionPageRegistered/>
   },
   {
-    path:"/previewevent/:id",
+    path:"/:id/preview/",
     element:<PreviewEvent/>
   },
 
   {
-    path:"/event-details/:id", 
+    path:"/:id/view/", 
     element:<DetailEvent />
   },
-  {
-    path:"/kode-unik/:id", 
-    element:<KodeUnik />
-  }
-
  
 ])
 

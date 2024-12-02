@@ -9,14 +9,13 @@ import kuliah from "./assets/Image/kuliah.svg";
 import workshop from "./assets/Image/workshop.svg";
 import sertifikasi from "./assets/Image/sertifikasi.svg";
 import circle5 from "./assets/Image/circle5.svg";
-import Cardpage from "./components/Cardpage";
+import CardPage from "./components/CardPage";
 import circle6 from "./assets/Image/circle6.svg";
 import arrowLeft from "./assets/Image/icon/arrow-circle-left.svg";
 import arrowRight from "./assets/Image/icon/arrow-circle-right.svg";
 import logo from "./assets/Image/logo.svg";
 import { motion } from "framer-motion";
 import Footer from "./components/footer";
-import { getevents } from "../services/getevents";
 
 const pageVariants = {
   initial: { y: "100%" },
@@ -28,9 +27,11 @@ function Homepage() {
   const [activeIndex, setActiveIndex] = useState(0); 
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
   const [trendingCount, setTrendingCount] = useState(0);
+  const [categoryCount, setCategoryCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   const maxIndex = 4;
   
   useEffect(() => {
@@ -42,15 +43,23 @@ function Homepage() {
 
   useEffect(() => {
     setIsLoading(true);
-    getevents((eventsData) => {
-      if (eventsData.length > 0) {
-        setEvents(eventsData);
-        setTrendingCount(eventsData.length); 
-      }
-      setIsLoading(false);
-    });
-  }, []);
-
+    fetch("https://campushub.web.id/api/events/all")
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Terjadi kesalahan saat mengambil data.");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            const { events, trending, category } = data;
+            setEvents(events);
+            setTrendingCount(trending);
+            setCategoryCount(category);
+            setError(null);
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setIsLoading(false));
+}, []);
 
   const handleNext = () => {
     setActiveIndex((prevIndex) => (prevIndex === maxIndex ? 0 : prevIndex + 1));
@@ -78,18 +87,20 @@ function Homepage() {
       <header className="bg-[#003266] w-full">
         <nav className="sm:px-[0px] tengah:p- bg-white w-full lg:px-10 xl:px-[85px] py-5">
           <div className="flex justify-between items-center w-full">
+          <Link to="/" className="flex items-center">
             <img
               src={logo}
               alt="Logo"
-              className="sm:max-w-[150px] md:max-w-[229px] tengah:max-w-[180px]"
+              className="hover:filter hover:drop-shadow-lg transition duration-300"
             />
+          </Link>
 
             <ul className="hidden lg:flex space-x-8 items-center text-[#003266] text-[20px] font-medium">
-              <Link to="/Homepage"><li>
+              <Link to="/home"><li>
                 <a href="#">Home</a>
               </li></Link>
               <li>
-              <Link to="/MyEvent">
+              <Link to="/my-event">
                     MyEvent
                   </Link>
               </li>
@@ -146,7 +157,7 @@ function Homepage() {
                   <a href="#">Home</a>
                 </li>
                 <li>
-                <Link to="/MyEvent">
+                <Link to="/my-event">
                     MyEvent
                   </Link>
                 </li>
@@ -192,12 +203,9 @@ function Homepage() {
                 </h1>
                 <p className="font-normal text-[18px] sm:text-[12px] lg:text-[18px] md:text-[18px]">Trending Events</p>
               </div>
+
               <div className="flex flex-col items-center">
-                <h1 className="font-bold text-[38px] sm:text-[20px] lg:text-[38px] md:text-[38px]">10+</h1>
-                <p className="font-normal text-[18px] sm:text-[12px] lg:text-[18px] md:text-[18px]">Subtopik</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <h1 className="font-bold text-[38px] sm:text-[20px] lg:text-[38px] md:text-[38px]">5+</h1>
+                <h1 className="font-bold text-[38px] sm:text-[20px] lg:text-[38px] md:text-[38px]">{isLoading ? "..." : categoryCount}</h1>
                 <p className="font-normal text-[18px] sm:text-[12px] lg:text-[18px] md:text-[18px]">Kategori Acara</p>
               </div>
             </div>
@@ -227,19 +235,19 @@ function Homepage() {
           <ul className="flex gap-x-[64px] justify-center">
             
             <li>
-            <Link to="/Webinar"><img src={webinar} alt="Webinar" /></Link>
+            <Link to="/webinar"><img src={webinar} alt="Webinar" /></Link>
             </li>
             <li>
-              <img src={seminar} alt="Seminar" />
+            <Link to="/seminar"><img src={seminar} alt="Seminar" /></Link>
             </li>
             <li>
-              <img src={kuliah} alt="Kuliah" />
+            <Link to="/kuliah-tamu"><img src={kuliah} alt="Kuliah" /></Link>
             </li>
             <li>
-              <img src={workshop} alt="Workshop" />
+            <Link to="/workshop"><img src={workshop} alt="Workshop" /></Link>
             </li>
             <li>
-              <img src={sertifikasi} alt="Sertifikasi" />
+            <Link to="/sertifikasi"><img src={sertifikasi} alt="Sertifikasi" /></Link>
             </li>
           </ul>
         </div>
@@ -255,12 +263,18 @@ function Homepage() {
         </h1>
 
         <div className="flex flex-wrap justify-center">
-          <Cardpage />
-          <img
-            src={circle6}
-            alt="Circle dekorasi"
-            className="absolute left-0 top-[1300px]"
-          />
+            {isLoading ? (
+                <p>Memuat data...</p>
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <CardPage events={events} />
+            )}
+            <img
+                src={circle6}
+                alt="Circle dekorasi"
+                className="absolute left-0 top-[1300px]"
+            />
         </div>
       </div>
       <div id="aboutus">
