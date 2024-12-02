@@ -27,12 +27,25 @@ const PopUpLogout = ({ setShowPopUp }) => {
     }, 600);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setIsProcessing(true);
     try {
-      localStorage.removeItem("authToken");
-      sessionStorage.removeItem("userData");
 
+      const response = await fetch("https://campushub.web.id/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Logout gagal: ${response.statusText}`);
+      }
+  
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("userData");
+  
       navigate("/");
     } catch (error) {
       console.error("Error saat logout:", error);

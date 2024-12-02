@@ -35,10 +35,38 @@ function Loginadmin() {
 
   const isFormValid = email.trim() !== '' && password.trim() !== '';
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+  
     if (isFormValid) {
-      navigate('/admin');
+      try {
+        const response = await fetch('https://campushub.web.id/api/login/admin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API Response:', data); // Debugging untuk memastikan respons
+  
+          // Simpan token dan tipe token
+          if (data.access_token) {
+            localStorage.setItem('token', data.access_token); // Simpan access_token
+            localStorage.setItem('token_type', data.token_type); // Simpan tipe token
+          }
+  
+          navigate('/home');
+        } else {
+          console.error('Login failed:', response.status);
+          alert('Login gagal, periksa kembali email atau password Anda.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat login.');
+      }
     }
   };
 
@@ -63,7 +91,7 @@ function Loginadmin() {
           <h1 className="font-semibold tengah:text-[48px] sm:text-[40px] text-[#003266]">Selamat Datang!</h1>
           <p className="text-[#003266] font-normal text-[24px] mb-8">
             Tidak punya akun?
-            <a href="/user/register" className="text-[#027FFF] hover:underline ml-1">
+            <a href="/Signinpeserta" className="text-[#027FFF] hover:underline ml-1">
               Daftar
             </a>
           </p>
