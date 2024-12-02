@@ -27,6 +27,8 @@ import ProfilePagePassword from './ProfilePagePassword.jsx'
 import DescriptionPageRegistered from './DescriptionPageRegistered.jsx'
 import PreviewEvent from './PreviewEvent.jsx'
 import DetailEvent from './Detailevent.jsx'
+import DescriptionPageCancel from './DescriptionPageCancel.jsx'
+import KodeUnik from './KodeUnik.jsx'
 
 const router = createBrowserRouter([
   {
@@ -114,7 +116,14 @@ const router = createBrowserRouter([
     path:"/:id/view/", 
     element:<DetailEvent />
   },
- 
+  {
+    path:"/:id/cancel/", 
+    element:<DescriptionPageCancel />
+  },
+  {
+    path:"/:id/kode-unik/", 
+    element:<KodeUnik />
+  }
 ])
 
 createRoot(document.getElementById('root')).render(

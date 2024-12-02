@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Poster from "../../../assets/Poster.svg";
-import Ellipse from "../../../assets/Ellipse.svg";
-import "../DescriptionPageCancel/DescriptionPageCancel.css";
+import Poster from "./assets/Image/Poster.svg";
+import Ellipse from "./assets/image/Ellipse.svg";
+import "./css/DescriptionPageCancel.css";
 
 const DescriptionPageCancel = () => {
   const [eventData, setEventData] = useState(null);
@@ -17,7 +17,7 @@ const DescriptionPageCancel = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch("https://your-api-url.com/event");
+        const response = await fetch(`https://campushub.web.id/api/events/${id}/cancel`);
         if (!response.ok) {
           throw new Error("Failed to fetch event data");
         }

@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const PopUpCancel = ({ setShowPopUp, bookingId }) => {
   const bookingRef = useRef(null);
+  const { id } = useParams(); // This is the correct variable name from useParams()
   const [isExiting, setIsExiting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
@@ -27,21 +28,29 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
     }, 600);
   };
 
-  const handleCancelBooking = () => {
-    navigate("/description-cancel");
-
   const handleCancelBooking = async () => {
     setIsProcessing(true); 
+
+    const accessToken = localStorage.getItem('token'); // Retrieve access token
+
+    if (!accessToken) {
+      console.error("No access token found.");
+      setIsProcessing(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`https://your-backend-api.com/bookings/${bookingId}/cancel`, {
+      // Use the correct `id` variable from `useParams`
+      const response = await fetch(`https://campushub.web.id/api/events/${id}/cancel`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`, // Include access token in the headers
         },
       });
 
       if (response.ok) {
-        navigate("/descriptionpagecancel");
+        navigate(`/cancel/${id}`);
       } else {
         console.error("Pembatalan gagal:", await response.text());
       }
@@ -50,7 +59,6 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
     } finally {
       setIsProcessing(false);
     }
-  }
   };
 
   return (
@@ -83,7 +91,7 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
         <div className="myevent-button flex flex-col py-2">
           <button
             onClick={triggerClose}
-            className="bg-customBlue font-regular w-full h-11 my-2 rounded-lg font-medium text-white text-[20px] shadow-md hover:shadow-lg transition duration-300"
+            className="bg-[#027FFF] font-regular w-full h-11 my-2 rounded-lg font-medium text-white text-[20px] shadow-md hover:shadow-lg transition duration-300"
           >
             Kembali
           </button>
@@ -91,7 +99,7 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
             onClick={handleCancelBooking}
             disabled={isProcessing}
             className={`bg-transparent border-2 ${
-              isProcessing ? "border-gray-400 text-gray-400" : "border-customBlue text-black"
+              isProcessing ? "border-gray-400 text-gray-400" : "border-[#027FFF] text-black"
             } font-medium w-full h-11 my-2 rounded-lg text-[20px] hover:bg-red-300 hover:border-red-500`}
           >
             {isProcessing ? "Memproses..." : "Batalkan"}

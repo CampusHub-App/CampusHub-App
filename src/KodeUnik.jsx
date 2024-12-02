@@ -52,7 +52,7 @@ const KodeUnik = () => {
     if (!loading) {
       setFadeClass("fade-out");
       setTimeout(() => {
-        navigate(`/MyEvent/${id}`);
+        navigate(`/my-event/${id}`);
       }, 1000); // Tunggu animasi selesai sebelum navigasi
     }
   };

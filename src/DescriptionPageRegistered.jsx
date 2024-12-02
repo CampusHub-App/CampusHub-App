@@ -5,6 +5,8 @@ import Ellipse from "./assets/image/Ellipse.svg";
 import Lecturer from "./assets/image/lecturer.svg";
 import PopUpCancel from "./components/PopUpCancel";
 import "./css/DescriptionPageRegistered.css";
+import Calendar from "./assets/image/date.svg";
+import Chair from "./assets/image/chair.svg";
 
 const DescriptionPageRegistered = () => {
   const { id } = useParams();
@@ -19,7 +21,6 @@ const DescriptionPageRegistered = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        // Retrieve access token from localStorage
         const token = localStorage.getItem("token");
 
         if (!token) {
@@ -28,7 +29,7 @@ const DescriptionPageRegistered = () => {
           return;
         }
 
-        const response = await fetch("https://campushub.web.id/api/events/${id}/view", {
+        const response = await fetch(`https://campushub.web.id/api/events/${id}/view`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`, // Send token for authentication
@@ -60,7 +61,7 @@ const DescriptionPageRegistered = () => {
 
   const handleBack = () => {
     setPageAnimation("page-exit");
-    setTimeout(() => navigate("/my-events"), 500);
+    setTimeout(() => navigate(`/MyEvent/${id}`), 500);
   };
 
   const handleCancel = () => {
@@ -113,14 +114,14 @@ const DescriptionPageRegistered = () => {
             />
           </div>
           <div className="description text-left mt-6 lg:mt-0 lg:mx-8">
-            <span className="bg-customBlue font-regular px-4 py-1 lg:px-8 lg:py-1 rounded-full text-white text-[12px] lg:text-[14px]">
+            <span className="bg-[#027FFF] font-regular px-4 py-1 lg:px-8 lg:py-1 rounded-full text-white text-[12px] lg:text-[14px]">
             {eventData.category_name}
             </span>
             <h1 className="font-bold text-[20px] lg:text-[32px] py-4">{eventData.judul}</h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div className="flex flex-wrap gap-2 ml-2">
               <img
-                src="src/assets/Calendar.svg"
+                src={Calendar}
                 alt="Calendar"
                 className="w-5 lg:w-8"
               />
@@ -137,7 +138,7 @@ const DescriptionPageRegistered = () => {
               {eventData.tempat}
               </span>
               <img
-                src="src/assets/chair.svg"
+                src={Chair}
                 alt="Location"
                 className="w-5 lg:w-8 ml-auto"
               />
@@ -169,7 +170,7 @@ const DescriptionPageRegistered = () => {
             </div>
           </div>
           <div className="booking w-full lg:w-4/12 h-1/2 px-6 py-6 mt-6 lg:mt-0 lg:mx-8 bg-white shadow-lg rounded-2xl flex flex-col">
-            <div className="uniq-code bg-customBlue mb-4 justify-center flex items-center lg:px-6 sm:px-0 py-5 rounded-xl">
+            <div className="uniq-code bg-[#027FFF] mb-4 justify-center flex items-center lg:px-6 sm:px-0 py-5 rounded-xl">
               <div className="uniq-code-output flex gap-4">
                 {code.map((char, index) => (
                   <input
@@ -193,13 +194,13 @@ const DescriptionPageRegistered = () => {
             </div>
             <div className="checkout flex flex-col">
               <button
-                className="bg-customBlue font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-white text-[14px] lg:text-[16px]"
+                className="bg-[#027FFF] font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-white text-[14px] lg:text-[16px]"
                 onClick={handleBack}
               >
                 Kembali
               </button>
               <button
-                className="bg-transparent border-2 border-customBlue font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-black text-[14px] lg:text-[16px] hover:bg-red-300 hover:border-red-500"
+                className="bg-transparent border-2 border-[#027FFF] font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-black text-[14px] lg:text-[16px] hover:bg-red-300 hover:border-red-500"
                 onClick={handleCancel}
               >
                 Batalkan
