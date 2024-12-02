@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 import Footer from "./components/footer";
 import { useEffect } from "react";
 
-function Webinarpage() {
+function SeminarPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +29,7 @@ function Webinarpage() {
 
   useEffect(() => {
     setIsLoading(true); // Set state untuk mulai loading
-    fetch("https://campushub.web.id/api/events/webinar") // URL API
+    fetch("https://campushub.web.id/api/events/seminar") // URL API
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Terjadi kesalahan saat mengambil data."); // Tangani error HTTP
@@ -182,4 +182,4 @@ function Webinarpage() {
   );
 }
 
-export default Webinarpage;
+export default SeminarPage;

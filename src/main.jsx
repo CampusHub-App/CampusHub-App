@@ -11,13 +11,17 @@ import Loginpeserta from './Loginpeserta.jsx'
 import Errorpage from './Errorpage.jsx'
 import Homepage from './Homepage.jsx'
 import Landingpage from './Landingpage.jsx'
-import Webinarpage from './Webinar.jsx'
+import WebinarPage from './Webinar.jsx'
+import SeminarPage from './Seminar.jsx'
+import SertifikasiPage from './Sertifikasi.jsx'
+import WorkshopPage from './Workshop.jsx'
+import KuliahTamuPage from './KuliahTamu.jsx'
 import Adminpage from './admin/Homepage.jsx'
 import Uploadevent from './admin/Uploadevent.jsx'
 import Updateevent from './admin/Updateevent.jsx'
 import Loginadmin from './admin/Loginadmin.jsx'
 import MyEvents from './myevent.jsx'
-import Cardpage from './components/Cardpage.jsx'
+import Cardpage from './components/CardPage.jsx'
 import ProfilePagePersonalInfo from './Profilepage.jsx'
 import ProfilePagePassword from './ProfilePagePassword.jsx'
 import DescriptionPageRegistered from './DescriptionPageRegistered.jsx'
@@ -52,7 +56,23 @@ const router = createBrowserRouter([
   },
   {
     path:"/Webinar",
-    element: <Webinarpage/>
+    element: <WebinarPage/>
+  },
+  {
+    path:"/Seminar",
+    element:<SeminarPage/>
+  },
+  {
+    path:"/KuliahTamu",
+    element: <KuliahTamuPage/>
+  },
+  {
+    path:"/Workshop",
+    element:<WorkshopPage/>
+  },
+  {
+    path:"/Sertifikasi",
+    element: <SertifikasiPage/>
   },
   {
     path:"/Admin",
@@ -95,7 +115,6 @@ const router = createBrowserRouter([
     path:"/event-details/:id", 
     element:<DetailEvent />
   },
-
  
 ])
 

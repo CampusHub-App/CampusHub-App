@@ -40,7 +40,7 @@ function Loginpeserta() {
   
     if (isFormValid) {
       try {
-        const response = await fetch('https://campushub.web.id/api/login', {
+        const response = await fetch('https://campushub.web.id/api/login/user', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -56,7 +56,6 @@ function Loginpeserta() {
           if (data.access_token) {
             localStorage.setItem('token', data.access_token); // Simpan access_token
             localStorage.setItem('token_type', data.token_type); // Simpan tipe token
-            localStorage.setItem('is_admin', data.is_admin); // Simpan status admin (opsional)
           }
   
           navigate('/Homepage');

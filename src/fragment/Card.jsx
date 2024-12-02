@@ -4,21 +4,28 @@ import date from "../assets/Image/date.svg";
 const Card = ({ children, onClick }) => {
   return (
     <div
-      className="border-2 rounded-[20px] bg-white max-w-[420px] text-[#003266] shadow-lg cursor-pointer"
+      className="border-2 rounded-[20px] bg-white max-w-[420px] h-[560px] text-[#003266] shadow-lg cursor-pointer flex flex-col"
       onClick={onClick}
     >
-      <div className="p-[24px] gap-y-[12px] flex flex-col">
-        {children}
-      </div>
+      <div className="p-[24px] flex flex-col flex-1 gap-y-[12px]">{children}</div>
     </div>
   );
 };
 
 const Body = ({ children, title }) => {
+  const truncateText = (text) => {
+    const maxWords = 10; 
+    const words = text.split(" ");
+    if (words.length > maxWords) {
+      return `${words.slice(0, maxWords).join(" ")}...`;
+    }
+    return text;
+  };
+
   return (
-    <div className="w-full max-w-[369px] ">
-      <h1 className="font-semibold text-[26px]">{title}...</h1>
-      <p className="text-[16px] font-normal">{children}</p>
+    <div className="w-full max-w-[369px]">
+      <h1 className="font-semibold text-[26px] mb-[8px]">{title}</h1>
+      <p className="text-[16px] font-normal">{truncateText(children, 15)}</p>
     </div>
   );
 };
@@ -35,7 +42,11 @@ const Kategori = ({ kategori }) => {
 
 const Image = ({ image }) => {
   return (
-    <img src={image} alt="" className="w-[372px] h-[232px]" />
+    <img
+      src={image}
+      alt=""
+      className="w-[372px] h-[232px] object-cover rounded-[12px]"
+    />
   );
 };
 
@@ -50,8 +61,8 @@ const Tanggal = ({ children }) => {
 
 const Creator = ({ image, nama, title }) => {
   return (
-    <div className="flex gap-x-[16px]">
-      <img src={image} alt="" className="w-full max-w-[40px]" />
+    <div className="flex gap-x-[16px] items-center mt-auto">
+      <img src={image} alt="" className="w-[40px] h-[40px] rounded-full" />
       <div>
         <p className="font-medium text-[16px]">{nama}</p>
         <p className="font-normal text-[14px]">{title}</p>
