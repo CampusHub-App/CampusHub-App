@@ -13,8 +13,17 @@ const Card = ({ children, onClick }) => {
 };
 
 const Body = ({ children, title }) => {
+  const truncateTitle = (text) => {
+    const maxWords = 3; 
+    const words = text.split(" ");
+    if (words.length > maxWords) {
+      return `${words.slice(0, maxWords).join(" ")}...`;
+    }
+    return text;
+  };
+
   const truncateText = (text) => {
-    const maxWords = 10; 
+    const maxWords = 8; 
     const words = text.split(" ");
     if (words.length > maxWords) {
       return `${words.slice(0, maxWords).join(" ")}...`;
@@ -24,8 +33,8 @@ const Body = ({ children, title }) => {
 
   return (
     <div className="w-full max-w-[369px]">
-      <h1 className="font-semibold text-[26px] mb-[8px]">{title}</h1>
-      <p className="text-[16px] font-normal">{truncateText(children, 15)}</p>
+      <h1 className="font-semibold text-[26px] mb-[8px]">{truncateTitle(title)}</h1>
+      <p className="text-[16px] font-normal">{truncateText(children)}</p>
     </div>
   );
 };

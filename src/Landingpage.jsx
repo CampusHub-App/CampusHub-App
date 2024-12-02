@@ -100,7 +100,7 @@ function Landingpage() {
               </li>
               <li>
               {isLoggedIn ? (
-                  <Link to="/Myevent">MyEvents</Link>
+                  <Link to="/my-event">MyEvents</Link>
                 ) : (
                   <button
                     onClick={handleMyEventClick}
@@ -126,10 +126,10 @@ function Landingpage() {
 
             <div className="flex justify-center gap-x-3 items-center">
             <div className=" sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap">
-              <Link to="/Welcome"><button className="bg-[#027FFF] border rounded-[10px]   text-white  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+              <Link to="/welcome"><button className="bg-[#027FFF] border rounded-[10px]   text-white  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
                 Login
               </button></Link>
-              <Link to="Signinpeserta"><button className="border-[#027FFF] border-2 rounded-[10px]  text-[#027FFF]  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+              <Link to="/user/register"><button className="border-[#027FFF] border-2 rounded-[10px]  text-[#027FFF]  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
                 Sign Up
               </button></Link>
             </div>
@@ -234,19 +234,19 @@ function Landingpage() {
         </h1>
         <ul className="flex gap-x-[64px] justify-center">
             <li>
-            <Link to="/Webinar"><img src={webinar} alt="Webinar" /></Link>
+            <Link to="/webinar"><img src={webinar} alt="Webinar" /></Link>
             </li>
             <li>
-            <Link to="/Seminar"><img src={seminar} alt="Seminar" /></Link>
+            <Link to="/seminar"><img src={seminar} alt="Seminar" /></Link>
             </li>
             <li>
-            <Link to="/KuliahTamu"><img src={kuliah} alt="Kuliah" /></Link>
+            <Link to="/kuliahTamu"><img src={kuliah} alt="Kuliah" /></Link>
             </li>
             <li>
-            <Link to="/Workshop"><img src={workshop} alt="Workshop" /></Link>
+            <Link to="/workshop"><img src={workshop} alt="Workshop" /></Link>
             </li>
             <li>
-            <Link to="/Sertifikasi"><img src={sertifikasi} alt="Sertifikasi" /></Link>
+            <Link to="/sertifikasi"><img src={sertifikasi} alt="Sertifikasi" /></Link>
             </li>
           </ul>
       </div>

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Card from "../fragment/Card";
 import arrowLeft from "../assets/Image/icon/arrow-circle-left.svg";
 import arrowRight from "../assets/Image/icon/arrow-circle-right.svg";
 
 const CardPage = ({ events }) => {
     const [currentPage, setCurrentPage] = useState(1);
+    const navigate = useNavigate(); // Hook untuk navigasi
+
     const eventsPerPage = 6;
     const indexOfLastEvent = currentPage * eventsPerPage;
     const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
@@ -28,6 +31,11 @@ const CardPage = ({ events }) => {
 
     const maxPage = Math.ceil(events.length / eventsPerPage);
 
+    // Fungsi untuk menangani klik pada card
+    const handleCardClick = (id) => {
+        navigate(`/${id}/view`); // Redirect ke halaman dengan ID tertentu
+    };
+
     return (
         <div className="relative z-10">
             <div className="flex flex-wrap justify-around px-14 gap-10">
@@ -36,7 +44,7 @@ const CardPage = ({ events }) => {
                         const { id, foto_event, category_name, accessibility, judul, deskripsi, date, foto_pembicara, pembicara, role } = event;
                         return (
                             <div key={id} className="gap-y-[50px]">
-                                <Card>
+                                <Card onClick={() => handleCardClick(id)}> {/* Tambahkan onClick */}
                                     <Card.Image image={foto_event} />
                                     <Card.Kategori kategori={category_name}>{accessibility}</Card.Kategori>
                                     <Card.Body title={judul.substring(0, 35)}>{deskripsi}</Card.Body>

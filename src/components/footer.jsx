@@ -34,10 +34,10 @@ const Footer = () => {
                     isLandingPage
                       ? "/"
                       : isHomePage
-                      ? "/Homepage"
+                      ? "/home"
                       : isAdminPage
-                      ? "/Adminpage"
-                      : "/Homepaage"
+                      ? "/admin"
+                      : "/home"
                   }
                   onClick={handleScrollToTop}
                 >
@@ -106,27 +106,27 @@ const Footer = () => {
               </span>
               <ul className="text-white space-y-6 text-[18px] text-medium">
                 <li>
-                  <Link to="/Webinar" onClick={handleScrollToTop}>
+                  <Link to="/seminar" onClick={handleScrollToTop}>
                     Seminar
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Webinar" onClick={handleScrollToTop}>
+                  <Link to="/webinar" onClick={handleScrollToTop}>
                     Webinar
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Webinar" onClick={handleScrollToTop}>
+                  <Link to="/kuliah-tamu" onClick={handleScrollToTop}>
                     Kuliah Tamu
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Webinar" onClick={handleScrollToTop}>
+                  <Link to="/workshop" onClick={handleScrollToTop}>
                     Workshop
                   </Link>
                 </li>
                 <li>
-                  <Link to="/Webinar" onClick={handleScrollToTop}>
+                  <Link to="/sertifikasi" onClick={handleScrollToTop}>
                     Sertifikasi
                   </Link>
                 </li>
@@ -144,10 +144,10 @@ const Footer = () => {
                       isLandingPage
                         ? "/"
                         : isHomePage
-                        ? "/Homepage"
+                        ? "/home"
                         : isAdminPage
-                        ? "/Adminpage"
-                        : "/Homepage"
+                        ? "/admin"
+                        : "/home"
                     }
                     onClick={handleScrollToTop}
                   >
@@ -165,14 +165,14 @@ const Footer = () => {
                   </ScrollLink>
                 </li>
                 <li>
-                  <Link to="/MyEvent" onClick={handleScrollToTop}>
+                  <Link to="/my-event" onClick={handleScrollToTop}>
                     MyEvent
                   </Link>
 
                  
                 </li>
                 <li>
-                  <Link to="/AboutUs" onClick={handleScrollToTop}>
+                  <Link to="#footer" onClick={handleScrollToTop}>
                     About Us
                   </Link>
                 </li>

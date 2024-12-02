@@ -43,7 +43,7 @@ function Homepage() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("https://campushub.web.id/api/events/all") // Ganti dengan URL API Anda
+    fetch("https://campushub.web.id/api/events/all")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Terjadi kesalahan saat mengambil data.");
@@ -87,18 +87,20 @@ function Homepage() {
       <header className="bg-[#003266] w-full">
         <nav className="sm:px-[0px] tengah:p- bg-white w-full lg:px-10 xl:px-[85px] py-5">
           <div className="flex justify-between items-center w-full">
+          <Link to="/" className="flex items-center">
             <img
               src={logo}
               alt="Logo"
-              className="sm:max-w-[150px] md:max-w-[229px] tengah:max-w-[180px]"
+              className="hover:filter hover:drop-shadow-lg transition duration-300"
             />
+          </Link>
 
             <ul className="hidden lg:flex space-x-8 items-center text-[#003266] text-[20px] font-medium">
-              <Link to="/Homepage"><li>
+              <Link to="/home"><li>
                 <a href="#">Home</a>
               </li></Link>
               <li>
-              <Link to="/MyEvent">
+              <Link to="/my-event">
                     MyEvent
                   </Link>
               </li>
@@ -155,7 +157,7 @@ function Homepage() {
                   <a href="#">Home</a>
                 </li>
                 <li>
-                <Link to="/MyEvent">
+                <Link to="/my-event">
                     MyEvent
                   </Link>
                 </li>
@@ -233,19 +235,19 @@ function Homepage() {
           <ul className="flex gap-x-[64px] justify-center">
             
             <li>
-            <Link to="/Webinar"><img src={webinar} alt="Webinar" /></Link>
+            <Link to="/webinar"><img src={webinar} alt="Webinar" /></Link>
             </li>
             <li>
-            <Link to="/Seminar"><img src={seminar} alt="Seminar" /></Link>
+            <Link to="/seminar"><img src={seminar} alt="Seminar" /></Link>
             </li>
             <li>
-            <Link to="/KuliahTamu"><img src={kuliah} alt="Kuliah" /></Link>
+            <Link to="/kuliah-tamu"><img src={kuliah} alt="Kuliah" /></Link>
             </li>
             <li>
-            <Link to="/Workshop"><img src={workshop} alt="Workshop" /></Link>
+            <Link to="/workshop"><img src={workshop} alt="Workshop" /></Link>
             </li>
             <li>
-            <Link to="/Sertifikasi"><img src={sertifikasi} alt="Sertifikasi" /></Link>
+            <Link to="/sertifikasi"><img src={sertifikasi} alt="Sertifikasi" /></Link>
             </li>
           </ul>
         </div>

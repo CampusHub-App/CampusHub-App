@@ -21,7 +21,7 @@ const PreviewEvent = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Anda harus login untuk mengakses halaman ini.");
-      navigate("/Loginpeserta"); // Redirect ke halaman login jika tidak ada token
+      navigate("/login/user"); // Redirect ke halaman login jika tidak ada token
     }
   }, [navigate]);
 
@@ -89,7 +89,7 @@ const PreviewEvent = () => {
   const handleExit = () => {
     setIsExiting(true);
     setTimeout(() => {
-      navigate(`/event-details/${eventData.id}`);
+      navigate(`/${eventData.id}/view`);
     }, 500);
   };
 

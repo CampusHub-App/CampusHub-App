@@ -28,24 +28,23 @@ import DescriptionPageRegistered from './DescriptionPageRegistered.jsx'
 import PreviewEvent from './PreviewEvent.jsx'
 import DetailEvent from './Detailevent.jsx'
 
-
 const router = createBrowserRouter([
   {
-    path: "/Welcome",
+    path: "/welcome",
     element: <Welcome/>,
     
   },
   {
-    path: "/Homepage",
+    path: "/home",
     element: <Homepage/>,
     
   },
   {
-    path: "/Signinpeserta",
+    path: "/user/register",
     element: <Signinpeserta/>,
   },
   {
-    path:"/Loginpeserta",
+    path:"/user/login",
     element: <Loginpeserta/>,
   },
   {
@@ -55,47 +54,47 @@ const router = createBrowserRouter([
     errorElement: <Errorpage/>,
   },
   {
-    path:"/Webinar",
+    path:"/webinar",
     element: <WebinarPage/>
   },
   {
-    path:"/Seminar",
+    path:"/seminar",
     element:<SeminarPage/>
   },
   {
-    path:"/KuliahTamu",
+    path:"/kuliah-tamu",
     element: <KuliahTamuPage/>
   },
   {
-    path:"/Workshop",
+    path:"/workshop",
     element:<WorkshopPage/>
   },
   {
-    path:"/Sertifikasi",
+    path:"/sertifikasi",
     element: <SertifikasiPage/>
   },
   {
-    path:"/Admin",
+    path:"/admin",
     element:<Adminpage/>
   },
   {
-    path:"/Upload",
+    path:"/upload",
     element:<Uploadevent/>,
   },
   {
-    path:"/Update",
+    path:"/update",
     element:<Updateevent/>
   },
   {
-    path: "/Loginadmin",
+    path: "/admin/login",
     element:<Loginadmin/>
   },
   {
-    path:"/Myevent",
+    path:"/my-event",
     element:<MyEvents/>
   },
   {
-    path:"/Profile",
+    path:"/profile",
     element:<ProfilePagePersonalInfo/>
   },
   {
@@ -107,12 +106,12 @@ const router = createBrowserRouter([
     element:<DescriptionPageRegistered/>
   },
   {
-    path:"/previewevent/:id",
+    path:"/:id/preview/",
     element:<PreviewEvent/>
   },
 
   {
-    path:"/event-details/:id", 
+    path:"/:id/view/", 
     element:<DetailEvent />
   },
  

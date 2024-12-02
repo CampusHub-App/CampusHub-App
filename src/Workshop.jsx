@@ -79,9 +79,15 @@ function WorkshopPage() {
         <header className="w-full">
           <nav className="p-5 bg-white sm:px-0 ">
             <div className="flex justify-between items-center px-5 tengah:px-[62px] sm:px-[0]">
-              <img src={logo} alt="Logo" className="" />
+            <Link to="/" className="flex items-center">
+            <img
+              src={logo}
+              alt="Logo"
+              className="hover:filter hover:drop-shadow-lg transition duration-300"
+            />
+          </Link>
               <ul className="hidden lg:flex gap-8 items-center text-[#003266] text-[20px] font-medium">
-                <Link to="/Homepage">
+                <Link to="/home">
                   <li>
                     <a href="#">Home</a>
                   </li>
@@ -128,7 +134,7 @@ function WorkshopPage() {
   <div className="lg:hidden mt-4">
     <ul className="flex flex-col space-y-4 text-[#003266] text-[20px] font-medium">
       <li>
-        <Link to="/Homepage">Home</Link>
+        <Link to="/home">Home</Link>
       </li>
       <li>
         <Link to="/MyEvent">MyEvent</Link>
