@@ -6,18 +6,18 @@ import Welcome from './Welcome.jsx'
 import 'remixicon/fonts/remixicon.css'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Loginpeserta from './LoginPeserta.jsx'
-import Errorpage from './ErrorPage.jsx'
-import Homepage from './HomePage.jsx'
+import LoginPeserta from './LoginPeserta.jsx'
+import ErrorPage from './ErrorPage.jsx'
+import HomePage from './HomePage.jsx'
 import WebinarPage from './Webinar.jsx'
 import SeminarPage from './Seminar.jsx'
 import SertifikasiPage from './Sertifikasi.jsx'
 import WorkshopPage from './Workshop.jsx'
 import KuliahTamuPage from './KuliahTamu.jsx'
-import Adminpage from './admin/HomePage.jsx'
-import Uploadevent from './admin/UploadEvent.jsx'
-import Updateevent from './admin/UpdateEvent.jsx'
-import Loginadmin from './admin/LoginAdmin.jsx'
+import AdminPage from './admin/HomePage.jsx'
+import UploadEvent from './admin/UploadEvent.jsx'
+import UpdateEvent from './admin/UpdateEvent.jsx'
+import LoginAdmin from './admin/LoginAdmin.jsx'
 import MyEvents from './MyEvents.jsx'
 import ProfilePagePersonalInfo from './ProfilePage.jsx'
 import ProfilePagePassword from './ProfilePagePassword.jsx'
@@ -25,7 +25,7 @@ import MyEventStatusPage from './MyEventStatusPage.jsx'
 import PreviewEvent from './PreviewEvent.jsx'
 import DetailEvent from './DetailEvent.jsx'
 import KodeUnik from './KodeUnik.jsx'
-import Signinpeserta from './SignInPeserta.jsx'
+import SignInPeserta from './SignInPeserta.jsx'
 
 const router = createBrowserRouter([
   {
@@ -35,17 +35,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/user/register",
-    element: <Signinpeserta/>,
+    element: <SignInPeserta/>,
   },
   {
     path:"/user/login",
-    element: <Loginpeserta/>,
+    element: <LoginPeserta/>,
   },
   {
     
     path:"/",
-    element: <Homepage/>,
-    errorElement: <Errorpage/>,
+    element: <HomePage/>,
+    errorElement: <ErrorPage/>,
   },
   {
     path:"/webinar",
@@ -69,19 +69,19 @@ const router = createBrowserRouter([
   },
   {
     path:"/admin",
-    element:<Adminpage/>
+    element:<AdminPage/>
   },
   {
     path:"/upload",
-    element:<Uploadevent/>,
+    element:<UploadEvent/>,
   },
   {
     path:"/update",
-    element:<Updateevent/>
+    element:<UpdateEvent/>
   },
   {
     path: "/admin/login",
-    element:<Loginadmin/>
+    element:<LoginAdmin/>
   },
   {
     path:"/my-events",
