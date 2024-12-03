@@ -2,7 +2,7 @@ name: Build, Compose, Cleanup
 on:
   push:
     branches:
-      - stable
+      - deploy
 jobs:
   build:
     runs-on: self-hosted
