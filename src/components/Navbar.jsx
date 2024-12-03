@@ -4,16 +4,15 @@ import logo from "../assets/Image/logo.svg";
 import logo2 from "../assets/Image/logo2.svg";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { data } from "autoprefixer";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const aboutus = () => {
     if (location.pathname !== "/") {
@@ -27,26 +26,15 @@ const Navbar = () => {
       }
     }, 200);
   };
-
+  
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await fetch("https://campushub.web.id/api/user", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data);
-        }
-      } finally {
-        setIsLoading(false);
-        console.log(data);
-      }
-    };
-
-    fetchUserProfile();
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUserData(JSON.parse(user));
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
 
     const savedMenuState = localStorage.getItem("isMenuOpen");
     if (savedMenuState === "true") {
@@ -145,7 +133,7 @@ const Navbar = () => {
 
         <div className="flex justify-center gap-x-3 items-center">
           {isLoading ? (
-            <div className="w-60 h-12 rounded-full hover:scale-105 transition duration-300 object-cover"></div>
+            <div className="sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap pl-[12rem]"></div>
           ) : userData ? (
             <Link
               to="/account/profile"
@@ -155,7 +143,7 @@ const Navbar = () => {
                 src={
                   userData.photo ||
                   `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(
-                    userData.fullname || "User"
+                    userData.fullname
                   )}&size=250`
                 }
                 alt="profile"

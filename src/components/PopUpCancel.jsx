@@ -3,12 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const PopUpCancel = ({ setShowPopUp, bookingId }) => {
   const bookingRef = useRef(null);
-  const { id } = useParams(); // This is the correct variable name from useParams()
+  const { id } = useParams();
   const [isExiting, setIsExiting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isVisible, setIsVisible] = useState(false); // State for entrance
   const navigate = useNavigate();
 
   useEffect(() => {
+    setIsVisible(true); // Trigger entrance animation on mount
+
     const handleClickOutside = (event) => {
       if (bookingRef.current && !bookingRef.current.contains(event.target)) {
         triggerClose();
@@ -22,16 +25,15 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
   }, []);
 
   const triggerClose = () => {
-    setIsExiting(true);
+    setIsExiting(true); // Trigger exit animation
     setTimeout(() => {
       setShowPopUp(false);
-    }, 600);
+    }, 600); // Match the duration of the animation
   };
 
   const handleCancelBooking = async () => {
-    setIsProcessing(true); 
-
-    const accessToken = localStorage.getItem('token'); // Retrieve access token
+    setIsProcessing(true);
+    const accessToken = localStorage.getItem("token");
 
     if (!accessToken) {
       console.error("No access token found.");
@@ -40,14 +42,16 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
     }
 
     try {
-
-      const response = await fetch(`https://campushub.web.id/api/events/${id}/cancel`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
-        },
-      });
+      const response = await fetch(
+        `https://campushub.web.id/api/events/${id}/cancel`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
       if (response.ok) {
         navigate(`/${id}/cancel`);
@@ -56,7 +60,7 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
         alert(data.message);
       }
     } catch (error) {
-        console.error("Error saat membatalkan:", error);
+      console.error("Error saat membatalkan:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -64,20 +68,32 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center ${
-        isExiting ? "animate-overlay-fade-out" : "animate-overlay-fade-in"
+      className={`fixed inset-0 flex items-center justify-center transition-all ${
+        isExiting
+          ? "opacity-0 duration-700"
+          : isVisible
+          ? "opacity-100 duration-700"
+          : "opacity-0"
       }`}
     >
       <div
-        className={`absolute inset-0 bg-black transition-opacity duration-600 ${
-          isExiting ? "opacity-0" : "opacity-50"
+        className={`absolute inset-0 bg-black transition-all ${
+          isExiting
+            ? "opacity-0 duration-700"
+            : isVisible
+            ? "opacity-30 duration-700"
+            : "opacity-0"
         }`}
       ></div>
 
       <div
         ref={bookingRef}
-        className={`relative booking w-[428px] h-[453px] px-6 py-6 mx-8 bg-white shadow-lg rounded-2xl flex flex-col justify-center gap-4 ${
-          isExiting ? "animate-popup-fade-out" : "animate-popup-fade-in"
+        className={`relative booking w-[428px] h-[453px] px-6 py-6 mx-8 bg-white shadow-lg rounded-2xl flex flex-col justify-center gap-4 transition-all ${
+          isExiting
+            ? "opacity-0 scale-90 duration-700"
+            : isVisible
+            ? "opacity-100 scale-100 duration-700"
+            : "opacity-0 scale-50 duration-700"
         }`}
       >
         <div className="confirmation-message flex flex-col items-center">
@@ -100,7 +116,9 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
             onClick={handleCancelBooking}
             disabled={isProcessing}
             className={`bg-transparent border-2 ${
-              isProcessing ? "border-gray-400 text-gray-400" : "border-[#027FFF] text-black"
+              isProcessing
+                ? "border-gray-400 text-gray-400"
+                : "border-[#027FFF] text-black"
             } font-medium w-full h-11 my-2 rounded-lg text-[20px] hover:bg-red-300 hover:border-red-500`}
           >
             {isProcessing ? "Memproses..." : "Batalkan"}

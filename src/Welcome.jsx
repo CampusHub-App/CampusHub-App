@@ -25,8 +25,8 @@ function Welcome() {
       <div className="h-screen w-full flex md:flex-col sm:flex-col lg:flex-row relative">
         
         <div className="h-screen w-full flex flex-col justify-center mx-auto gap-y-[20px] pb-[70px] relative">
-          <div className="px-4">
-            <h1 className="text-[32px] font-semibold text-[#003266]">
+          <div className="px-4 mb-16 ml-12">
+            <h1 className="text-[64px] font-semibold text-[#003266]">
               Selamat Datang!
             </h1>
             <p className="text-[24px] font-medium text-[#003266]">
@@ -54,7 +54,7 @@ function Welcome() {
         </div>
 
         <div className="bg-[#003266] h-screen w-full flex flex-col items-center justify-center sm:pb-[70px] md:pb-[0px] sm:relative md:relative lg:static">
-          <div className="relative z-10 flex flex-col items-center gap-y-[20px] mt-[34px]">
+          <div className="mt-[8rem] relative z-10 flex flex-col items-center gap-y-[20px] mt-[34px]">
             <img
               src={admin}
               alt="Admin"

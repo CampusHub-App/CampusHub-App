@@ -44,7 +44,8 @@ const PopUpLogout = ({ setShowPopUp }) => {
       }
   
       localStorage.removeItem("token");
-      sessionStorage.removeItem("userData");
+      localStorage.removeItem("token_type");
+      localStorage.removeItem("user");
   
       navigate("/");
     } catch (error) {

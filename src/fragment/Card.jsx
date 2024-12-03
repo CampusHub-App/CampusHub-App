@@ -4,7 +4,7 @@ import date from "../assets/Image/date.svg";
 const Card = ({ children, onClick }) => {
   return (
     <div
-      className="border-2 rounded-[20px] bg-white max-w-[420px] h-[560px] text-[#003266] shadow-lg cursor-pointer flex flex-col"
+      className="border-2 rounded-[20px] bg-white max-w-[420px] h-[560px] text-[#003266] shadow-lg cursor-pointer flex flex-col transition-transform duration-150 active:scale-95"
       onClick={onClick}
     >
       <div className="p-[24px] flex flex-col flex-1 gap-y-[12px]">{children}</div>

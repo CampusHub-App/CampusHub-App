@@ -44,7 +44,7 @@ const DetailEvent = () => {
   const handleExit = () => {
     setIsExiting(true); // Start fade-out effect
     setTimeout(() => {
-      navigate(`/`); // Navigate elsewhere after fade-out
+      navigate(`/${eventData.id}/preview`);
     }, 500); // Wait for the fade-out to complete
   };
 
@@ -73,7 +73,7 @@ const DetailEvent = () => {
         <div className="breadcrumb pt-auto flex ml-2 pb-10">
           <ol className="list-none flex text-black text-medium">
             <li>
-              <Link to="/home" className="hover:underline">
+              <Link to="/" className="hover:underline">
                 Home
               </Link>
             </li>
@@ -168,7 +168,7 @@ const DetailEvent = () => {
             </h1>
             <button
               className="bg-[#027FFF] font-regular w-full h-11 my-4 rounded-lg text-medium text-white text-[16px] sm:text-[14px]"
-              onClick={() => navigate(`/${eventData.id}/preview`)}
+              onClick={handleExit}
             >
               Pesan
             </button>

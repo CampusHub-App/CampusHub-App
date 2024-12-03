@@ -13,12 +13,19 @@ const DescriptionPageRegistered = () => {
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [code, setCode] = useState(["A", "B", "C", "D"]);
+  const [code, setCode] = useState([null]);
   const [showPopUp, setShowPopUp] = useState(false);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("welcome", { replace: true });
+      return;
+    }
+    
     const fetchEventData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -29,39 +36,49 @@ const DescriptionPageRegistered = () => {
           return;
         }
 
-        const response = await fetch(`https://campushub.web.id/api/events/${id}/view`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`, // Send token for authentication
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch event data");
-        }
+        const response = await fetch(
+          `https://campushub.web.id/api/events/${id}/view`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
         setEventData(data);
+
+        const kode = await fetch(
+          `https://campushub.web.id/api/events/${id}/kode-unik`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const kodeData = await kode.json();
+
+        if (!kode.ok) {
+          setMessage(kodeData.message);
+        }
+
+        setCode(kodeData.kode_unik.split(""));
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching event data:", error);
-        setError("Failed to load event data. Please try again later.");
+        setError(message);
         setLoading(false);
       }
     };
 
     fetchEventData();
-
-    // Retrieve the unique code from localStorage
-    const storedCode = localStorage.getItem("uniqueCode");
-    if (storedCode) {
-      setCode(storedCode.split("")); // Assuming the code is stored as a string
-    }
   }, []);
 
   const handleBack = () => {
     setPageAnimation("page-exit");
-    setTimeout(() => navigate(`/MyEvent/${id}`), 500);
+    setTimeout(() => navigate(`/my-events`), 500);
   };
 
   const handleCancel = () => {
@@ -99,7 +116,7 @@ const DescriptionPageRegistered = () => {
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/description-registered" className="hover:underline">
+              <Link to="/my-events" state={{ activeTab: "Registered" }}>
                 Registered
               </Link>
             </li>
@@ -115,35 +132,29 @@ const DescriptionPageRegistered = () => {
           </div>
           <div className="description text-left mt-6 lg:mt-0 lg:mx-8">
             <span className="bg-[#027FFF] font-regular px-4 py-1 lg:px-8 lg:py-1 rounded-full text-white text-[12px] lg:text-[14px]">
-            {eventData.category_name}
+              {eventData.category_name}
             </span>
-            <h1 className="font-bold text-[20px] lg:text-[32px] py-4">{eventData.judul}</h1>
+            <h1 className="font-bold text-[20px] lg:text-[32px] py-4 max-w-[40rem]">
+              {eventData.judul}
+            </h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div className="flex flex-wrap gap-2 ml-2">
-              <img
-                src={Calendar}
-                alt="Calendar"
-                className="w-5 lg:w-8"
-              />
+              <img src={Calendar} alt="Calendar" className="w-5 lg:w-8" />
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-              {eventData.date}
+                {eventData.date}
               </span>
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2 ml-auto">
-              {eventData.start_time} - {eventData.end_time}
+                {eventData.start_time} - {eventData.end_time}
               </span>
             </div>
             <div className="flex flex-wrap gap-2 ml-1 my-4">
               <i className="ri-map-pin-2-fill w-5 lg:w-8 text-xl"></i>
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-              {eventData.tempat}
+                {eventData.tempat}
               </span>
-              <img
-                src={Chair}
-                alt="Location"
-                className="w-5 lg:w-8 ml-auto"
-              />
+              <img src={Chair} alt="Location" className="w-5 lg:w-8 ml-auto" />
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-              {eventData.available_slot} Kursi
+                {eventData.available_slot} Kursi
               </span>
             </div>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
@@ -151,21 +162,21 @@ const DescriptionPageRegistered = () => {
               <img
                 src={eventData.foto_pembicara || Lecturer}
                 alt="Profile"
-                className="w-8 lg:w-12"
+                className="w-[40px] h-[40px] rounded-full object-cover"
               />
               <div className="lecturername flex flex-col ml-4">
                 <span className="font-semibold text-[14px] lg:text-[16px]">
-                {eventData.pembicara}
+                  {eventData.pembicara}
                 </span>
                 <span className="text-regular text-[12px] lg:text-[14px]">
-                {eventData.role}
+                  {eventData.role}
                 </span>
               </div>
             </div>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div>
               <p className="eventdescription font-regular text-wrap text-[14px] lg:text-[16px] block w-full lg:max-w-[486px]">
-              {eventData.deskripsi}
+                {eventData.deskripsi}
               </p>
             </div>
           </div>
@@ -184,6 +195,7 @@ const DescriptionPageRegistered = () => {
                 ))}
               </div>
             </div>
+
             <div className="confirmation-message flex flex-col items-center py-8">
               <span className="font-medium text-[16px] lg:text-[20px] text-center py-2">
                 Terdaftar!

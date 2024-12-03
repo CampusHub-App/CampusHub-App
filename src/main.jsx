@@ -22,10 +22,9 @@ import Loginadmin from './admin/LoginAdmin.jsx'
 import MyEvents from './MyEvents.jsx'
 import ProfilePagePersonalInfo from './ProfilePage.jsx'
 import ProfilePagePassword from './ProfilePagePassword.jsx'
-import DescriptionPageRegistered from './DescriptionPageRegistered.jsx'
+import MyEventStatusPage from './MyEventStatusPage.jsx'
 import PreviewEvent from './PreviewEvent.jsx'
 import DetailEvent from './DetailEvent.jsx'
-import DescriptionPageCancel from './DescriptionPageCancel.jsx'
 import KodeUnik from './KodeUnik.jsx'
 
 const router = createBrowserRouter([
@@ -97,8 +96,8 @@ const router = createBrowserRouter([
     element:<ProfilePagePassword/>
   },
   {
-    path:"/myeventsregister/:id",
-    element:<DescriptionPageRegistered/>
+    path:"/my-events/:id/view/",
+    element:<MyEventStatusPage/>
   },
   {
     path:"/:id/preview/",
@@ -108,10 +107,6 @@ const router = createBrowserRouter([
   {
     path:"/:id/view/", 
     element:<DetailEvent />
-  },
-  {
-    path:"/:id/cancel/", 
-    element:<DescriptionPageCancel />
   },
   {
     path:"/:id/kode-unik/", 

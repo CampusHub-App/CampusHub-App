@@ -12,6 +12,12 @@ const KodeUnik = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("welcome", { replace: true });
+      return;
+    }
+    
     const fetchUniqueCode = async () => {
       try {
         console.log("Fetching unique code...");
@@ -52,7 +58,7 @@ const KodeUnik = () => {
     if (!loading) {
       setFadeClass("fade-out");
       setTimeout(() => {
-        navigate(`/my-event/${id}`);
+        navigate(`/my-events/${id}/view`);
       }, 1000); // Tunggu animasi selesai sebelum navigasi
     }
   };
@@ -76,8 +82,8 @@ const KodeUnik = () => {
             Tunjukkan kode ini kepada panitia saat acara sebagai bukti pemesanan tiket Anda. Simpan kode dengan baik dan pastikan Anda siap menunjukkannya saat diminta.
           </p>
           
-          <div className="unique-code bg-[#027FFF] w-full sm:w-11/12 lg:w-11/12 h-full flex flex-col mb-4 items-center px-2 sm:px-12 py-4 sm:py-6 rounded-xl items-center">
-            <div className="unique-code-output w-full flex gap-4 sm:gap-6 px-4">
+          <div className="unique-code bg-[#027FFF] w-full sm:w-11/12 lg:w-8/12 h-full flex flex-col mb-4 items-center px-2 sm:px-12 py-4 sm:py-6 rounded-xl mx-auto">
+            <div className="unique-code-output flex gap-4 sm:gap-6 px-4">
               {code.map((char, index) => (
                 <input
                   key={index}

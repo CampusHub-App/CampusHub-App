@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import PopUpCheckout from './components/PopUpCheckout';
-import Ellipse2 from './assets/image/Ellipse2.svg';
+import PopUpCheckout from "./components/PopUpCheckout";
+import Ellipse2 from "./assets/image/Ellipse2.svg";
 import "./css/PreviewEvent.css";
-import Calendar from './assets/image/date.svg';
-import Chair from './assets/image/chair.svg';
+import Calendar from "./assets/image/date.svg";
+import Chair from "./assets/image/chair.svg";
 
 const PreviewEvent = () => {
   const { id } = useParams();
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(null);
-  const [seatsToBook, setSeatsToBook] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
-  // Periksa autentikasi sebelum menampilkan halaman
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Anda harus login untuk mengakses halaman ini.");
-      navigate("/login/user"); // Redirect ke halaman login jika tidak ada token
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     alert("Anda harus login untuk mengakses halaman ini.");
+  //     navigate("/login/user");
+  //   }
+  // }, [navigate]);
 
   // Ambil data event berdasarkan ID
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch(`https://campushub.web.id/api/events/${id}/view`);
+        const response = await fetch(
+          `https://campushub.web.id/api/events/${id}/view`
+        );
         if (!response.ok) {
           throw new Error("Gagal mendapatkan data event.");
         }
@@ -54,28 +54,27 @@ const PreviewEvent = () => {
       const token = localStorage.getItem("token");
       if (!token) {
         alert("Anda belum login. Silakan login terlebih dahulu.");
-        navigate("/Loginpeserta");
+        navigate("welcome", { replace: true });
         return;
       }
 
-      const response = await fetch(`https://campushub.web.id/api/events/${id}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          eventId: id,
-          seats: seatsToBook,
-        }),
-      });
+      const response = await fetch(
+        `https://campushub.web.id/api/events/${id}/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         setShowPopup(true);
         setTimeout(() => {
-          navigate(`/kode-unik/${eventData.id}`);
+          navigate(`/${eventData.id}/kode-unik`);
         }, 2000);
       } else {
         alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
@@ -107,19 +106,44 @@ const PreviewEvent = () => {
 
   return (
     <div className="preview-event h-[1024px] pt-10 mx-4 lg:mx-20 relative">
-      <div className={`preview-event-container ${isLoaded ? "loaded" : ""} ${isExiting ? "exiting" : ""}`}>
+      <div
+        className={`preview-event-container ${isLoaded ? "loaded" : ""} ${
+          isExiting ? "exiting" : ""
+        }`}
+      >
         <div className="breadcrumb pt-auto flex ml-2 pb-10">
           <ol className="list-none flex text-black text-medium">
             <li>
-              <Link to="#" className="hover:underline">Home</Link>
+              <Link to="/" className="hover:underline">
+                Home
+              </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to={`/event-details/${eventData.id}`} className="hover:underline">{eventData.category_name}</Link>
+              <Link
+                to={
+                  eventData.category_name === "Seminar"
+                    ? "/seminar"
+                    : eventData.category_name === "Webinar"
+                    ? "/webinar"
+                    : eventData.category_name === "Kuliah Tamu"
+                    ? "/kuliah-tamu"
+                    : eventData.category_name === "Sertifikasi"
+                    ? "/sertifikasi"
+                    : eventData.category_name === "Workshop"
+                    ? "/workshop"
+                    : "/home"
+                }
+                className="hover:underline"
+              >
+                {eventData.category_name}
+              </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/preview-event" className="hover:underline">Booking</Link>
+              <a href="" className="hover:underline">
+                Booking
+              </a>
             </li>
           </ol>
         </div>
@@ -137,20 +161,34 @@ const PreviewEvent = () => {
                 <span className="bg-[#027FFF] font-regular px-8 py-1 rounded-full text-white text-[14px]">
                   {eventData.category_name}
                 </span>
-                <h1 className="font-bold text-[32px] py-4">{eventData.judul}</h1>
+                <h1 className="font-bold text-[32px] py-4">
+                  {eventData.judul}
+                </h1>
                 <div className="border-b-2 border-[#003266] w-full my-4"></div>
                 <div className="flex gap-2 ml-2">
                   <img src={Calendar} alt="Calendar" className="text-4xl" />
                   <div className="flex w-full">
-                    <span className="font-medium text-[16px] mt-2">{eventData.date}</span>
-                    <span className="font-medium text-[16px] mt-2 ml-auto">{eventData.start_time} - {eventData.end_time}</span>
+                    <span className="font-medium text-[16px] mt-2">
+                      {eventData.date}
+                    </span>
+                    <span className="font-medium text-[16px] mt-2 ml-auto">
+                      {eventData.start_time} - {eventData.end_time}
+                    </span>
                   </div>
                 </div>
                 <div className="flex gap-2 ml-1 my-4">
                   <i className="ri-map-pin-2-fill text-4xl"></i>
-                  <span className="font-medium text-[16px] mt-2">{eventData.tempat}</span>
-                  <img src={Chair} alt="Location" className="text-4xl ml-auto" />
-                  <span className="font-medium text-[16px] mt-2">{eventData.available_slot} Kursi</span>
+                  <span className="font-medium text-[16px] mt-2">
+                    {eventData.tempat}
+                  </span>
+                  <img
+                    src={Chair}
+                    alt="Location"
+                    className="text-4xl ml-auto"
+                  />
+                  <span className="font-medium text-[16px] mt-2">
+                    {eventData.available_slot} Kursi
+                  </span>
                 </div>
                 <div className="border-b-2 border-[#003266] w-full my-4"></div>
                 <div className="lecturer flex gap-2 ml-2 items-center">
@@ -183,15 +221,19 @@ const PreviewEvent = () => {
                 Sub Total
               </span>
               <span className="text-right my-2 font-medium text-[14px] ms-auto">
-                {seatsToBook} seat(s)
+                1 seat(s)
               </span>
             </div>
-            <span className="event-type my-2 font-medium text-[14px] pl-2">Webinar</span>
+            <span className="event-type my-2 font-medium text-[14px] pl-2">
+              Webinar
+            </span>
             <div className="border-b-2 border-[#003266] w-full my-4"></div>
             <div className="total flex gap-4">
-              <span className="text-left my-2 font-semibold text-[18px] pl-2 me-auto">Total</span>
+              <span className="text-left my-2 font-semibold text-[18px] pl-2 me-auto">
+                Total
+              </span>
               <span className="text-right my-2 font-semibold text-[18px] ms-auto">
-                {seatsToBook} seat(s)
+                1 seat(s)
               </span>
             </div>
             <div className="checkout flex flex-col">
