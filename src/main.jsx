@@ -6,7 +6,6 @@ import Welcome from './Welcome.jsx'
 import 'remixicon/fonts/remixicon.css'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Signinpeserta from './SignInPeserta.jsx'
 import Loginpeserta from './LoginPeserta.jsx'
 import Errorpage from './ErrorPage.jsx'
 import Homepage from './HomePage.jsx'
@@ -26,6 +25,7 @@ import MyEventStatusPage from './MyEventStatusPage.jsx'
 import PreviewEvent from './PreviewEvent.jsx'
 import DetailEvent from './DetailEvent.jsx'
 import KodeUnik from './KodeUnik.jsx'
+import Signinpeserta from './SignInPeserta.jsx'
 
 const router = createBrowserRouter([
   {
