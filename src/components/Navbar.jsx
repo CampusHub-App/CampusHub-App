@@ -26,7 +26,7 @@ const Navbar = () => {
       }
     }, 200);
   };
-  
+
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -107,27 +107,21 @@ const Navbar = () => {
           )} text-[20px] font-medium`}
         >
           <Link to="/" className="transition-all duration-3000 hover:scale-105">
-            <li>
-              <a href="#">Home</a>
-            </li>
+            <li>Home</li>
           </Link>
           <Link
             to="/my-events"
             className="transition-all duration-3000 hover:scale-105"
           >
-            <li>
-              <a href="#">My Events</a>
-            </li>
+            <li>My Events</li>
           </Link>
           <li>
-            <li>
-              <button
-                onClick={aboutus}
-                className="transition-all duration-3000 hover:scale-105 cursor-pointer"
-              >
-                About Us
-              </button>
-            </li>
+            <button
+              onClick={aboutus}
+              className="transition-all duration-3000 hover:scale-105 cursor-pointer"
+            >
+              About Us
+            </button>
           </li>
         </ul>
 

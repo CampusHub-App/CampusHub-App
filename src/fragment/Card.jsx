@@ -1,7 +1,7 @@
 import React from "react";
 import date from "../assets/image/date.svg";
 
-const Card = ({ children, onClick }) => {
+export const Card = ({ children, onClick }) => {
   return (
     <div
       className="border-2 rounded-[20px] bg-white max-w-[420px] h-[560px] text-[#003266] shadow-lg cursor-pointer flex flex-col transition-transform duration-150 active:scale-95"
@@ -12,7 +12,7 @@ const Card = ({ children, onClick }) => {
   );
 };
 
-const Body = ({ children, title }) => {
+export const Body = ({ children, title }) => {
   const truncateTitle = (text) => {
     const maxWords = 3; 
     const words = text.split(" ");
@@ -39,7 +39,7 @@ const Body = ({ children, title }) => {
   );
 };
 
-const Kategori = ({ kategori }) => {
+export const Kategori = ({ kategori }) => {
   return (
     <div className="flex gap-x-[4px] text-white">
       <p className="border bg-[#027FFF] rounded-[20px] p-[4px] w-[122px] text-[14px] justify-center flex">
@@ -49,7 +49,7 @@ const Kategori = ({ kategori }) => {
   );
 };
 
-const Image = ({ image }) => {
+export const Image = ({ image }) => {
   return (
     <img
       src={image}
@@ -59,7 +59,7 @@ const Image = ({ image }) => {
   );
 };
 
-const Tanggal = ({ children }) => {
+export const Tanggal = ({ children }) => {
   return (
     <div className="flex gap-x-[12px]">
       <img src={date} alt="" />
@@ -68,7 +68,7 @@ const Tanggal = ({ children }) => {
   );
 };
 
-const Creator = ({ image, nama, title }) => {
+export const Creator = ({ image, nama, title }) => {
   return (
     <div className="flex gap-x-[16px] items-center mt-auto">
       <img src={image} alt="" className="w-[40px] h-[40px] rounded-full" />
@@ -79,11 +79,3 @@ const Creator = ({ image, nama, title }) => {
     </div>
   );
 };
-
-Card.Body = Body;
-Card.Creator = Creator;
-Card.Image = Image;
-Card.Tanggal = Tanggal;
-Card.Kategori = Kategori;
-
-export default Card;

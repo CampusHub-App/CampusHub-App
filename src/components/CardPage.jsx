@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import Card from "../fragment/Card";
 import arrowLeft from "../assets/image/icon/arrow-circle-left.svg";
 import arrowRight from "../assets/image/icon/arrow-circle-right.svg";
+import { Card, Body, Kategori, Image, Tanggal, Creator } from "../fragment/Card";
 
 const CardPage = ({ events }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -45,11 +45,11 @@ const CardPage = ({ events }) => {
                         return (
                             <div key={id} className="gap-y-[50px]">
                                 <Card onClick={() => handleCardClick(id)}> {/* Tambahkan onClick */}
-                                    <Card.image image={foto_event} />
-                                    <Card.Kategori kategori={category_name}>{accessibility}</Card.Kategori>
-                                    <Card.Body title={judul.substring(0, 35)}>{deskripsi}</Card.Body>
-                                    <Card.Tanggal>{date}</Card.Tanggal>
-                                    <Card.Creator
+                                    <Image image={foto_event} />
+                                    <Kategori kategori={category_name}>{accessibility}</Kategori>
+                                    <Body title={judul.substring(0, 35)}>{deskripsi}</Body>
+                                    <Tanggal>{date}</Tanggal>
+                                    <Creator
                                         image={foto_pembicara}
                                         nama={pembicara}
                                         title={role}
