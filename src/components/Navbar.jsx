@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import logo from "../assets/Image/logo.svg";
-import logo2 from "../assets/Image/logo2.svg";
+import logo from "../assets/image/logo.svg";
+import logo2 from "../assets/image/logo2.svg";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { useLocation } from "react-router-dom";

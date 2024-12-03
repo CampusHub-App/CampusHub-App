@@ -1,6 +1,6 @@
-import profile from "../assets/Image/profile.svg";
-import logo from "../assets/Image/logo2.svg";
-import upload from "../assets/Image/adminimage/upload.svg";
+import profile from "../assets/image/profile.svg";
+import logo from "../assets/image/logo2.svg";
+import upload from "../assets/image/adminimage/upload.svg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import React from "react";

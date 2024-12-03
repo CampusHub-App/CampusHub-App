@@ -1,9 +1,9 @@
-import profile from "../assets/Image/profile.svg";
-import logo from "../assets/Image/logo.svg";
-import admin from "../assets/Image/adminimage/admin.svg";
-import admin2 from "../assets/Image/adminimage/admin2.svg";
-import circle5 from "../assets/Image/circle5.svg";
-import circle from "../assets/Image/adminimage/circleadmin.svg";
+import profile from "../assets/image/profile.svg";
+import logo from "../assets/image/logo.svg";
+import admin from "../assets/image/adminimage/admin.svg";
+import admin2 from "../assets/image/adminimage/admin2.svg";
+import circle5 from "../assets/image/circle5.svg";
+import circle from "../assets/image/adminimage/circleadmin.svg";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";

@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/Image/Campushub.svg";
-import facebook from "../assets/Image/Facebook.svg";
-import instagram from "../assets/Image/Instagram.svg";
-import Linkedin from "../assets/Image/Linkedin.svg";
-import tiktok from "../assets/Image/Tiktok.svg";
-import x from "../assets/Image/X.svg";
+import logo from "../assets/image/Campushub.svg";
+import facebook from "../assets/image/Facebook.svg";
+import instagram from "../assets/image/Instagram.svg";
+import Linkedin from "../assets/image/Linkedin.svg";
+import tiktok from "../assets/image/Tiktok.svg";
+import x from "../assets/image/X.svg";
 import { Link as ScrollLink } from "react-scroll";
 
 const Footer = () => {
