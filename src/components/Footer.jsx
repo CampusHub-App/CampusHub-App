@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/image/Campushub.svg";
+import logo from "../assets/image/CampusHub.svg";
 import facebook from "../assets/image/Facebook.svg";
 import instagram from "../assets/image/Instagram.svg";
 import Linkedin from "../assets/image/Linkedin.svg";
