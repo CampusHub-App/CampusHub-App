@@ -4,7 +4,6 @@ import './App.css'
 import React from 'react'
 import Welcome from './Welcome.jsx'
 import 'remixicon/fonts/remixicon.css'
-
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LoginPeserta from './LoginPeserta.jsx'
 import ErrorPage from './ErrorPage.jsx'
