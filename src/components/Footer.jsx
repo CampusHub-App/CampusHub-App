@@ -3,7 +3,7 @@ import logo from "../assets/image/CampusHub.svg";
 import facebook from "../assets/image/Facebook.svg";
 import instagram from "../assets/image/Instagram.svg";
 import Linkedin from "../assets/image/Linkedin.svg";
-import tiktok from "../assets/image/Tiktok.svg";
+import tiktok from "../assets/image/TikTok.svg";
 import x from "../assets/image/X.svg";
 import { Link as ScrollLink } from "react-scroll";
 
