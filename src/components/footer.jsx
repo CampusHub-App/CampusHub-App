@@ -11,9 +11,8 @@ const Footer = () => {
   const location = useLocation();
 
   const isLandingPage = location.pathname === "/";
-  const isHomePage = location.pathname === "/Homepage";
-  const isDetailEventPage = location.pathname === "/Homepage";
-  const isAdminPage = location.pathname === "/Adminpage";
+  const isHomePage = location.pathname === "/home";
+  const isAdminPage = location.pathname === "/admin";
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -24,9 +23,9 @@ const Footer = () => {
 
   return (
     <div className="footer bg-[#003266] w-full transition all" id="footer">
-      <div className="container">
+      <div className="w-full">
         <div className="content-box mx-20">
-          <div className="footer-box flex sm:flex-col lg:flex-row gap-56 sm:gap-y-20 mx-auto ">
+          <div className="footer-box flex sm:flex-col lg:flex-row gap-72 sm:gap-y-20 mx-auto">
             <div className="about-us">
               <div className="logo mt-24 pb-8">
                 <Link
@@ -99,7 +98,7 @@ const Footer = () => {
               </div>
             </div>
             
-            <div className="flex md:gap-56 sm:gap-20">
+            <div className="flex md:gap-72 sm:gap-20">
             <div className="kategori lg:mt-32 sm:mt-0">
               <span className="text-white mb-6 block text-bold text-[18px] font-semibold">
                 Kategori

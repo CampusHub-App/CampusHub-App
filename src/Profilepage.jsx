@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Profile from "./assets/Image/Profile.svg";
-import Verify from "./assets/image/Verify.svg";
 import Ellipse from "./assets/image/Ellipse.svg";
 import PopUpDelete from "./components/PopUpDelete.jsx";
 import PopUpLogout from "./components/PopUpLogOut.jsx";
 import Navbar from "./components/Navbar.jsx";
 import "./css/ProfilePagePersonalInfo.css";
+import { motion } from "framer-motion";
 
 const ProfilePagePersonalInfo = () => {
   const [activePage, setActivePage] = useState("info-personal");
@@ -15,8 +14,14 @@ const ProfilePagePersonalInfo = () => {
   const [showLogoutPopUp, setShowLogoutPopUp] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Periksa autentikasi dan ambil data pengguna
+  const pageVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  };  
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -39,9 +44,10 @@ const ProfilePagePersonalInfo = () => {
 
         const data = await response.json();
         setUser(data);
+        setIsLoading(false);
       } catch (error) {
-        console.error("Gagal mengambil data pengguna:", error);
         alert("Gagal memuat data pengguna. Silakan coba lagi.");
+        setIsLoading(false);
       }
     };
 
@@ -53,15 +59,20 @@ const ProfilePagePersonalInfo = () => {
   };
 
   return (
-    <div className="profile-page h-screen">
-      <Navbar />
-      <div className="mx-4 sm:mx-10 md:mx-20 lg:mx-32">
-        <div
-          className={`container ${showAnimation ? "animate-slide-up" : ""}`}
-          style={{
-            transition: "transform 0.8s ease-out",
-          }}
-        >
+
+    <motion.div
+    className="font-sans flex flex-col box-border w-full"
+    initial="initial"
+    animate="animate"
+    exit="exit"
+    variants={pageVariants}
+    transition={{ duration: 1.1 }}
+  >
+          
+      <div className="profile-page h-screen">
+        <Navbar />
+        <div className="mx-4 sm:mx-10 md:mx-20 lg:mx-32">
+        {!isLoading ? (
           <div className="content-box px-4 sm:px-8 md:px-16 py-0">
             <div className="header flex flex-col lg:flex-row justify-between lg:py-10 py-6">
               <div className="text-header flex flex-col">
@@ -69,7 +80,8 @@ const ProfilePagePersonalInfo = () => {
                   Info Personal
                 </span>
                 <span className="description text-regular text-[14px] lg:text-[18px]">
-                  Anda dapat memperbarui foto profil dan informasi pribadi di sini.
+                  Anda dapat melihat foto profil dan informasi pribadi
+                  di sini.
                 </span>
               </div>
               <span className="title font-semibold text-[24px] lg:text-[32px] mt-4 lg:mt-0">
@@ -80,9 +92,14 @@ const ProfilePagePersonalInfo = () => {
               <div className="profile flex flex-col lg:flex-row lg:items-start justify-center lg:justify-between lg:w-10/12 py-10">
                 <div className="profile-picture w-[120px] lg:w-2/12 mx-auto lg:mx-0 rounded-full">
                   <img
-                    src={user?.photo || Profile}
+                    src={
+                      user.photo ||
+                      `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(
+                        user.fullname || "User"
+                      )}&size=250`
+                    }
                     alt="Foto Profil"
-                    className="w-full rounded-full"
+                    className="w-full aspect-square rounded-full object-cover"
                   />
                 </div>
 
@@ -141,7 +158,9 @@ const ProfilePagePersonalInfo = () => {
                           Nomor Telepon
                         </label>
                         <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
-                          <span>{user ? user.nomor_telepon : "Memuat..."}</span>
+                          <span>
+                            {user ? user.nomor_telepon : "Memuat..."}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -152,9 +171,11 @@ const ProfilePagePersonalInfo = () => {
                 <ul className="flex flex-col gap-4 lg:gap-11">
                   <li>
                     <Link
-                      to="/profile-info"
+                      to="/account/profile"
                       className={`font-regular text-lg ${
-                        activePage === "info-personal" ? "font-semibold underline" : ""
+                        activePage === "info-personal"
+                          ? "font-semibold underline"
+                          : ""
                       } hover:underline`}
                       onClick={() => handlePageChange("info-personal")}
                     >
@@ -163,9 +184,11 @@ const ProfilePagePersonalInfo = () => {
                   </li>
                   <li>
                     <Link
-                      to="/password"
+                      to="/account/password"
                       className={`font-regular text-lg ${
-                        activePage === "password" ? "font-semibold underline" : ""
+                        activePage === "password"
+                          ? "font-semibold underline"
+                          : ""
                       } hover:underline`}
                       onClick={() => handlePageChange("password")}
                     >
@@ -175,7 +198,9 @@ const ProfilePagePersonalInfo = () => {
                   <li>
                     <button
                       className={`font-regular text-lg ${
-                        activePage === "delete-account" ? "font-semibold underline" : ""
+                        activePage === "delete-account"
+                          ? "font-semibold underline"
+                          : ""
                       } hover:underline`}
                       onClick={() => setShowDeletePopUp(true)}
                     >
@@ -185,7 +210,9 @@ const ProfilePagePersonalInfo = () => {
                   <li>
                     <button
                       className={`font-regular text-lg ${
-                        activePage === "logout" ? "font-semibold underline" : ""
+                        activePage === "logout"
+                          ? "font-semibold underline"
+                          : ""
                       } hover:underline`}
                       onClick={() => setShowLogoutPopUp(true)}
                     >
@@ -196,7 +223,7 @@ const ProfilePagePersonalInfo = () => {
               </div>
             </div>
           </div>
-        </div>
+        ) : null}
         <div className="absolute bottom-0 left-0">
           <img src={Ellipse} alt="Background" />
         </div>
@@ -204,6 +231,7 @@ const ProfilePagePersonalInfo = () => {
         {showLogoutPopUp && <PopUpLogout setShowPopUp={setShowLogoutPopUp} />}
       </div>
     </div>
+  </motion.div>
   );
 };
 

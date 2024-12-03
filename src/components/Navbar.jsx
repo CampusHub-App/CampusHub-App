@@ -1,24 +1,48 @@
+import { useState } from "react";
+import { useEffect } from "react";
+import logo from "../assets/Image/logo.svg";
+import logo2 from "../assets/Image/logo2.svg";
 import { Link } from "react-router-dom";
-import Logo from "../assets/Image/CampusHub.svg";
-import { useState, useEffect } from "react";
+import { Link as ScrollLink } from "react-scroll";
+import { data } from "autoprefixer";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const aboutus = () => {
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
+
+    setTimeout(() => {
+      const aboutUsElement = document.getElementById("footer");
+      if (aboutUsElement) {
+        aboutUsElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 200);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch("https://campushub.web.id/api/user");
+        const response = await fetch("https://campushub.web.id/api/user", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setUserData(data);
-        } else {
-          console.error("Failed to fetch user profile data.");
         }
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
+      } finally {
+        setIsLoading(false);
+        console.log(data);
       }
     };
 
@@ -27,151 +51,177 @@ const Navbar = () => {
     const savedMenuState = localStorage.getItem("isMenuOpen");
     if (savedMenuState === "true") {
       setIsMenuOpen(true);
-      setIsMenuVisible(true);
     }
   }, []);
 
-  const handleMenuToggle = () => {
+  const toggleMenu = () => {
     if (isMenuOpen) {
       setIsMenuOpen(false);
-      setTimeout(() => {
-        setIsMenuVisible(false);
-        localStorage.setItem("isMenuOpen", "false");
-      }, 500);
+      localStorage.setItem("isMenuOpen", "false");
     } else {
-      setIsMenuVisible(true);
       setIsMenuOpen(true);
       localStorage.setItem("isMenuOpen", "true");
     }
   };
 
+  const bgcolor = (pathname) => {
+    switch (pathname) {
+      case "/my-events":
+      case "/account/profile":
+      case "/account/password":
+        return "bg-[#003266]";
+      default:
+        return "bg-white";
+    }
+  };
+
+  const txtcolor = (pathname) => {
+    switch (pathname) {
+      case "/my-events":
+      case "/profile":
+      case "/account/profile":
+      case "/account/password":
+        return "text-white";
+      default:
+        return "text-[#003266]";
+    }
+  };
+
+  const Logo = (pathname) => {
+    switch (pathname) {
+      case "/my-events":
+      case "/profile":
+      case "/account/profile":
+      case "/account/password":
+        return logo2;
+      default:
+        return logo;
+    }
+  };
+
   return (
-    <div className="navbar w-full bg-[#003266] h-20">
-      <div className="container mx-auto flex items-center lg:justify-between px-4 sm:px-6 h-full lg:gap-48">
-        
-        <div className="logo sm:w-auto lg:w-auto mx-auto">
-          <Link to="/" className="flex items-center">
-            <img
-              src={Logo}
-              alt="Logo"
-              className="hover:filter hover:drop-shadow-lg transition duration-300"
-            />
+    <nav
+      className={`sm:px-[0px] md:p-5 tengah:px-6 ${bgcolor(
+        location.pathname
+      )} w-full lg:px-10 xl:px-[85px] py-5`}
+    >
+      <div className="flex justify-between items-center  px-[0px] w-full ">
+        <Link to="/" className="flex items-center space-x-3">
+          <img
+            src={Logo(location.pathname)}
+            alt="Logo"
+            className="hover:scale-105 hover:filter hover:drop-shadow-lg transition duration-300 sm:max-w-[150px] md:max-w-[229px] tengah:max-w-[180px]"
+          />
+        </Link>
+        <ul
+          className={`hidden lg:flex space-x-8 items-center ${txtcolor(
+            location.pathname
+          )} text-[20px] font-medium`}
+        >
+          <Link to="/" className="transition-all duration-3000 hover:scale-105">
+            <li>
+              <a href="#">Home</a>
+            </li>
           </Link>
-        </div>
-
-        <div className="flex md:hidden">
-          <button
-            onClick={handleMenuToggle}
-            className="text-white relative w-8 h-8 flex justify-center items-center focus:outline-none"
+          <Link
+            to="/my-events"
+            className="transition-all duration-3000 hover:scale-105"
           >
-            <div
-              className={`absolute w-6 h-0.5 bg-white transition-transform duration-500 ease-in-out ${
-                isMenuOpen ? "rotate-45" : "-translate-y-2"
-              }`}
-            />
-            <div
-              className={`absolute w-6 h-0.5 bg-white transition-all duration-500 ease-in-out ${
-                isMenuOpen ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <div
-              className={`absolute w-6 h-0.5 bg-white transition-transform duration-500 ease-in-out ${
-                isMenuOpen ? "-rotate-45" : "translate-y-2"
-              }`}
-            />
-          </button>
-        </div>
-
-        <ul className="hidden md:flex gap-10 text-white mx-auto">
+            <li>
+              <a href="#">My Events</a>
+            </li>
+          </Link>
           <li>
-            <Link to="/home" className="font-medium text-[20px] hover:underline">
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/my-event" className="font-medium text-[20px] hover:underline">
-              MyEvent
-            </Link>
-          </li>
-          <li>
-            <a href="#footer" className="font-medium text-[20px] hover:underline">
-              About Us
-            </a>
+            <li>
+              <button
+                onClick={aboutus}
+                className="transition-all duration-3000 hover:scale-105 cursor-pointer"
+              >
+                About Us
+              </button>
+            </li>
           </li>
         </ul>
 
-        
-        <div className="hidden md:block mx-auto">
-          <Link to="/profile-info" className="flex items-center">
-            {userData ? (
+        <div className="flex justify-center gap-x-3 items-center">
+          {isLoading ? (
+            <div className="w-60 h-12 rounded-full hover:scale-105 transition duration-300 object-cover"></div>
+          ) : userData ? (
+            <Link
+              to="/account/profile"
+              className="sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap pl-[12rem]"
+            >
               <img
-                src={userData.photo || "https://via.placeholder.com/150"}
+                src={
+                  userData.photo ||
+                  `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(
+                    userData.fullname || "User"
+                  )}&size=250`
+                }
                 alt="profile"
-                className="w-16 h-16 rounded-full hover:scale-105 transition duration-300"
+                className="w-12 h-12 rounded-full hover:scale-105 transition duration-300 object-cover"
               />
-            ) : (
-              <img
-                src="https://via.placeholder.com/150"
-                alt="profile"
-                className="w-12 h-12 rounded-full hover:scale-105 transition duration-300"
+            </Link>
+          ) : (
+            <div className="sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap">
+              <Link to="/welcome">
+                <button className="hover:scale-105 transition-all duration-300 bg-[#027FFF] border rounded-[10px] text-white sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+                  Login
+                </button>
+              </Link>
+              <Link to="/user/register">
+                <button className="hover:scale-105 transition-all duration-300 border-[#027FFF] border-2 rounded-[10px] text-[#027FFF] sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+                  Sign Up
+                </button>
+              </Link>
+            </div>
+          )}
+
+          <button
+            onClick={toggleMenu}
+            className="lg:hidden flex items-center justify-center p-2 w-10 h-10 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none"
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="w-5 h-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 1h15M1 7h15M1 13h15"
               />
-            )}
-          </Link>
+            </svg>
+          </button>
         </div>
       </div>
-
-      {isMenuVisible && (
-        <div
-          className={`fixed top-0 left-0 w-64 h-full bg-[#003266] text-white z-50 
-            ${isMenuOpen ? "animate-slideIn" : "animate-slideOut"} opacity-90`}
-        >
-          <div className="flex justify-end p-4">
-            <button
-              onClick={handleMenuToggle}
-              className="text-white focus:outline-none"
-            >
-              <i className="ri-close-line text-2xl" />
-            </button>
-          </div>
-
-          <div className="flex justify-center mb-4">
-            <Link to="/profile-info" className="flex items-center">
-              {userData ? (
-                <img
-                  src={userData.profile_picture || "https://via.placeholder.com/150"}
-                  alt="profile"
-                  className="w-14 h-14 rounded-full hover:scale-105 transition duration-300"
-                />
-              ) : (
-                <img
-                  src="https://via.placeholder.com/150"
-                  alt="profile"
-                  className="w-14 h-14 rounded-full hover:scale-105 transition duration-300"
-                />
-              )}
-            </Link>
-          </div>
-
-          <ul className="flex flex-col gap-6 px-4">
+      {isMenuOpen && !isLoading && (
+        <div className="lg:hidden mt-4">
+          <ul className="flex flex-col space-y-4 text-[#003266] text-[20px] font-medium">
             <li>
-              <Link to="/home" className="font-medium text-[18px] hover:underline">
-                Home
-              </Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/my-events" className="font-medium text-[18px] hover:underline">
-                MyEvent
-              </Link>
+              <Link to="/my-events">MyEvent</Link>
             </li>
             <li>
-              <a href="#footer" className="font-medium text-[18px] hover:underline">
-                About Us
-              </a>
+              <ScrollLink
+                to="aboutus"
+                smooth={true}
+                duration={800}
+                className="cursor-pointer"
+              >
+                <p>About Us</p>
+              </ScrollLink>
             </li>
           </ul>
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 

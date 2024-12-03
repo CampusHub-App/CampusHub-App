@@ -40,22 +40,23 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
     }
 
     try {
-      // Use the correct `id` variable from `useParams`
+
       const response = await fetch(`https://campushub.web.id/api/events/${id}/cancel`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`, // Include access token in the headers
+          "Authorization": `Bearer ${accessToken}`,
         },
       });
 
       if (response.ok) {
-        navigate(`/cancel/${id}`);
+        navigate(`/${id}/cancel`);
       } else {
-        console.error("Pembatalan gagal:", await response.text());
+        const data = await response.json();
+        alert(data.message);
       }
     } catch (error) {
-      console.error("Error saat membatalkan:", error);
+        console.error("Error saat membatalkan:", error);
     } finally {
       setIsProcessing(false);
     }

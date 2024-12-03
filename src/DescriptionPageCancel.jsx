@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Poster from "./assets/Image/Poster.svg";
 import Ellipse from "./assets/image/Ellipse.svg";
 import "./css/DescriptionPageCancel.css";
+import { useParams } from "react-router-dom";
 
 const DescriptionPageCancel = () => {
   const [eventData, setEventData] = useState(null);
@@ -11,25 +12,37 @@ const DescriptionPageCancel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch(`https://campushub.web.id/api/events/${id}/cancel`);
+        const response = await fetch(`https://campushub.web.id/api/events/${id}/cancel`, {
+          method: "POST", // Menggunakan metode POST
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`, // Pastikan token benar
+          },
+          body: JSON.stringify({}), // Body dapat dikustomisasi jika dibutuhkan
+        });
+    
         if (!response.ok) {
-          throw new Error("Failed to fetch event data");
+          const errorData = await response.json(); // Parsing pesan kesalahan dari respons
+          throw new Error(errorData.message || "Failed to cancel the event");
         }
-        const data = await response.json();
+    
+        const data = await response.json(); // Parsing data sukses
         setEventData(data);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching event data:", error);
-        setError("Failed to load event data. Please try again later.");
+        setError(error.message || "Failed to load event data. Please try again later.");
         setLoading(false);
       }
     };
+    
 
     fetchEventData();
     setTimeout(() => {

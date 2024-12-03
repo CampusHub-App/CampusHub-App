@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Menu from "../src/assets/Image/menu.svg";
 import "./css/MyEvents.css";
+import Navbar from "./components/Navbar";
 
 const MyEvents = () => {
   const [events, setEvents] = useState([]);
@@ -87,7 +88,10 @@ const MyEvents = () => {
   ).length;
 
   return (
-    <div className="myevents py-4">
+    <div className="myevents">
+
+    <Navbar />
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-20">
         <div className="content-box flex flex-col">
           <div className="page-features flex flex-wrap justify-between px-4 sm:px-6 lg:px-20 pt-16">

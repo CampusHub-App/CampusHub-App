@@ -11,13 +11,11 @@ import sertifikasi from "./assets/Image/sertifikasi.svg";
 import circle5 from "./assets/Image/circle5.svg";
 import CardPage from "./components/CardPage";
 import circle6 from "./assets/Image/circle6.svg";
-import arrowLeft from "./assets/Image/icon/arrow-circle-left.svg";
-import arrowRight from "./assets/Image/icon/arrow-circle-right.svg";
-import logo from "./assets/Image/logo.svg";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import { motion } from "framer-motion";
+import Navbar from "./components/Navbar";
 
-function Landingpage() {
+function LandingPage() {
  
   const pageVariants = {
     initial: { y: "100%" },
@@ -86,111 +84,10 @@ function Landingpage() {
       variants={pageVariants}
       transition={{ duration: 0.5 }}
     >
+
+      <Navbar />
+
       <header className="bg-[#003266] w-full max-[1000px] ">
-        <nav className=" sm:px-[0px] md:p-5 tengah:px-6 bg-white w-full lg:px-10 xl:px-[85px] py-5 ">
-          <div className="flex justify-between items-center  px-[0px] w-full ">
-            
-            <div className="flex items-center space-x-3">
-              <img src={logo} alt="Logo" className="sm:max-w-[150px] md:max-w-[229px] tengah:max-w-[180px]" />
-            </div>
-
-            <ul className="hidden lg:flex space-x-8 items-center text-[#003266] text-[20px] font-medium">
-              <li>
-              <Link to="/">Home</Link>
-              </li>
-              <li>
-              {isLoggedIn ? (
-                  <Link to="/my-event">MyEvents</Link>
-                ) : (
-                  <button
-                    onClick={handleMyEventClick}
-                    className="text-[#003266] font-medium text-[20px] cursor-pointer"
-                  >
-                    MyEvents
-                  </button>
-                )}
-              </li>
-              
-              <li>
-              <ScrollLink
-              to="aboutus"
-              smooth={true}
-              duration={800}
-              className=" flex justify-center cursor-pointer"
-            >
-              <p>About Us</p>
-            </ScrollLink>
-              </li>
-            </ul>
-
-
-            <div className="flex justify-center gap-x-3 items-center">
-            <div className=" sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap">
-              <Link to="/welcome"><button className="bg-[#027FFF] border rounded-[10px]   text-white  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
-                Login
-              </button></Link>
-              <Link to="/user/register"><button className="border-[#027FFF] border-2 rounded-[10px]  text-[#027FFF]  sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
-                Sign Up
-              </button></Link>
-            </div>
-          
-
-          <button
-              onClick={toggleMenu}
-              type="button"
-              className="flex lg:hidden  items-center justify-center p-2 w-10 h-10 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none"
-              aria-controls="navbar-hamburger"
-              aria-expanded={isMenuOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-5 h-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
-              </svg>
-            </button>
-            </div>
-            </div>
-
-          
-          {isMenuOpen && (
-            <div className="lg:hidden mt-4">
-              <ul className="flex flex-col space-y-4 text-[#003266] text-[20px] font-medium">
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                <button
-                    onClick={handleMyEventClick}
-                    className="text-[#003266] font-medium text-[20px] cursor-pointer"
-                  >
-                    MyEvents
-                  </button>
-                </li>
-                <li>
-                <ScrollLink
-              to="aboutus"
-              smooth={true}
-              duration={1000}
-              className="cursor-pointer"
-            >
-              <p>About Us</p>
-            </ScrollLink>
-                </li>
-              </ul>
-            </div>
-          )}
-        </nav>
-
         
         <main className="flex justify-around text-white items-center my-auto py-10 w-full md:px-5">
           <div className="flex flex-col gap-y-[24px] ">
@@ -240,7 +137,7 @@ function Landingpage() {
             <Link to="/seminar"><img src={seminar} alt="Seminar" /></Link>
             </li>
             <li>
-            <Link to="/kuliahTamu"><img src={kuliah} alt="Kuliah" /></Link>
+            <Link to="/kuliah-tamu"><img src={kuliah} alt="Kuliah" /></Link>
             </li>
             <li>
             <Link to="/workshop"><img src={workshop} alt="Workshop" /></Link>
@@ -278,4 +175,4 @@ function Landingpage() {
   );
 }
 
-export default Landingpage;
+export default LandingPage;

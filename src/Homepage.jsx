@@ -11,16 +11,14 @@ import sertifikasi from "./assets/Image/sertifikasi.svg";
 import circle5 from "./assets/Image/circle5.svg";
 import CardPage from "./components/CardPage";
 import circle6 from "./assets/Image/circle6.svg";
-import arrowLeft from "./assets/Image/icon/arrow-circle-left.svg";
-import arrowRight from "./assets/Image/icon/arrow-circle-right.svg";
-import logo from "./assets/Image/logo.svg";
 import { motion } from "framer-motion";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 const pageVariants = {
-  initial: { y: "100%" },
-  animate: { y: 0 },
-  exit: { y: "-100%" },
+  initial: {opacity: 0 },
+  animate: {opacity: 1 },
+  exit: {opacity: 0 },
 };
 
 function Homepage() {
@@ -81,102 +79,13 @@ function Homepage() {
       animate="animate"
       exit="exit"
       variants={pageVariants}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 1.1 }}
     >
       
+      <Navbar/>
+
       <header className="bg-[#003266] w-full">
-        <nav className="sm:px-[0px] tengah:p- bg-white w-full lg:px-10 xl:px-[85px] py-5">
-          <div className="flex justify-between items-center w-full">
-          <Link to="/" className="flex items-center">
-            <img
-              src={logo}
-              alt="Logo"
-              className="hover:filter hover:drop-shadow-lg transition duration-300"
-            />
-          </Link>
 
-            <ul className="hidden lg:flex space-x-8 items-center text-[#003266] text-[20px] font-medium">
-              <Link to="/home"><li>
-                <a href="#">Home</a>
-              </li></Link>
-              <li>
-              <Link to="/my-event">
-                    MyEvent
-                  </Link>
-              </li>
-              <li>
-              <ScrollLink
-              to="aboutus"
-              smooth={true}
-              duration={800}
-              className=" flex justify-center cursor-pointer"
-            >
-              <p>About Us</p>
-            </ScrollLink>
-              </li>
-            </ul>
-
-            <div className="flex items-center gap-x-3">
-             
-             <Link to="/profile"> <img
-                src={profile}
-                alt="Profile"
-                className=" hidden sm:block"
-              /></Link>
-              
-              <button
-                onClick={toggleMenu}
-                type="button"
-                className="flex lg:hidden items-center justify-center p-2 w-10 h-10 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none"
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className="w-5 h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 17 14"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M1 1h15M1 7h15M1 13h15"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {isMenuOpen && (
-            <div className="lg:hidden mt-4">
-              <ul className="flex flex-col space-y-4 text-[#003266] text-[20px] font-medium">
-                
-                <li>
-                  <a href="#">Home</a>
-                </li>
-                <li>
-                <Link to="/my-event">
-                    MyEvent
-                  </Link>
-                </li>
-                <li>
-                <ScrollLink
-              to="aboutus"
-              smooth={true}
-              duration={800}
-              className=" cursor-pointer"
-            >
-              <p>About Us</p>
-            </ScrollLink>
-                </li>
-              </ul>
-              
-            </div>
-          )}
-        </nav>
-
-        
         <main className="flex justify-around text-white items-center md:px-5 py-10">
           <div className="flex flex-col gap-y-[24px]">
             <h1 className="font-bold sm:text-[20px] md:text-[28px] lg:text-[54px] max-w-[640px] w-full tengah:text-[24px]">
@@ -215,6 +124,9 @@ function Homepage() {
             alt="Gambar utama"
             className="relative z-10 w-full sm:w-[200px] md:w-[440px] lg:w-[550px]"
           />
+
+<img src={circle5} alt="Circle dekorasi" className="absolute right-0 top-72 sm:hidden xl:block" />
+
         </main>
       </header>
 
