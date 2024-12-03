@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom'; 
-import circle from './assets/Image/circle3.svg';
-import circle2 from './assets/Image/circle4.svg';
-import logo from './assets/Image/logo2.svg';
+import circle from './assets/image/circle3.svg';
+import circle2 from './assets/image/circle4.svg';
+import logo from './assets/image/logo2.svg';
 
 const pageVariants = {
   initial: { opacity: 0 },

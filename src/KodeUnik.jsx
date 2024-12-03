@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Ellipse from "./assets/Image/Ellipse.svg";
-import Ellipse2 from "./assets/Image/Ellipse2.svg";
+import Ellipse from "./assets/image/Ellipse.svg";
+import Ellipse2 from "./assets/image/Ellipse2.svg";
 import "./css/KodeUnik.css";
 
 const KodeUnik = () => {

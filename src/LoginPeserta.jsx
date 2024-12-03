@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import circle2 from "./assets/Image/circle4.svg";
-import logo from "./assets/Image/logo2.svg";
+import circle2 from "./assets/image/circle4.svg";
+import logo from "./assets/image/logo2.svg";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CardPage from "./components/CardPage";
-import circle6 from "./assets/Image/circle6.svg";
+import circle6 from "./assets/image/circle6.svg";
 import { motion } from "framer-motion";
 import Footer from "./components/Footer";
 import { useEffect } from "react";

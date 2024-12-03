@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import peserta from "./assets/Image/peserta.svg";
-import circle from "./assets/Image/circle.svg";
-import admin from "./assets/Image/admin.svg";
-import circle2 from "./assets/Image/circle2.svg";
+import peserta from "./assets/image/peserta.svg";
+import circle from "./assets/image/circle.svg";
+import admin from "./assets/image/admin.svg";
+import circle2 from "./assets/image/circle2.svg";
 
 const pageVariants = {
   initial: { opacity: 0 },

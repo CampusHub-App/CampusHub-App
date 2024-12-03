@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Poster from "./assets/Image/Poster.svg";
-import Ellipse from "./assets/Image/Ellipse.svg";
-import Lecturer from "./assets/Image/lecturer.svg";
-import Date from "./assets/Image/date.svg";
-import Chair from "./assets/Image/chair.svg";
+import Poster from "./assets/image/Poster.svg";
+import Ellipse from "./assets/image/Ellipse.svg";
+import Lecturer from "./assets/image/lecturer.svg";
+import Date from "./assets/image/date.svg";
+import Chair from "./assets/image/chair.svg";
 import "./css/DetailEvent.css";
 
 const DetailEvent = () => {
