@@ -70,7 +70,7 @@ const PopUpUpdate = ({ triggerClose, setShowPopUp }) => {
           >
             Kembali
           </button>
-             <Link to="/home"><p
+             <Link to="/"><p
             className="bg-transparent border-2 border-[#027FFF] font-medium w-full h-11 my-2 rounded-lg text-medium text-black text-[20px] hover:bg-[#027FFF] hover:border-white hover:text-white shadow-md hover:shadow-lg transition duration-300 cursor-pointer flex justify-center items-center"
             onClick={() => {
               setIsExiting(true);
