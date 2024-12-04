@@ -33,7 +33,7 @@ const CardPage = ({ events }) => {
 
     // Fungsi untuk menangani klik pada card
     const handleCardClick = (id) => {
-        navigate(`/${id}/view`); // Redirect ke halaman dengan ID tertentu
+        navigate(`/events/${id}/view`); // Redirect ke halaman dengan ID tertentu
     };
 
     return (

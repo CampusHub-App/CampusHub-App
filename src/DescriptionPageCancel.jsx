@@ -20,7 +20,7 @@ const DescriptionPageCancel = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("welcome", { replace: true });
+      navigate("/welcome", { replace: true });
       return;
     }
     

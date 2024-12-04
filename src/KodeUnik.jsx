@@ -14,7 +14,7 @@ const KodeUnik = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("welcome", { replace: true });
+      navigate("/welcome", { replace: true });
       return;
     }
     
@@ -38,7 +38,6 @@ const KodeUnik = () => {
 
         if (uniqueCode && uniqueCode.length === 4) {
           setCode(uniqueCode.split(""));
-          localStorage.setItem("uniqueCode", uniqueCode);
         } else {
           setCode(["", "", "", ""]);
         }

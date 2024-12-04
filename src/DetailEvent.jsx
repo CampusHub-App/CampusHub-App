@@ -44,7 +44,7 @@ const DetailEvent = () => {
   const handleExit = () => {
     setIsExiting(true); // Start fade-out effect
     setTimeout(() => {
-      navigate(`/${eventData.id}/preview`);
+      navigate(`/events/${eventData.id}/preview`);
     }, 500); // Wait for the fade-out to complete
   };
 

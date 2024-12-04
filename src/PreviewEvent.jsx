@@ -15,14 +15,6 @@ const PreviewEvent = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     alert("Anda harus login untuk mengakses halaman ini.");
-  //     navigate("/login/user");
-  //   }
-  // }, [navigate]);
-
   // Ambil data event berdasarkan ID
   useEffect(() => {
     const fetchEventData = async () => {
@@ -53,8 +45,7 @@ const PreviewEvent = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Anda belum login. Silakan login terlebih dahulu.");
-        navigate("welcome", { replace: true });
+        navigate(`/user/login?redirect=${encodeURIComponent(location.pathname)}`);
         return;
       }
 
@@ -74,7 +65,7 @@ const PreviewEvent = () => {
       if (response.ok) {
         setShowPopup(true);
         setTimeout(() => {
-          navigate(`/${eventData.id}/kode-unik`);
+          navigate(`/my-events/${eventData.id}/kode-unik`);
         }, 2000);
       } else {
         alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);

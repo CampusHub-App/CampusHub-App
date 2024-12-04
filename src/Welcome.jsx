@@ -13,6 +13,8 @@ const pageVariants = {
 };
 
 function Welcome() {
+  const params = new URLSearchParams(location.search);
+  const redirectPath = params.get("redirect") || "/";
   return (
     <motion.div
       className="flex delay-100 transition-transform"
@@ -23,7 +25,6 @@ function Welcome() {
       transition={{ duration: 1 }}
     >
       <div className="h-screen w-full flex md:flex-col sm:flex-col lg:flex-row relative">
-        
         <div className="h-screen w-full flex flex-col justify-center mx-auto gap-y-[20px] pb-[70px] relative">
           <div className="px-4 mb-16 ml-12">
             <h1 className="text-[64px] font-semibold text-[#003266]">
@@ -44,7 +45,7 @@ function Welcome() {
               <h1 className="text-[32px] font-semibold text-[#003266]">
                 Sebagai peserta
               </h1>
-              <Link to="/user/login">
+              <Link to={`/user/login?redirect=${redirectPath}`}>
                 <button className="text-white tengah:w-[440px] sm:w-[400px] px-[24px] py-[16px] text-[20px] font-medium bg-[#003266] rounded-[10px]">
                   Masuk
                 </button>
@@ -63,11 +64,13 @@ function Welcome() {
             <h1 className="text-[32px] font-semibold text-white">
               Sebagai penyelenggara
             </h1>
-            <Link to="/admin/login"><button className="text-white bg-[#027FFF] rounded-[10px] tengah:w-[440px] sm:w-[400px]  px-[24px] py-[16px] text-[20px] font-medium">
-              Masuk
-            </button></Link>
+            <Link to={`/admin/login?redirect=${redirectPath}`}>
+              <button className="text-white bg-[#027FFF] rounded-[10px] tengah:w-[440px] sm:w-[400px]  px-[24px] py-[16px] text-[20px] font-medium">
+                Masuk
+              </button>
+            </Link>
           </div>
-          
+
           <img
             src={circle}
             alt="Circle"
@@ -75,7 +78,6 @@ function Welcome() {
           />
         </div>
 
-        
         <img
           src={circle2}
           alt="Circle2"

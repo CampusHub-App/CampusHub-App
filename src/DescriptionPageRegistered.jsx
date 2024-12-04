@@ -22,7 +22,7 @@ const DescriptionPageRegistered = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("welcome", { replace: true });
+      navigate("/welcome", { replace: true });
       return;
     }
     

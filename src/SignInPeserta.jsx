@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom'; 
-import circle from './assets/image/circle3.svg';
-import circle2 from './assets/image/circle4.svg';
-import logo from './assets/image/logo2.svg';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import circle from "./assets/image/circle3.svg";
+import circle2 from "./assets/image/circle4.svg";
+import logo from "./assets/image/logo2.svg";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -12,32 +12,35 @@ const pageVariants = {
 };
 
 function Signinpeserta() {
+  const params = new URLSearchParams(location.search);
+  const redirectPath = params.get("redirect") || "/";
+
   const [formData, setFormData] = useState({
-    nama: '',
-    email: '',
-    password: '',
-    telepon: '',
+    nama: "",
+    email: "",
+    password: "",
+    telepon: "",
   });
 
-const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [responseMessage, setResponseMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setErrorMessage('');
+    setErrorMessage("");
   };
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
       setFormData({ ...formData, telepon: value });
-      setErrorMessage('');
+      setErrorMessage("");
     }
   };
 
@@ -45,20 +48,20 @@ const [showPassword, setShowPassword] = useState(false);
     e.preventDefault();
 
     if (formData.telepon.length < 11) {
-      setErrorMessage('Nomor telepon harus memiliki minimal 11 digit!');
+      setErrorMessage("Nomor telepon harus memiliki minimal 11 digit!");
       return;
     }
 
-    const baseUrl = 'https://campushub.web.id/api';
+    const baseUrl = "https://campushub.web.id/api";
     const endpoint = `${baseUrl}/register`;
 
     setLoading(true);
     try {
-      console.log('Mengirim data ke endpoint:', endpoint); 
+      console.log("Mengirim data ke endpoint:", endpoint);
       const response = await fetch(endpoint, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: formData.nama,
@@ -69,30 +72,33 @@ const [showPassword, setShowPassword] = useState(false);
       });
 
       if (!response.ok) {
-        const errorData = await response.json(); 
-        console.error('Error response:', errorData); 
-        throw new Error(`Error ${response.status}: ${errorData.message || response.statusText}`);
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error(
+          `Error ${response.status}: ${
+            errorData.message || response.statusText
+          }`
+        );
       }
 
       const responseData = await response.json();
-      console.log('Response data:', responseData); 
+      console.log("Response data:", responseData);
 
       setTimeout(() => {
-        navigate('/Loginpeserta'); 
-      }, 1000); 
-
+        navigate(`/user/login?redirect=${redirectPath}`);
+      }, 1000);
     } catch (error) {
-      console.error('Registrasi gagal:', error); 
+      console.error("Registrasi gagal:", error);
       setErrorMessage(`Registrasi gagal: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  
-  const isFormValid = Object.values(formData).every((value) => value.trim() !== '');
+  const isFormValid = Object.values(formData).every(
+    (value) => value.trim() !== ""
+  );
 
-  
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -112,19 +118,26 @@ const [showPassword, setShowPassword] = useState(false);
             Daftar Sekarang!
           </h1>
           <p className="text-[#003266] font-normal lg:text-[24px] text-[17px]">
-            Buat akun anda di Breece
+            Buat akun anda di Campus Hub
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full flex flex-col max-w-[250px] lg:max-w-[420px] sm:max-w-[282px] items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full flex flex-col max-w-[250px] lg:max-w-[420px] sm:max-w-[282px] items-center"
+        >
           <div className="mb-6 w-full max-w-[420px]">
-            <label htmlFor="nama" className="block mb-2 text-[20px] font-medium text-[#003266]">
+            <label
+              htmlFor="nama"
+              className="block mb-2 text-[20px] font-medium text-[#003266]"
+            >
               Nama
             </label>
             <input
               type="text"
               id="nama"
               name="nama"
+              placeholder="Your Name"
               className="w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.nama}
               onChange={handleChange}
@@ -133,7 +146,10 @@ const [showPassword, setShowPassword] = useState(false);
           </div>
 
           <div className="mb-6 w-full max-w-[420px]">
-            <label htmlFor="email" className="block mb-2 text-[20px] font-medium text-[#003266]">
+            <label
+              htmlFor="email"
+              className="block mb-2 text-[20px] font-medium text-[#003266]"
+            >
               Alamat email
             </label>
             <input
@@ -141,7 +157,7 @@ const [showPassword, setShowPassword] = useState(false);
               id="email"
               name="email"
               className="w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="breece@gmail.com"
+              placeholder="your.email@example.com"
               value={formData.email}
               onChange={handleChange}
               required
@@ -149,15 +165,18 @@ const [showPassword, setShowPassword] = useState(false);
           </div>
 
           <div className="mb-6 w-full max-w-[420px] relative">
-            <label htmlFor="password" className="block mb-2 text-[20px] font-medium text-[#003266]">
+            <label
+              htmlFor="password"
+              className="block mb-2 text-[20px] font-medium text-[#003266]"
+            >
               Password
             </label>
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               className="w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="breece123#"
+              placeholder="Enter your password here"
               value={formData.password}
               onChange={handleChange}
               required
@@ -171,7 +190,10 @@ const [showPassword, setShowPassword] = useState(false);
           </div>
 
           <div className="mb-6 w-full max-w-[420px]">
-            <label htmlFor="telepon" className="block mb-2 text-[20px] font-medium text-[#003266]">
+            <label
+              htmlFor="telepon"
+              className="block mb-2 text-[20px] font-medium text-[#003266]"
+            >
               No Telepon
             </label>
             <input
@@ -181,14 +203,20 @@ const [showPassword, setShowPassword] = useState(false);
               className="w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={formData.telepon}
               onChange={handlePhoneChange}
-              placeholder="Masukkan nomor telepon"
+              placeholder="08123456789"
               required
             />
-            {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
+            {errorMessage && (
+              <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+            )}
           </div>
 
           {responseMessage && (
-            <p className={`text-sm mt-2 ${errorMessage ? 'text-red-500' : 'text-green-500'}`}>
+            <p
+              className={`text-sm mt-2 ${
+                errorMessage ? "text-red-500" : "text-green-500"
+              }`}
+            >
               {responseMessage}
             </p>
           )}
@@ -198,17 +226,25 @@ const [showPassword, setShowPassword] = useState(false);
             disabled={!isFormValid || loading}
             className={`w-full max-w-[420px] px-[24px] py-[16px] text-[20px] font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
               isFormValid
-                ? 'bg-[#003266] hover:bg-blue-800 focus:ring-[#003266]'
-                : 'bg-[#A2A2A2] cursor-not-allowed'
+                ? "bg-[#003266] hover:bg-blue-800 focus:ring-[#003266]"
+                : "bg-[#A2A2A2] cursor-not-allowed"
             }`}
           >
-            {loading ? 'Mengirim...' : 'Daftar'}
+            {loading ? "Mengirim..." : "Daftar"}
           </button>
         </form>
       </div>
 
-      <img src={circle} alt="" className="absolute max-w-[284px] max-h-[284px] bottom-0 left-0 sm:hidden tengah:block" />
-      <img src={circle2} alt="" className="absolute max-w-[284px] max-h-[284px] top-0 right-0 sm:hidden tengah:block" />
+      <img
+        src={circle}
+        alt=""
+        className="absolute max-w-[284px] max-h-[284px] bottom-0 left-0 sm:hidden tengah:block"
+      />
+      <img
+        src={circle2}
+        alt=""
+        className="absolute max-w-[284px] max-h-[284px] top-0 right-0 sm:hidden tengah:block"
+      />
 
       <div className="tengah:w-7/12 sm:w-1/2 bg-[#003266] flex items-center justify-center">
         <img src={logo} alt="" />

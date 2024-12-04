@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import Menu from "../src/assets/image/menu.svg";
-import "./css/MyEvents.css";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import Menu from "../assets/image/menu.svg";
 import { motion } from "framer-motion";
-import Navbar from "./components/Navbar";
-import { useLocation } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const MyEvents = () => {
   const [events, setEvents] = useState([]);
@@ -14,6 +12,7 @@ const MyEvents = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [categoryFilter, setCategoryFilter] = useState("All");
   const location = useLocation();
   const pageVariants = {
     initial: { opacity: 0.6 },
@@ -24,7 +23,6 @@ const MyEvents = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if `state` exists and set the active tab
     if (location.state?.activeTab) {
       setStatusFilter(location.state.activeTab);
     }
@@ -36,7 +34,6 @@ const MyEvents = () => {
 
   useEffect(() => {
     const fetchEvents = async () => {
-
       const token = localStorage.getItem("token");
       if (!token) {
         navigate("/welcome?redirect=/my-events", { replace: true });
@@ -84,14 +81,12 @@ const MyEvents = () => {
       event.judul.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .filter((event) =>
-      statusFilter === "All"
-        ? true
-        : event.status.toLowerCase() === statusFilter.toLowerCase()
+      categoryFilter === "All" ? true : event.kategori_id === categoryFilter
     );
 
   const sortedEvents = [...filteredEvents].sort((a, b) => {
     if (sortOption === "date") {
-      return new Date(a.join_date) - new Date(b.join_date);
+      return new Date(a.uploaded) - new Date(b.uploaded);
     } else if (sortOption === "title") {
       return a.judul.localeCompare(b.judul);
     }
@@ -99,12 +94,21 @@ const MyEvents = () => {
   });
 
   const allCount = events.length;
-  const registeredCount = events.filter(
-    (event) => event.status.toLowerCase() === "registered"
+  const webinarCount = events.filter((event) => event.kategori_id === 1).length;
+  const seminarCount = events.filter((event) => event.kategori_id === 2).length;
+  const kuliahTamuCount = events.filter(
+    (event) => event.kategori_id === 3
   ).length;
-  const canceledCount = events.filter(
-    (event) => event.status.toLowerCase() === "cancelled"
+  const workshopCount = events.filter(
+    (event) => event.kategori_id === 4
   ).length;
+  const sertifikasiCount = events.filter(
+    (event) => event.kategori_id === 5
+  ).length;
+
+  const handleCategoryFilter = (category) => {
+    setCategoryFilter(category);
+  };
 
   return (
     <motion.div
@@ -177,27 +181,51 @@ const MyEvents = () => {
                 <ul className="flex gap-8 sm:gap-12 lg:gap-16 w-full text-sm sm:text-base justify-center lg:justify-start lg:px-20">
                   <li
                     className={`cursor-pointer ${
-                      statusFilter === "All" ? "font-bold underline" : ""
+                      categoryFilter === "All" ? "font-bold underline" : ""
                     }`}
-                    onClick={() => handleStatusFilter("All")}
+                    onClick={() => handleCategoryFilter("All")}
                   >
                     All ({allCount})
                   </li>
                   <li
                     className={`cursor-pointer ${
-                      statusFilter === "Registered" ? "font-bold underline" : ""
+                      categoryFilter === 1 ? "font-bold underline" : ""
                     }`}
-                    onClick={() => handleStatusFilter("Registered")}
+                    onClick={() => handleCategoryFilter(1)}
                   >
-                    Registered ({registeredCount})
+                    Webinar ({webinarCount})
                   </li>
                   <li
                     className={`cursor-pointer ${
-                      statusFilter === "Cancelled" ? "font-bold underline" : ""
+                      categoryFilter === 2 ? "font-bold underline" : ""
                     }`}
-                    onClick={() => handleStatusFilter("Cancelled")}
+                    onClick={() => handleCategoryFilter(2)}
                   >
-                    Canceled ({canceledCount})
+                    Seminar ({seminarCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      categoryFilter === 3 ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleCategoryFilter(3)}
+                  >
+                    Kuliah Tamu ({kuliahTamuCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      categoryFilter === 4 ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleCategoryFilter(4)}
+                  >
+                    Workshop ({workshopCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      categoryFilter === 5 ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleCategoryFilter(5)}
+                  >
+                    Sertifikasi ({sertifikasiCount})
                   </li>
                 </ul>
               </div>
@@ -225,8 +253,8 @@ const MyEvents = () => {
                             {event.judul}
                           </span>
                           <span className="event-date text-sm text-gray-500 mb-1 block">
-                            Join date:{" "}
-                            {new Date(event.join_date).toLocaleDateString()}
+                            Updated:{" "}
+                            {new Date(event.uploaded).toLocaleDateString()}
                           </span>
                         </div>
                       </div>

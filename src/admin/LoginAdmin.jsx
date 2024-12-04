@@ -23,10 +23,17 @@ const whiteVariants = {
 };
 
 function Loginadmin() {
+  const params = new URLSearchParams(location.search);
+  const redirectPath = params.get("redirect") || "/";
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
+
+  const handleCheckboxChange = (e) => {
+    setRemember(e.target.checked);
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -44,7 +51,7 @@ function Loginadmin() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password, remember }),
         });
   
         if (response.ok) {
@@ -56,8 +63,21 @@ function Loginadmin() {
             localStorage.setItem('token', data.access_token); // Simpan access_token
             localStorage.setItem('token_type', data.token_type); // Simpan tipe token
           }
-  
-          navigate('/admin');
+
+          try {
+            const response = await fetch("https://campushub.web.id/api/user", {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            });
+    
+            if (response.ok) {
+              const data = await response.json();
+              localStorage.setItem("user", JSON.stringify(data));
+            }
+          } finally {
+            navigate(redirectPath);
+          }
         } else {
           console.error('Login failed:', response.status);
           alert('Login gagal, periksa kembali email atau password Anda.');
@@ -88,12 +108,6 @@ function Loginadmin() {
       >
         <div className='tengah:mb-12 tengah:mt-5 sm:mb-5  w-full sm:max-w-[282px] lg:max-w-[420px] max-w-[250px]'>
           <h1 className="font-semibold tengah:text-[48px] sm:text-[40px] text-[#003266]">Selamat Datang!</h1>
-          <p className="text-[#003266] font-normal text-[24px] mb-8">
-            Tidak punya akun?
-            <a href="/Signinpeserta" className="text-[#027FFF] hover:underline ml-1">
-              Daftar
-            </a>
-          </p>
         </div>
 
         <form
@@ -109,7 +123,7 @@ function Loginadmin() {
               id="email"
               name="email"
               className=" w-full flex justify-center h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="breece@gmail.com"
+              placeholder="your.email@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -125,7 +139,7 @@ function Loginadmin() {
               id="password"
               name="password"
               className=" w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="breece123#"
+              placeholder="Enter your password here"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -144,6 +158,7 @@ function Loginadmin() {
                 type="checkbox"
                 id="remember"
                 name="remember"
+                onChange={handleCheckboxChange}
                 className="w-4 h-4 text-[#003266] border-[#003266] rounded focus:ring-blue-500"
               />
               <label htmlFor="remember" className="ml-2 text-sm text-[#003266]">

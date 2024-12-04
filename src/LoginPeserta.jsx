@@ -23,9 +23,12 @@ const whiteVariants = {
 };
 
 function Loginpeserta() {
+  const params = new URLSearchParams(location.search);
+  const redirectPath = params.get("redirect") || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -33,6 +36,10 @@ function Loginpeserta() {
   };
 
   const isFormValid = email.trim() !== "" && password.trim() !== "";
+
+  const handleCheckboxChange = (e) => {
+    setRemember(e.target.checked);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -46,7 +53,7 @@ function Loginpeserta() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, remember }),
           }
         );
 
@@ -73,10 +80,8 @@ function Loginpeserta() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("User data:", data);
           localStorage.setItem("user", JSON.stringify(data));
-
-          navigate("/");
+          navigate(redirectPath);
         }
       } catch (error) {}
     }
@@ -106,7 +111,7 @@ function Loginpeserta() {
           <p className="text-[#003266] font-normal text-[24px] mb-8">
             Tidak punya akun?
             <a
-              href="/Signinpeserta"
+              href={`/user/register?redirect=${redirectPath}`}
               className="text-[#027FFF] hover:underline ml-1"
             >
               Daftar
@@ -130,7 +135,7 @@ function Loginpeserta() {
               id="email"
               name="email"
               className=" w-full flex justify-center h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="breece@gmail.com"
+              placeholder="your.email@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -149,7 +154,7 @@ function Loginpeserta() {
               id="password"
               name="password"
               className=" w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="breece123#"
+              placeholder="Enter your password here"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -168,6 +173,7 @@ function Loginpeserta() {
                 type="checkbox"
                 id="remember"
                 name="remember"
+                onChange={handleCheckboxChange}
                 className="w-4 h-4 text-[#003266] border-[#003266] rounded focus:ring-blue-500"
               />
               <label htmlFor="remember" className="ml-2 text-sm text-[#003266]">

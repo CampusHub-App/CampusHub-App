@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Ellipse from "./assets/image/Ellipse.svg";
-import PopUpUpdate from "./components/PopUpUpdate";
 import PopUpDelete from "./components/PopUpDelete";
 import PopUpLogout from "./components/PopUpLogOut";
+import PopUpUpdate from "./components/PopUpUpdate";
 import "./css/ProfilePagePassword.css";
 import Navbar from "./components/Navbar";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePagePassword = () => {
   const [activePage, setActivePage] = useState("password");
@@ -19,16 +20,16 @@ const ProfilePagePassword = () => {
     useState(false);
   const [showDeletePopUp, setShowDeletePopUp] = useState(false);
   const [showLogoutPopUp, setShowLogoutPopUp] = useState(false);
-  const [showPopUp, setShowPopUp] = useState(false);
+  const [showUpdatePopUp, setShowUpdatePopUp] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const pageVariants = {
     initial: { opacity: 0.8 },
     animate: { opacity: 1 },
     exit: { opacity: 0.8 },
   };
-  
 
   const handlePageChange = (page) => {
     setActivePage(page);
@@ -68,16 +69,17 @@ const ProfilePagePassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowPopUp(true);
+    setShowUpdatePopUp(true);
   };
 
   useEffect(() => {
+    
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("welcome", { replace: true });
+      navigate("/welcome", { replace: true });
       return;
     }
-    
+
     const user = localStorage.getItem("user");
     if (user) {
       setUserData(JSON.parse(user));
@@ -274,7 +276,7 @@ const ProfilePagePassword = () => {
                   </li>
                   <li>
                     <Link
-                      to="/profile-password"
+                      to="/account/password"
                       className={`font-regular text-lg sm:text-base md:text-lg ${
                         activePage === "password"
                           ? "font-semibold underline"
@@ -325,7 +327,13 @@ const ProfilePagePassword = () => {
           </div>
           {showDeletePopUp && <PopUpDelete setShowPopUp={setShowDeletePopUp} />}
           {showLogoutPopUp && <PopUpLogout setShowPopUp={setShowLogoutPopUp} />}
-          {showPopUp && <PopUpUpdate setShowPopUp={setShowPopUp} />}
+          {showUpdatePopUp && (
+            <PopUpUpdate
+              setShowPopUp={setShowUpdatePopUp}
+              password={newPassword}
+              confirmation={passwordConfirmation}
+            />
+          )}
         </div>
       </div>
     </motion.div>

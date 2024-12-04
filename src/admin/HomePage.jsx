@@ -1,12 +1,10 @@
-import profile from "../assets/image/profile.svg";
-import logo from "../assets/image/logo.svg";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import admin from "../assets/image/adminimage/admin.svg";
 import admin2 from "../assets/image/adminimage/admin2.svg";
 import circle5 from "../assets/image/circle5.svg";
-import circle from "../assets/image/adminimage/circleadmin.svg";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 
 const pageVariants = {
   initial: { y: "100%" },
@@ -30,66 +28,9 @@ function Adminpage() {
       variants={pageVariants}
       transition={{ duration: 0.5 }}
     >
-      <div className="bg-[#003266] w-full">
-        <nav className="p-5 bg-white">
-          <div className="flex justify-between items-center px-[62px] sm:px-0 tengah:px-[62px]">
-            <img src={logo} alt="Logo" className="sm:max-w-[150px] md:max-w-[229px]" />
-            <ul className="hidden lg:flex gap-[40px] text-[#003266] font-medium text-[20px]">
-              <li>
-                <a href="#">Home</a>
-              </li>
-              <li>
-                <a href="#">MyEvents</a>
-              </li>
-              <li>
-                <a href="#">About Us</a>
-              </li>
-            </ul>
-            <div className="flex items-center gap-3">
-            <Link to="/profile"> <img
-                src={profile}
-                alt="Profile"
-                className=" hidden sm:block"
-              />
-              </Link>
-              <button
-                onClick={toggleMenu}
-                type="button"
-                className="flex lg:hidden items-center justify-center p-2 w-10 h-10 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none"
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className="w-5 h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 17 14"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M1 1h15M1 7h15M1 13h15"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-          {isMenuOpen && (
-            <ul className="flex flex-col lg:hidden mt-4 space-y-4 text-[#003266] text-[20px] font-medium">
-              <li>
-                <a href="#">Home</a>
-              </li>
-              <li>
-                <a href="#">MyEvents</a>
-              </li>
-              <li>
-                <a href="#">About Us</a>
-              </li>
-            </ul>
-          )}
-        </nav>
+      <Navbar />
 
+      <div className="bg-[#003266] w-full">
         <main className="flex gap-x-0 text-white items-center sm:px-0 tengah:px-5 py-8 ">
           <div className="flex flex-col gap-y-[24px] px-[62px]  sm:px-0 tengah:px-[62px]">
             <h1 className="font-bold md:text-[32px] sm:text-[20px] lg:text-[54px]">
@@ -132,8 +73,14 @@ function Adminpage() {
           </main>
         </div>
       </div>
-      <img src={circle5} alt="Circle dekorasi" className="absolute right-0 top-96 sm:hidden md:block" />
-      <img src={circle} alt="Dekorasi lingkaran" className="absolute left-0 bottom-[-300px] sm:hidden xl:block" />
+      <img
+        src={circle5}
+        alt="Circle dekorasi"
+        className="absolute right-0 top-96 sm:hidden md:block"
+      />
+      <div id="aboutus">
+        <Footer></Footer>
+      </div>
     </motion.div>
   );
 }
