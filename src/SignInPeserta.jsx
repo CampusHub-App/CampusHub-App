@@ -12,6 +12,16 @@ const pageVariants = {
 };
 
 function Signinpeserta() {
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }, []);
+  
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
 

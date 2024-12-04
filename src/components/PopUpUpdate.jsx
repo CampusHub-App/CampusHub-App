@@ -33,7 +33,9 @@ const PopUpUpdate = ({ setShowPopUp, password, confirmation }) => {
 
       if (counter <= 0) {
         clearInterval(timer);
-        navigate("/welcome"); // Ubah sesuai dengan path halaman login Anda
+        setTimeout(() => {
+          window.location.href = '/welcome';
+        }, 200);
       }
 
       return () => clearInterval(timer);

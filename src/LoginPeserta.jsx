@@ -23,13 +23,24 @@ const whiteVariants = {
 };
 
 function Loginpeserta() {
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }, []);
+
+  
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -46,6 +57,7 @@ function Loginpeserta() {
 
     if (isFormValid) {
       try {
+        setIsLoading(true);
         const response = await fetch(
           "https://campushub.web.id/api/login/user",
           {
@@ -81,7 +93,13 @@ function Loginpeserta() {
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem("user", JSON.stringify(data));
-          navigate(redirectPath);
+
+          setTimeout(() => {
+            window.location.href = redirectPath;
+          }, 200);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 1000);
         }
       } catch (error) {}
     }
@@ -201,7 +219,35 @@ function Loginpeserta() {
                   : "bg-[#A2A2A2] cursor-not-allowed"
               }`}
             >
-              Masuk
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin h-7 w-7 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      d="M22 12a10 10 0 01-10 10"
+                    ></path>
+                  </svg>
+                </div>
+              ) : (
+                "Masuk"
+              )}
             </button>
           </div>
         </form>

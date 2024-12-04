@@ -57,6 +57,7 @@ const Navbar = () => {
       case "/my-events":
       case "/account/profile":
       case "/account/password":
+      case "/events/upload":
         return "bg-[#003266]";
       default:
         return "bg-white";
@@ -66,9 +67,9 @@ const Navbar = () => {
   const txtcolor = (pathname) => {
     switch (pathname) {
       case "/my-events":
-      case "/profile":
       case "/account/profile":
       case "/account/password":
+      case "/events/upload":
         return "text-white";
       default:
         return "text-[#003266]";
@@ -78,9 +79,9 @@ const Navbar = () => {
   const Logo = (pathname) => {
     switch (pathname) {
       case "/my-events":
-      case "/profile":
       case "/account/profile":
       case "/account/password":
+      case "/events/upload":
         return logo2;
       default:
         return logo;

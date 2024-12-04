@@ -50,7 +50,9 @@ const PopUpLogout = ({ setShowPopUp }) => {
       localStorage.removeItem("token_type");
       localStorage.removeItem("user");
 
-      navigate("/");
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 200);
     } catch (error) {
       console.error("Error saat logout:", error);
     } finally {

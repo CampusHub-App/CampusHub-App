@@ -3,8 +3,8 @@ import Footer from "../components/Footer";
 import admin from "../assets/image/adminimage/admin.svg";
 import admin2 from "../assets/image/adminimage/admin2.svg";
 import circle5 from "../assets/image/circle5.svg";
-import { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const pageVariants = {
   initial: { y: "100%" },
@@ -13,12 +13,6 @@ const pageVariants = {
 };
 
 function Adminpage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <motion.div
       className="font-sans flex flex-col box-border mx-auto w-full relative"
@@ -61,9 +55,11 @@ function Adminpage() {
                 Setelah melakukan tahap verifikasi identitas, realisasikan
                 acaramu dengan langkah yang mudah!
               </p>
-              <button className="max-w-[310px] max-h-[46px] px-[24px] py-[8px] sm:max-w-[200px] tengah:max-w-[310px] text-white text-[16px] md:text-[20px] bg-[#027FFF] rounded-[10px]">
+              <Link to="/events/upload">
+              <button className="hover:scale-105 animations-all duration-300 shadow-xl max-w-[310px] max-h-[46px] px-[24px] py-[8px] sm:max-w-[200px] tengah:max-w-[310px] text-white text-[16px] md:text-[20px] bg-[#027FFF] rounded-[10px]">
                 Buat Sekarang
               </button>
+              </Link>
             </div>
             <img
               src={admin2}

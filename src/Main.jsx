@@ -31,7 +31,6 @@ import SignInPeserta from './SignInPeserta.jsx';
 const user = JSON.parse(localStorage.getItem('user'));
 const isAdmin = user?.is_admin === true;
 
-
 const router = createBrowserRouter([
   {
     path: "/welcome",
@@ -71,7 +70,7 @@ const router = createBrowserRouter([
     element: <SertifikasiPage />,
   },
   {
-    path: "/upload",
+    path: "/events/upload",
     element: <UploadEvent />,
   },
   {
