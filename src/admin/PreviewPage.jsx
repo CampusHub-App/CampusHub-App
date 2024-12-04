@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Poster from "./assets/image/Poster.svg";
-import Ellipse from "./assets/image/Ellipse.svg";
-import Lecturer from "./assets/image/lecturer.svg";
-import "./css/DescriptionPageCancel.css";
-import Calendar from "./assets/image/date.svg";
-import Chair from "./assets/image/chair.svg";
-import Navbar from "./components/Navbar";
+import Poster from "../assets/image/Poster.svg";
+import Ellipse from "../assets/image/Ellipse.svg";
+import Lecturer from "../assets/image/lecturer.svg";
+import "../css/DescriptionPageCancel.css";
+import Calendar from "../assets/image/date.svg";
+import Chair from "../assets/image/chair.svg";
 
 const DescriptionPageCancel = () => {
   const [eventData, setEventData] = useState(null);
@@ -86,9 +85,8 @@ const DescriptionPageCancel = () => {
   }
 
   return (
-    <div className="detail-event h-screen">
-      <Navbar />
-      <div className={`container ${pageAnimation} pt-10 px-4 lg:mx-20`}>
+    <div className="detail-event min-h-screen pt-10 px-4 lg:mx-20">
+      <div className={`container ${pageAnimation}`}>
         <div className="breadcrumb pt-auto flex ml-2 pb-10 text-sm lg:text-base">
           <ol className="list-none flex text-black text-medium">
             <li>
@@ -191,13 +189,9 @@ const DescriptionPageCancel = () => {
               </div>
             </div>
             <div className="confirmation-message flex flex-col items-center py-4">
-              <span className="font-medium text-[16px] lg:text-[20px]">
-                Dibatalkan
-              </span>
-              <p className="text-[14px] lg:text-[16px] text-center">
-                Kamu sudah membatalkan acara ini, segera daftar ulang atau cari
-                acara serupa
-              </p>
+
+
+
             </div>
             <button
               className="bg-customBlue w-full h-10 lg:h-11 rounded-lg text-[14px] lg:text-[16px] text-white"

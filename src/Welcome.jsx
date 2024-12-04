@@ -5,6 +5,7 @@ import peserta from "./assets/image/peserta.svg";
 import circle from "./assets/image/circle.svg";
 import admin from "./assets/image/admin.svg";
 import circle2 from "./assets/image/circle2.svg";
+import { useEffect } from "react";
 
 const pageVariants = {
   initial: { opacity: 0 },

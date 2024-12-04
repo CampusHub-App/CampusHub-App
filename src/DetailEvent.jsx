@@ -7,7 +7,7 @@ import Date from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
 import "./css/DetailEvent.css";
 
-const DetailEvent = () => {
+const  DetailEvent = () => {
   const { id } = useParams(); // Mengambil parameter id dari URL
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(null);

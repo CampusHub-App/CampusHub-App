@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import profile from "../assets/image/profile.svg";
-import logo from "../assets/image/logo2.svg";
 import upload from "../assets/image/adminimage/upload.svg";
 import Navbar from "../components/Navbar";
 
@@ -57,7 +55,7 @@ function Uploadevent() {
   };
 
   const handlePreview = () => {
-    navigate("/preview", {
+    navigate("/events/preview", {
       state: {
         file,
         category,
@@ -146,7 +144,8 @@ function Uploadevent() {
               <p className="text-[12px] mt-2">Ukuran maksimum: 25MB</p>
             </div>
           </div>
-          <div className="w-max">
+
+          <div className="w-max max-h-screen">
             <form className="flex flex-col gap-6 w-max">
               {step === 1 ? (
                 <>
@@ -180,7 +179,7 @@ function Uploadevent() {
                     </p>
                     <input
                       type="text"
-                      placeholder="Masukkan judul acara..."
+                      placeholder="Masukkan judul acara"
                       className="border border-[#027FFF] rounded-lg p-3 w-[54rem]"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
@@ -237,20 +236,6 @@ function Uploadevent() {
                 </>
               ) : (
                 <>
-                  <div className="flex justify-between gap-x-[20px] items-center">
-                    <p className="text-[20px] font-semibold text-[#003266]">
-                      Judul
-                    </p>
-                    <input
-                      type="text"
-                      placeholder="Masukkan judul acara..."
-                      className="border border-[#027FFF] rounded-lg p-3 w-[54rem]"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      required
-                    />
-                  </div>
-
                   <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-x-[20px] ">
                     <div className="flex items-center w-full gap-x-[2.4rem]">
                       <p className="text-[20px] font-semibold text-[#003266] ">
@@ -260,6 +245,7 @@ function Uploadevent() {
                         type="text"
                         className="border border-[#027FFF] rounded-lg p-3 w-full xl:m-0 ml-[30px]"
                         value={speaker}
+                        placeholder="Masukkan nama pembicara"
                         onChange={(e) => setSpeaker(e.target.value)}
                       />
                     </div>
@@ -269,6 +255,7 @@ function Uploadevent() {
                       </p>
                       <input
                         type="text"
+                        placeholder="Masukkan pekerjaan pembicara"
                         className="border border-[#027FFF] rounded-lg p-3 w-full lg:m-0 ml-[64px]"
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
@@ -282,7 +269,7 @@ function Uploadevent() {
                     </p>
                     <input
                       type="text"
-                      placeholder="Jumlah Tiket"
+                      placeholder="Masukkan jumlah tiket"
                       className="border border-[#027FFF] rounded-lg p-3 w-[54rem]"
                       value={ticketCount}
                       onChange={(e) => setTicketCount(e.target.value)}
@@ -341,11 +328,15 @@ function Uploadevent() {
                 </>
               )}
 
-              <div className="flex gap-[30px] justify-end mt-auto">
+              <div
+                className={`flex gap-[30px] justify-end ${
+                  isOffline ? "mt-[12rem]" : "mt-[15.15rem]"
+                }`}
+              >
                 <button
                   type="button"
                   className="w-full border-[#027FFF] border-2 text-[#003266] text-[20px] max-w-[279px] h-[46px] rounded-lg"
-                  onClick={step === 1 ? alert('memek') : handleBack} // Step 1: No action, Step 2: Go back
+                  onClick={step === 1 ? () => navigate("/") : handleBack} // Step 1: No action, Step 2: Go back
                 >
                   {step === 1 ? "Batal" : "Kembali"}
                 </button>

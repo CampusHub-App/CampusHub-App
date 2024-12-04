@@ -26,6 +26,7 @@ import PreviewEvent from './PreviewEvent.jsx';
 import DetailEvent from './DetailEvent.jsx';
 import KodeUnik from './KodeUnik.jsx';
 import MyAdmin from './admin/MyEvents.jsx';
+import PreviewPage from './admin/PreviewPage.jsx';
 import SignInPeserta from './SignInPeserta.jsx';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
   {
     path: "/my-events/:id/kode-unik/",
     element: <KodeUnik />,
+  },
+  {
+    path: "/events/preview",
+    element: <PreviewPage />,
   },
 ]);
 

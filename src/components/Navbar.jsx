@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
@@ -13,6 +14,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const { id } = useParams();
 
   const aboutus = () => {
     if (location.pathname !== "/") {
@@ -58,6 +60,7 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
+      case `/my-events/${id}/view`:
         return "bg-[#003266]";
       default:
         return "bg-white";
@@ -70,6 +73,7 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
+      case `/my-events/${id}/view`:
         return "text-white";
       default:
         return "text-[#003266]";
@@ -82,6 +86,7 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
+      case `/my-events/${id}/view`:
         return logo2;
       default:
         return logo;

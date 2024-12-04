@@ -7,6 +7,7 @@ import PopUpCancel from "./components/PopUpCancel";
 import "./css/DescriptionPageRegistered.css";
 import Calendar from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
+import Navbar from "./components/Navbar";
 
 const DescriptionPageRegistered = () => {
   const { id } = useParams();
@@ -105,8 +106,11 @@ const DescriptionPageRegistered = () => {
   }
 
   return (
-    <div className="detail-event h-auto lg:h-[1024px] pt-10 mx-4 lg:mx-20">
-      <div className={`container ${pageAnimation}`}>
+    <div className="detail-event h-screen">
+
+      <Navbar />
+
+      <div className={`container ${pageAnimation} pt-10 mx-auto`}>
         <div className="breadcrumb pt-auto flex ml-2 pb-6 lg:pb-10">
           <ol className="list-none flex text-black text-sm lg:text-medium">
             <li>

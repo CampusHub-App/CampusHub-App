@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import circle from "./assets/image/circle3.svg";
 import circle2 from "./assets/image/circle4.svg";
 import logo from "./assets/image/logo2.svg";
+import { useEffect } from "react";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -21,7 +22,7 @@ function Signinpeserta() {
       return;
     }
   }, []);
-  
+
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
 

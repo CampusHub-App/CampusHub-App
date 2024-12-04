@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import circle2 from "./assets/image/circle4.svg";
 import logo from "./assets/image/logo2.svg";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 
 const pageVariants = {
@@ -33,7 +33,7 @@ function Loginpeserta() {
     }
   }, []);
 
-  
+
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
   const [email, setEmail] = useState("");
