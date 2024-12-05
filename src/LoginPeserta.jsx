@@ -78,9 +78,11 @@ function Loginpeserta() {
           }
         } else {
           alert("Login gagal, periksa kembali email atau password Anda.");
+          setIsLoading(false);
         }
       } catch (error) {
         alert("Terjadi kesalahan saat login.");
+        setIsLoading(false);
       }
 
       try {
@@ -101,7 +103,9 @@ function Loginpeserta() {
             setIsLoading(false);
           }, 1000);
         }
-      } catch (error) {}
+      } catch (error) {
+        setIsLoading(false);
+      }
     }
   };
 

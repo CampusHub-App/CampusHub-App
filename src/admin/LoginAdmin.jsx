@@ -101,10 +101,12 @@ function Loginadmin() {
         } else {
           console.error("Login failed:", response.status);
           alert("Login gagal, periksa kembali email atau password Anda.");
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error:", error);
         alert("Terjadi kesalahan saat login.");
+        setIsLoading(false);
       }
     }
   };

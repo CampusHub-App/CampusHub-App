@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import Poster from "../assets/image/Poster.svg";
 import Ellipse from "../assets/image/Ellipse.svg";
 import Lecturer from "../assets/image/lecturer.svg";
 import "../css/DescriptionPageCancel.css";
 import Calendar from "../assets/image/date.svg";
 import Chair from "../assets/image/chair.svg";
+import { useLocation } from "react-router-dom";
 
-const DescriptionPageCancel = () => {
+const PreviewPage = () => {
   const [eventData, setEventData] = useState(null);
   const [isCrossVisible, setIsCrossVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
   const { id } = useParams();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,55 +21,12 @@ const DescriptionPageCancel = () => {
       navigate("/welcome", { replace: true });
       return;
     }
-    
-    const fetchEventData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-          setError("No token found. Please log in again.");
-          setLoading(false);
-          return;
-        }
-
-        const response = await fetch(
-          `https://campushub.web.id/api/events/${id}/view`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await response.json();
-        setEventData(data);
-        setLoading(false);
-      } catch (error) {
-        setError(message);
-        setLoading(false);
-      }
-    };
-
-    fetchEventData();
-    setTimeout(() => {
-      setIsCrossVisible(true);
-    }, 1000);
   }, []);
 
   const handleBack = () => {
     setPageAnimation("page-exit");
     setTimeout(() => navigate("/my-events"), 400);
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="loader w-16 h-16 border-4 border-customBlue border-t-transparent rounded-full animate-spin"></div>
-        <p className="ml-4 text-lg font-medium">Loading...</p>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -83,6 +38,37 @@ const DescriptionPageCancel = () => {
       </div>
     );
   }
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/welcome", { replace: true });
+      return;
+    }
+
+    // If no event data is passed, handle fallback
+    if (!location.state) {
+      setError("No event data found");
+    }
+  }, [location.state, navigate]);
+
+  // Ensure eventData is safely destructured
+  const {
+    file,
+    category,
+    title,
+    date,
+    start_time,
+    end_time,
+    description,
+    speaker,
+    role,
+    ticketCount,
+    isOffline,
+    venue,
+  } = eventData;
 
   return (
     <div className="detail-event min-h-screen pt-10 px-4 lg:mx-20">
@@ -106,25 +92,25 @@ const DescriptionPageCancel = () => {
           <div className="PosterEvent w-full lg:w-1/2 h-auto lg:h-1/2">
             <img
               className="w-full h-auto object-cover rounded-2xl shadow-lg"
-              src={eventData.foto_event || Poster}
+              src={file}
               alt="Poster Event"
             />
           </div>
           <div className="description text-left mt-6 lg:mt-0 lg:mx-8">
             <span className="bg-[#027FFF] font-regular px-4 py-1 lg:px-8 lg:py-1 rounded-full text-white text-[12px] lg:text-[14px]">
-              {eventData.category_name}
+              {category}
             </span>
             <h1 className="font-bold text-[20px] lg:text-[32px] py-4 max-w-[40rem]">
-              {eventData.judul}
+              {title}
             </h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div className="flex flex-wrap gap-2 ml-2">
               <img src={Calendar} alt="Calendar" className="w-5 lg:w-8" />
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-                {eventData.date}
+                {date}
               </span>
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2 ml-auto">
-                {eventData.start_time} - {eventData.end_time}
+                {start_time} - {end_time}
               </span>
             </div>
             <div className="flex flex-wrap gap-2 ml-1 my-4">
@@ -134,7 +120,7 @@ const DescriptionPageCancel = () => {
               </span>
               <img src={Chair} alt="Location" className="w-5 lg:w-8 ml-auto" />
               <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
-                {eventData.available_slot} Kursi
+                {ticketCount} Kursi
               </span>
             </div>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
@@ -188,11 +174,7 @@ const DescriptionPageCancel = () => {
                 </svg>
               </div>
             </div>
-            <div className="confirmation-message flex flex-col items-center py-4">
-
-
-
-            </div>
+            <div className="confirmation-message flex flex-col items-center py-4"></div>
             <button
               className="bg-customBlue w-full h-10 lg:h-11 rounded-lg text-[14px] lg:text-[16px] text-white"
               onClick={handleBack}
@@ -209,4 +191,4 @@ const DescriptionPageCancel = () => {
   );
 };
 
-export default DescriptionPageCancel;
+export default PreviewPage;

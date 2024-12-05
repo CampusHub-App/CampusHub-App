@@ -61,6 +61,7 @@ const Navbar = () => {
       case "/account/password":
       case "/events/upload":
       case `/my-events/${id}/view`:
+      case `/my-participants/${id}/view`:
         return "bg-[#003266]";
       default:
         return "bg-white";
@@ -74,6 +75,7 @@ const Navbar = () => {
       case "/account/password":
       case "/events/upload":
       case `/my-events/${id}/view`:
+      case `/my-participants/${id}/view`:
         return "text-white";
       default:
         return "text-[#003266]";
@@ -87,6 +89,7 @@ const Navbar = () => {
       case "/account/password":
       case "/events/upload":
       case `/my-events/${id}/view`:
+      case `/my-participants/${id}/view`:
         return logo2;
       default:
         return logo;

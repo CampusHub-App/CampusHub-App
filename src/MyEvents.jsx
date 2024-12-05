@@ -127,7 +127,7 @@ const MyEvents = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-20">
             <div className="content-box flex flex-col">
               <div className="page-features flex flex-wrap justify-between px-4 sm:px-6 lg:px-20 pt-16">
-                <h1 className="text-3xl font-bold">MyEvents</h1>
+                <h1 className="text-3xl font-bold">My Events</h1>
                 <div className="features flex flex-wrap gap-4 items-center mt-4 lg:mt-0 w-full sm:w-auto">
                   <div className="search flex-1 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 py-2 border border-gray-300 rounded-lg flex items-center">
                     <input

@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import Menu from "../assets/image/menu.svg";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Menu from "../../src/assets/image/menu.svg";
+import "../css/MyEvents.css";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
+import Navbar from "../../src/components/Navbar";
+import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const MyEvents = () => {
+const MyParticipants = () => {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("date");
@@ -12,8 +15,8 @@ const MyEvents = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryFilter, setCategoryFilter] = useState("All");
   const location = useLocation();
+  const { id } = useParams();
   const pageVariants = {
     initial: { opacity: 0.6 },
     animate: { opacity: 1 },
@@ -23,6 +26,7 @@ const MyEvents = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Check if `state` exists and set the active tab
     if (location.state?.activeTab) {
       setStatusFilter(location.state.activeTab);
     }
@@ -42,7 +46,7 @@ const MyEvents = () => {
 
       try {
         const response = await fetch(
-          "https://campushub.web.id/api/my-events/all",
+          `https://campushub.web.id/api/events/${id}/participants/all`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -78,37 +82,30 @@ const MyEvents = () => {
 
   const filteredEvents = events
     .filter((event) =>
-      event.judul.toLowerCase().includes(searchQuery.toLowerCase())
+      event.fullname.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .filter((event) =>
-      categoryFilter === "All" ? true : event.kategori_id === categoryFilter
+      statusFilter === "All"
+        ? true
+        : event.status.toLowerCase() === statusFilter.toLowerCase()
     );
 
   const sortedEvents = [...filteredEvents].sort((a, b) => {
     if (sortOption === "date") {
-      return new Date(a.uploaded) - new Date(b.uploaded);
+      return new Date(a.join_date) - new Date(b.join_date);
     } else if (sortOption === "title") {
-      return a.judul.localeCompare(b.judul);
+      return a.fullname.localeCompare(b.fullname);
     }
     return 0;
   });
 
   const allCount = events.length;
-  const webinarCount = events.filter((event) => event.kategori_id === 1).length;
-  const seminarCount = events.filter((event) => event.kategori_id === 2).length;
-  const kuliahTamuCount = events.filter(
-    (event) => event.kategori_id === 3
+  const registeredCount = events.filter(
+    (event) => event.status.toLowerCase() === "registered"
   ).length;
-  const workshopCount = events.filter(
-    (event) => event.kategori_id === 4
+  const canceledCount = events.filter(
+    (event) => event.status.toLowerCase() === "cancelled"
   ).length;
-  const sertifikasiCount = events.filter(
-    (event) => event.kategori_id === 5
-  ).length;
-
-  const handleCategoryFilter = (category) => {
-    setCategoryFilter(category);
-  };
 
   return (
     <motion.div
@@ -119,7 +116,7 @@ const MyEvents = () => {
       variants={pageVariants}
       transition={{ duration: 1.6 }}
     >
-      <div className="myevents">
+      <div className="MyParticipants">
         <Navbar />
 
         {isLoading ? (
@@ -131,7 +128,7 @@ const MyEvents = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-20">
             <div className="content-box flex flex-col">
               <div className="page-features flex flex-wrap justify-between px-4 sm:px-6 lg:px-20 pt-16">
-                <h1 className="text-3xl font-bold">My Events</h1>
+                <h1 className="text-3xl font-bold">MyParticipants</h1>
                 <div className="features flex flex-wrap gap-4 items-center mt-4 lg:mt-0 w-full sm:w-auto">
                   <div className="search flex-1 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 py-2 border border-gray-300 rounded-lg flex items-center">
                     <input
@@ -181,51 +178,27 @@ const MyEvents = () => {
                 <ul className="flex gap-8 sm:gap-12 lg:gap-16 w-full text-sm sm:text-base justify-center lg:justify-start lg:px-20">
                   <li
                     className={`cursor-pointer ${
-                      categoryFilter === "All" ? "font-bold underline" : ""
+                      statusFilter === "All" ? "font-bold underline" : ""
                     }`}
-                    onClick={() => handleCategoryFilter("All")}
+                    onClick={() => handleStatusFilter("All")}
                   >
                     All ({allCount})
                   </li>
                   <li
                     className={`cursor-pointer ${
-                      categoryFilter === 1 ? "font-bold underline" : ""
+                      statusFilter === "Registered" ? "font-bold underline" : ""
                     }`}
-                    onClick={() => handleCategoryFilter(1)}
+                    onClick={() => handleStatusFilter("Registered")}
                   >
-                    Webinar ({webinarCount})
+                    Registered ({registeredCount})
                   </li>
                   <li
                     className={`cursor-pointer ${
-                      categoryFilter === 2 ? "font-bold underline" : ""
+                      statusFilter === "Cancelled" ? "font-bold underline" : ""
                     }`}
-                    onClick={() => handleCategoryFilter(2)}
+                    onClick={() => handleStatusFilter("Cancelled")}
                   >
-                    Seminar ({seminarCount})
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      categoryFilter === 3 ? "font-bold underline" : ""
-                    }`}
-                    onClick={() => handleCategoryFilter(3)}
-                  >
-                    Kuliah Tamu ({kuliahTamuCount})
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      categoryFilter === 4 ? "font-bold underline" : ""
-                    }`}
-                    onClick={() => handleCategoryFilter(4)}
-                  >
-                    Workshop ({workshopCount})
-                  </li>
-                  <li
-                    className={`cursor-pointer ${
-                      categoryFilter === 5 ? "font-bold underline" : ""
-                    }`}
-                    onClick={() => handleCategoryFilter(5)}
-                  >
-                    Sertifikasi ({sertifikasiCount})
+                    Canceled ({canceledCount})
                   </li>
                 </ul>
               </div>
@@ -240,31 +213,31 @@ const MyEvents = () => {
                         animationDelay: `${index * 100}ms`,
                         animationFillMode: "forwards",
                       }}
-                      onClick={() =>
-                        navigate(`/my-events/${event.id}/participants`)
-                      }
+                      onClick={() => navigate(`/my-events/${event.id}/view`)}
                     >
                       <div className="event-data flex items-center">
                         <img
-                          src={event.foto_event}
-                          alt={event.judul}
+                          src={
+                            event.photo ||
+                            `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(
+                              event.fullname
+                            )}&size=250`
+                          }
+                          alt={event.fullname}
                           className="w-20 h-20 object-cover rounded-full my-2"
                         />
                         <div className="event-details flex flex-col px-4">
                           <span className="event-title block font-semibold text-lg mb-2">
-                            {event.judul}
+                            {event.fullname}
                           </span>
                           <span className="event-date text-sm text-gray-500 mb-1 block">
-                            Updated:{" "}
-                            {new Date(event.uploaded).toLocaleDateString()}
+                            Join date:{" "}
+                            {new Date(event.join_date).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
-                      <Link
-                        to={`/my-events/${event.id}/edit`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <i className="ri-edit-box-line text-4xl"></i>
+                      <Link to={`/my-events/${event.id}/view`}>
+                        <i className="ri-more-fill text-4xl"></i>
                       </Link>
                     </div>
                   ))
@@ -280,4 +253,4 @@ const MyEvents = () => {
   );
 };
 
-export default MyEvents;
+export default MyParticipants;

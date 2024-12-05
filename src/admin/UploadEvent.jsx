@@ -6,10 +6,12 @@ import Navbar from "../components/Navbar";
 function Uploadevent() {
   const [step, setStep] = useState(1); // Step of the form (1 or 2)
   const [file, setFile] = useState();
+  const [fileSpeaker, setFileSpeaker] = useState();
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [start_time, setStartTime] = useState("");
+  const [end_time, setEndTime] = useState("");
   const [description, setDescription] = useState("");
   const [isOffline, setIsOffline] = useState(false);
   const [speaker, setSpeaker] = useState("");
@@ -38,8 +40,17 @@ function Uploadevent() {
     }
   };
 
+  const getSpeakerFile = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFileSpeaker(URL.createObjectURL(selectedFile));
+    }
+  };
+
   const isFormValid = () => {
-    return file && category && title && date && time && description;
+    return (
+      file && category && title && date && end_time > start_time && description
+    );
   };
 
   const isSecondStepValid = () => {
@@ -61,7 +72,8 @@ function Uploadevent() {
         category,
         title,
         date,
-        time,
+        start_time,
+        end_time,
         description,
         speaker,
         role,
@@ -103,52 +115,52 @@ function Uploadevent() {
         </div>
 
         <div className="flex flex-col xl:flex-row justify-between px-[62px] pb-16 gap-12">
-          <div className="flex flex-col w-auto">
-            <div
-              className="border-dashed border-2 h-[30rem] border-[#003266] xl:w-[36rem] sm:w-full flex flex-col items-center justify-center text-[#003266] relative overflow-hidden"
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-            >
-              <label
-                htmlFor="file-upload"
-                className="items-center justify-center flex flex-col cursor-pointer text-[#003266] text-[18px] font-light gap-y-[28px] h-full w-full"
-              >
-                {file ? (
-                  <img
-                    src={file}
-                    alt="Preview"
-                    className="w-full h-full object-contain"
+          {step === 1 ? (
+            <>
+              <div className="flex flex-col w-auto">
+                <div
+                  className="border-dashed border-2 h-[30rem] border-[#003266] xl:w-[36rem] sm:w-full flex flex-col items-center justify-center text-[#003266] relative overflow-hidden"
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                >
+                  <label
+                    htmlFor="file-upload"
+                    className="items-center justify-center flex flex-col cursor-pointer text-[#003266] text-[18px] font-light gap-y-[28px] h-full w-full"
+                  >
+                    {file ? (
+                      <img
+                        src={file}
+                        alt="Preview"
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <>
+                        <img src={upload} alt="Upload" />
+                        <div>
+                          Drag and drop your event image here or{" "}
+                          <span className="underline">Select a file</span>
+                        </div>
+                      </>
+                    )}
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept=".png, .jpg, .jpeg, .pdf"
+                    className="hidden"
+                    onChange={getFile}
                   />
-                ) : (
-                  <>
-                    <img src={upload} alt="Upload" />
-                    <div>
-                      Drag and drop your file here or{" "}
-                      <span className="underline">Select a file</span>
-                    </div>
-                  </>
-                )}
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                accept=".png, .jpg, .jpeg, .pdf"
-                className="hidden"
-                onChange={getFile}
-              />
-            </div>
-            <div className="flex justify-between max-w-[40rem]">
-              <p className="text-[12px] mt-2">
-                Supported format: PNG, JPG, PDF
-              </p>
-              <p className="text-[12px] mt-2">Ukuran maksimum: 25MB</p>
-            </div>
-          </div>
+                </div>
+                <div className="flex justify-between max-w-[40rem]">
+                  <p className="text-[12px] mt-2">
+                    Supported format: PNG, JPG, PDF
+                  </p>
+                  <p className="text-[12px] mt-2">Ukuran maksimum: 25MB</p>
+                </div>
+              </div>
 
-          <div className="w-max max-h-screen">
-            <form className="flex flex-col gap-6 w-max">
-              {step === 1 ? (
-                <>
+              <div className="w-max max-h-screen">
+                <form className="flex flex-col gap-6 w-max">
                   <div className="flex justify-between gap-x-[20px] items-center w-full">
                     <p className="text-[20px] font-semibold text-[#003266]">
                       Kategori
@@ -188,7 +200,7 @@ function Uploadevent() {
                   </div>
 
                   <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-x-[20px] ">
-                    <div className="flex items-center w-full gap-x-[26px] ">
+                    <div className="flex items-center w-full gap-x-[27px] ">
                       <p className="text-[20px] font-semibold text-[#003266]">
                         Tanggal
                       </p>
@@ -205,16 +217,31 @@ function Uploadevent() {
                     </div>
                     <div className="flex items-center  mt-6 gap-x-[20px]  lg:mt-0 w-full">
                       <p className="text-[20px] font-semibold text-[#003266]">
-                        Pukul
+                        Mulai
                       </p>
                       <input
                         type="time"
                         className="border border-[#027FFF] rounded-lg p-3 w-full lg:m-0 ml-[64px]"
                         style={{
-                          color: time ? "black" : "#BFBFBF",
+                          color: start_time ? "black" : "#BFBFBF",
                         }}
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
+                        value={start_time}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="flex items-center  mt-6 gap-x-[20px]  lg:mt-0 w-full">
+                      <p className="text-[20px] font-semibold text-[#003266]">
+                        Berakhir
+                      </p>
+                      <input
+                        type="time"
+                        className="border border-[#027FFF] rounded-lg p-3 w-full lg:m-0 ml-[64px]"
+                        style={{
+                          color: end_time ? "black" : "#BFBFBF",
+                        }}
+                        value={end_time}
+                        onChange={(e) => setEndTime(e.target.value)}
                         required
                       />
                     </div>
@@ -233,9 +260,89 @@ function Uploadevent() {
                       required
                     ></textarea>
                   </div>
-                </>
-              ) : (
-                <>
+
+                  <div
+                    className={`flex gap-[30px] justify-end ${
+                      step === 2
+                        ? isOffline
+                          ? "mt-[12rem]"
+                          : "mt-[15.15rem]"
+                        : "mt-[0.7rem]"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      className="w-full border-[#027FFF] border-2 text-[#003266] text-[20px] max-w-[279px] h-[46px] rounded-lg"
+                      onClick={step === 1 ? () => navigate("/") : handleBack} // Step 1: No action, Step 2: Go back
+                    >
+                      {step === 1 ? "Batal" : "Kembali"}
+                    </button>
+                    <button
+                      type="button"
+                      className={`w-full text-[20px] h-[46px] max-w-[279px] text-white rounded-lg ${
+                        (step === 1 && isFormValid()) ||
+                        (step === 2 && isSecondStepValid())
+                          ? "bg-[#027FFF]"
+                          : "bg-[#A2A2A2]"
+                      }`}
+                      onClick={step === 1 ? handleNext : handlePreview} // Step 1: Next, Step 2: Preview
+                      disabled={
+                        (step === 1 && !isFormValid()) ||
+                        (step === 2 && !isSecondStepValid())
+                      }
+                    >
+                      {step === 1 ? "Lanjut" : "Preview"}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col w-auto">
+                <div
+                  className="border-dashed border-2 h-[30rem] border-[#003266] xl:w-[36rem] sm:w-full flex flex-col items-center justify-center text-[#003266] relative overflow-hidden"
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                >
+                  <label
+                    htmlFor="file-upload"
+                    className="items-center justify-center flex flex-col cursor-pointer text-[#003266] text-[18px] font-light gap-y-[28px] h-full w-full"
+                  >
+                    {fileSpeaker ? (
+                      <img
+                        src={fileSpeaker}
+                        alt="Preview"
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      <>
+                        <img src={upload} alt="Upload" />
+                        <div>
+                          Drag and drop your speaker image here or{" "}
+                          <span className="underline">Select a file</span>
+                        </div>
+                      </>
+                    )}
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept=".png, .jpg, .jpeg, .pdf"
+                    className="hidden"
+                    onChange={getSpeakerFile}
+                  />
+                </div>
+                <div className="flex justify-between max-w-[40rem]">
+                  <p className="text-[12px] mt-2">
+                    Supported format: PNG, JPG, PDF
+                  </p>
+                  <p className="text-[12px] mt-2">Ukuran maksimum: 25MB</p>
+                </div>
+              </div>
+
+              <div className="w-max max-h-screen">
+                <form className="flex flex-col gap-6 w-max">
                   <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-x-[20px] ">
                     <div className="flex items-center w-full gap-x-[2.4rem]">
                       <p className="text-[20px] font-semibold text-[#003266] ">
@@ -272,7 +379,13 @@ function Uploadevent() {
                       placeholder="Masukkan jumlah tiket"
                       className="border border-[#027FFF] rounded-lg p-3 w-[54rem]"
                       value={ticketCount}
-                      onChange={(e) => setTicketCount(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (/^\d*$/.test(value)) {
+                          // Regex to allow only digits
+                          setTicketCount(value);
+                        }
+                      }}
                       required
                     />
                   </div>
@@ -325,40 +438,44 @@ function Uploadevent() {
                       </div>
                     )}
                   </div>
-                </>
-              )}
 
-              <div
-                className={`flex gap-[30px] justify-end ${
-                  isOffline ? "mt-[12rem]" : "mt-[15.15rem]"
-                }`}
-              >
-                <button
-                  type="button"
-                  className="w-full border-[#027FFF] border-2 text-[#003266] text-[20px] max-w-[279px] h-[46px] rounded-lg"
-                  onClick={step === 1 ? () => navigate("/") : handleBack} // Step 1: No action, Step 2: Go back
-                >
-                  {step === 1 ? "Batal" : "Kembali"}
-                </button>
-                <button
-                  type="button"
-                  className={`w-full text-[20px] h-[46px] max-w-[279px] text-white rounded-lg ${
-                    (step === 1 && isFormValid()) ||
-                    (step === 2 && isSecondStepValid())
-                      ? "bg-[#027FFF]"
-                      : "bg-[#A2A2A2]"
-                  }`}
-                  onClick={step === 1 ? handleNext : handlePreview} // Step 1: Next, Step 2: Preview
-                  disabled={
-                    (step === 1 && !isFormValid()) ||
-                    (step === 2 && !isSecondStepValid())
-                  }
-                >
-                  {step === 1 ? "Lanjut" : "Preview"}
-                </button>
+                  <div
+                    className={`flex gap-[30px] justify-end ${
+                      step === 2
+                        ? isOffline
+                          ? "mt-[12rem]"
+                          : "mt-[15.15rem]"
+                        : "mt-[0.7rem]"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      className="w-full border-[#027FFF] border-2 text-[#003266] text-[20px] max-w-[279px] h-[46px] rounded-lg"
+                      onClick={step === 1 ? () => navigate("/") : handleBack} // Step 1: No action, Step 2: Go back
+                    >
+                      {step === 1 ? "Batal" : "Kembali"}
+                    </button>
+                    <button
+                      type="button"
+                      className={`w-full text-[20px] h-[46px] max-w-[279px] text-white rounded-lg ${
+                        (step === 1 && isFormValid()) ||
+                        (step === 2 && isSecondStepValid())
+                          ? "bg-[#027FFF]"
+                          : "bg-[#A2A2A2]"
+                      }`}
+                      onClick={step === 1 ? handleNext : handlePreview} // Step 1: Next, Step 2: Preview
+                      disabled={
+                        (step === 1 && !isFormValid()) ||
+                        (step === 2 && !isSecondStepValid())
+                      }
+                    >
+                      {step === 1 ? "Lanjut" : "Preview"}
+                    </button>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
+            </>
+          )}
         </div>
       </div>
     </div>

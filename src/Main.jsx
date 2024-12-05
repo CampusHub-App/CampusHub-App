@@ -28,6 +28,7 @@ import KodeUnik from './KodeUnik.jsx';
 import MyAdmin from './admin/MyEvents.jsx';
 import PreviewPage from './admin/PreviewPage.jsx';
 import SignInPeserta from './SignInPeserta.jsx';
+import MyParticipants from './admin/MyParticipants.jsx';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const isAdmin = user?.is_admin === true;
@@ -95,11 +96,11 @@ const router = createBrowserRouter([
     element: <ProfilePagePassword />,
   },
   {
-    path: "/my-events/:id/view/",
+    path: "/my-events/:id/view",
     element: <MyEventStatusPage />,
   },
   {
-    path: "/events/:id/preview/",
+    path: "/events/:id/preview",
     element: <PreviewEvent />,
   },
   {
@@ -107,12 +108,16 @@ const router = createBrowserRouter([
     element: <DetailEvent />,
   },
   {
-    path: "/my-events/:id/kode-unik/",
+    path: "/my-events/:id/kode-unik",
     element: <KodeUnik />,
   },
   {
     path: "/events/preview",
     element: <PreviewPage />,
+  },
+  {
+    path: "/my-events/:id/participants",
+    element: <MyParticipants />,
   },
 ]);
 
