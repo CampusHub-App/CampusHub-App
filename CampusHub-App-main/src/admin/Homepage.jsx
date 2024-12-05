@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import Footer from "../components/footer.jsx";
-import Footeradmin from "../components/footeradmin.jsx";
+
 const pageVariants = {
   initial: { y: "100%" },
   animate: { y: 0 },
