@@ -7,6 +7,7 @@ import { Link as ScrollLink } from "react-scroll";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { text } from "framer-motion/client";
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
@@ -102,6 +103,38 @@ const Navbar = () => {
     }
   };
 
+  const bordersignup = (pathname) => {
+    switch (pathname) {
+      case "/my-events":
+      case "/account/profile":
+      case "/account/password":
+      case "/events/upload":
+      case `/events/${id}/view`:
+      case `/my-events/${id}/view`:
+      case `/my-participants/${id}/view`:
+      case "/events/preview":
+        return "border-white/70 ";
+      default:
+        return "border-[#027FFF]";
+    }
+  };
+
+  const textsignup = (pathname) => {
+    switch (pathname) {
+      case "/my-events":
+      case "/account/profile":
+      case "/account/password":
+      case "/events/upload":
+      case `/events/${id}/view`:
+      case `/my-events/${id}/view`:
+      case `/my-participants/${id}/view`:
+      case "/events/preview":
+        return "text-white";
+      default:
+        return "text-[#027FFF]";
+    }
+  };
+
   return (
     <nav
       className={`sm:px-[0px] md:p-5 tengah:px-6 ${bgcolor(
@@ -167,7 +200,7 @@ const Navbar = () => {
                 </button>
               </Link>
               <Link to="/user/register">
-                <button className="hover:scale-105 transition-all duration-300 border-[#027FFF] border-2 rounded-[10px] text-[#027FFF] sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]">
+                <button className={`hover:scale-105 transition-all duration-300 ${bordersignup(location.pathname)} border-2 rounded-[10px] ${textsignup(location.pathname)} sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]`}>
                   Sign Up
                 </button>
               </Link>

@@ -23,14 +23,6 @@ const PreviewEdit = () => {
     }
   }, []);
 
-  const toBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
   const categoryMap = {
     1: "Webinar",
     2: "Seminar",
@@ -105,13 +97,8 @@ const PreviewEdit = () => {
         return;
       }
 
-      const event_img_base64 = event_img ? await toBase64(event_img) : null;
-      const speaker_img_base64 = speaker_img
-        ? await toBase64(speaker_img)
-        : null;
-
       const formData = new FormData();
-      formData.append("event_img", event_img); // Assuming event_img is the file object
+      formData.append("event_img", event_img);
       formData.append("category", category);
       formData.append("title", title);
       formData.append("date", date);
@@ -122,28 +109,16 @@ const PreviewEdit = () => {
       formData.append("role", role);
       formData.append("slot", slot);
       formData.append("location", location);
-      formData.append("speaker_img", speaker_img); // If speaker_img is also a file
+      formData.append("speaker_img", speaker_img);
 
       const response = await fetch(
         `https://campushub.web.id/api/events/${id}/edit`,
         {
-          method: "PATCH",
+          method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            category: category,
-            title: title,
-            date: date,
-            start_time: start_time,
-            end_time: end_time,
-            desc: desc,
-            speaker: speaker,
-            role: role,
-            slot: slot,
-            location: location,
-          }),
+          body: formData,
         }
       );
 
