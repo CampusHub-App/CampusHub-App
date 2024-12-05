@@ -16,7 +16,6 @@ import WorkshopPage from './Workshop.jsx';
 import KuliahTamuPage from './KuliahTamu.jsx';
 import AdminPage from './admin/HomePage.jsx';
 import UploadEvent from './admin/UploadEvent.jsx';
-import UpdateEvent from './admin/UpdateEvent.jsx';
 import LoginAdmin from './admin/LoginAdmin.jsx';
 import MyEvents from './MyEvents.jsx';
 import ProfilePagePersonalInfo from './ProfilePage.jsx';
@@ -29,6 +28,8 @@ import MyAdmin from './admin/MyEvents.jsx';
 import PreviewPage from './admin/PreviewPage.jsx';
 import SignInPeserta from './SignInPeserta.jsx';
 import MyParticipants from './admin/MyParticipants.jsx';
+import EditEvent from './admin/EditEvent.jsx';
+import PreviewEdit from './admin/PreviewEdit.jsx';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const isAdmin = user?.is_admin === true;
@@ -76,10 +77,6 @@ const router = createBrowserRouter([
     element: <UploadEvent />,
   },
   {
-    path: "/update",
-    element: <UpdateEvent />,
-  },
-  {
     path: "/admin/login",
     element: <LoginAdmin />,
   },
@@ -118,6 +115,14 @@ const router = createBrowserRouter([
   {
     path: "/my-events/:id/participants",
     element: <MyParticipants />,
+  },
+  {
+    path: "/my-events/:id/edit",
+    element: <EditEvent />,
+  },
+  {
+    path: "/my-events/:id/preview",
+    element: <PreviewEdit />,
   },
 ]);
 

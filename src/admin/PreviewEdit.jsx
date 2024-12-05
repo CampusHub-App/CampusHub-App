@@ -6,12 +6,14 @@ import Date from "../assets/image/date.svg";
 import Chair from "../assets/image/chair.svg";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useParams } from "react-router-dom";
 
-const PreviewPage = () => {
+const PreviewEdit = () => {
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(null);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,6 +22,14 @@ const PreviewPage = () => {
       return;
     }
   }, []);
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   const categoryMap = {
     1: "Webinar",
@@ -87,13 +97,18 @@ const PreviewPage = () => {
 
   const CategoryName = categoryMap[category];
 
-  const handleUpload = async () => {
+  const handleUpdate = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         navigate(`/user/login?redirect=${encodeURIComponent(lokasi.pathname)}`);
         return;
       }
+
+      const event_img_base64 = event_img ? await toBase64(event_img) : null;
+      const speaker_img_base64 = speaker_img
+        ? await toBase64(speaker_img)
+        : null;
 
       const formData = new FormData();
       formData.append("event_img", event_img); // Assuming event_img is the file object
@@ -110,13 +125,25 @@ const PreviewPage = () => {
       formData.append("speaker_img", speaker_img); // If speaker_img is also a file
 
       const response = await fetch(
-        `https://campushub.web.id/api/events`,
+        `https://campushub.web.id/api/events/${id}/edit`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: formData,
+          body: JSON.stringify({
+            category: category,
+            title: title,
+            date: date,
+            start_time: start_time,
+            end_time: end_time,
+            desc: desc,
+            speaker: speaker,
+            role: role,
+            slot: slot,
+            location: location,
+          }),
         }
       );
 
@@ -142,13 +169,13 @@ const PreviewPage = () => {
           <ol className="list-none flex text-black text-medium">
             <li>
               <Link to="/my-events" className="hover:underline">
-                Home
+                My Events
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
               <Link to="/my-events" state={{ activeTab: "Cancelled" }}>
-                Upload Event
+                Update Event
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
@@ -181,7 +208,7 @@ const PreviewPage = () => {
               {title}
             </h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
- 
+
             <div className="flex gap-2 ml-2">
               <img src={Date} alt="Calendar" className="text-4xl sm:text-3xl" />
               <span className="font-medium text-[16px] sm:text-[14px] mt-2">
@@ -234,9 +261,9 @@ const PreviewPage = () => {
             <div className="checkout flex flex-col">
               <button
                 className="bg-[#027FFF] font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-white text-[14px] lg:text-[16px]"
-                onClick={handleUpload}
+                onClick={handleUpdate}
               >
-                Upload
+                Update
               </button>
               <button
                 className="bg-transparent border-2 border-[#027FFF] font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-black text-[14px] lg:text-[16px] hover:bg-red-300 hover:border-red-500"
@@ -255,4 +282,4 @@ const PreviewPage = () => {
   );
 };
 
-export default PreviewPage;
+export default PreviewEdit;

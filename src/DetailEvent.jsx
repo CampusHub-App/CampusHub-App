@@ -6,8 +6,9 @@ import Lecturer from "./assets/image/lecturer.svg";
 import Date from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
 import "./css/DetailEvent.css";
+import Navbar from "./components/Navbar";
 
-const  DetailEvent = () => {
+const DetailEvent = () => {
   const { id } = useParams(); // Mengambil parameter id dari URL
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(null);
@@ -64,11 +65,13 @@ const  DetailEvent = () => {
   }
 
   return (
-    <div className="detail-event h-[1024px] pt-10 mx-4 lg:mx-20">
+    <div className="detail-event h-screen">
+      <Navbar />
+
       <div
         className={`detail-event-container ${isLoaded ? "loaded" : ""} ${
           isExiting ? "exiting" : ""
-        }`}
+        } [1024px] pt-10 mx-4 lg:mx-20`}
       >
         <div className="breadcrumb pt-auto flex ml-2 pb-10">
           <ol className="list-none flex text-black text-medium">

@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import upload from "../assets/image/adminimage/upload.svg";
 import Navbar from "../components/Navbar";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-function Uploadevent() {
+function EditEvent() {
   const [step, setStep] = useState(1); // Step of the form (1 or 2)
   const [event_img, setEventImg] = useState();
   const [speaker_img, setSpeakerImg] = useState();
-  const [eventsPreview , setEventsPreview] = useState();
-  const [speakerPreview , setSpeakerPreview] = useState();
+  const [eventsPreview, setEventsPreview] = useState();
+  const [speakerPreview, setSpeakerPreview] = useState();
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -21,6 +23,7 @@ function Uploadevent() {
   const [slot, setSlot] = useState("");
   const [location, setVenue] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -38,7 +41,7 @@ function Uploadevent() {
   const getFile = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      setEventImg(selectedFile)
+      setEventImg(selectedFile);
       const fileUrl = URL.createObjectURL(selectedFile);
       setEventsPreview(fileUrl);
     }
@@ -47,7 +50,7 @@ function Uploadevent() {
   const getSpeakerFile = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
-      setSpeakerImg(selectedFile)
+      setSpeakerImg(selectedFile);
       const fileUrl = URL.createObjectURL(selectedFile);
       setSpeakerPreview(fileUrl);
     }
@@ -72,7 +75,7 @@ function Uploadevent() {
   };
 
   const handlePreview = () => {
-    navigate("/events/preview", {
+    navigate(`/my-events/${id}/preview`, {
       state: {
         eventsPreview,
         speakerPreview,
@@ -93,6 +96,40 @@ function Uploadevent() {
     });
   };
 
+  useEffect(() => {
+    const FetchEvent = async () => {
+      try {
+        const response = await fetch(
+          `https://campushub.web.id/api/events/${id}/view`
+        );
+        const data = await response.json();
+
+        if (response.ok) {
+          setEventsPreview(data.foto_event);
+          setSpeakerPreview(data.foto_pembicara);
+          setCategory(data.kategori_id);
+          setTitle(data.judul);
+          setDate(data.date);
+          setStartTime(data.start_time);
+          setEndTime(data.end_time);
+          setDes(data.deskripsi);
+          setSpeaker(data.pembicara);
+          setRole(data.role);
+          setSlot(data.available_slot);
+          setVenue(data.location);
+          setIsOffline(data.isOffline);
+        } else {
+          alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan saat booking. Silakan coba lagi.");
+        console.log(err);
+      }
+    };
+
+    FetchEvent();
+  } , []);
+
   return (
     <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white">
       <Navbar />
@@ -102,21 +139,21 @@ function Uploadevent() {
           {step === 1 ? (
             <div className="flex gap-x-[7px] text-[20px] mb-4 text-black">
               <Link>
-                <p>Home</p>
+                <p>My Event</p>
               </Link>
               <p> &gt; </p>
               <Link>
-                <p>Upload Event</p>
+                <p>Update Event</p>
               </Link>
             </div>
           ) : (
             <div className="flex gap-x-[7px] text-[20px] mb-4 text-black">
               <Link>
-                <p>Home</p>
+                <p>My Event</p>
               </Link>
               <p> &gt; </p>
               <Link>
-                <p>Upload Event</p>
+                <p>Update Event</p>
               </Link>
               <p> &gt; </p>
               <Link>
@@ -503,4 +540,4 @@ function Uploadevent() {
   );
 }
 
-export default Uploadevent;
+export default EditEvent;

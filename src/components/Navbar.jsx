@@ -61,7 +61,9 @@ const Navbar = () => {
       case "/account/password":
       case "/events/upload":
       case `/my-events/${id}/view`:
+      case `/events/${id}/view`:
       case `/my-participants/${id}/view`:
+      case "/events/preview":
         return "bg-[#003266]";
       default:
         return "bg-white";
@@ -75,7 +77,9 @@ const Navbar = () => {
       case "/account/password":
       case "/events/upload":
       case `/my-events/${id}/view`:
+      case `/events/${id}/view`:
       case `/my-participants/${id}/view`:
+      case "/events/preview":
         return "text-white";
       default:
         return "text-[#003266]";
@@ -88,8 +92,10 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
+      case `/events/${id}/view`:
       case `/my-events/${id}/view`:
       case `/my-participants/${id}/view`:
+      case "/events/preview":
         return logo2;
       default:
         return logo;

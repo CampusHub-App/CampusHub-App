@@ -5,7 +5,7 @@ import Ellipse from "./assets/image/Ellipse.svg";
 import Lecturer from "./assets/image/lecturer.svg";
 import PopUpCancel from "./components/PopUpCancel";
 import "./css/DescriptionPageRegistered.css";
-import Calendar from "./assets/image/date.svg";
+import Date from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
 import Navbar from "./components/Navbar";
 
@@ -142,25 +142,31 @@ const DescriptionPageRegistered = () => {
               {eventData.judul}
             </h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
-            <div className="flex flex-wrap gap-2 ml-2">
-              <img src={Calendar} alt="Calendar" className="w-5 lg:w-8" />
-              <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
+
+            <div className="flex gap-2 ml-2">
+              <img src={Date} alt="Calendar" className="text-4xl sm:text-3xl" />
+              <span className="font-medium text-[16px] sm:text-[14px] mt-2">
                 {eventData.date}
               </span>
-              <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2 ml-auto">
+              <span className="font-medium text-[16px] sm:text-[14px] mt-2 ml-auto mr-2">
                 {eventData.start_time} - {eventData.end_time}
               </span>
             </div>
-            <div className="flex flex-wrap gap-2 ml-1 my-4">
-              <i className="ri-map-pin-2-fill w-5 lg:w-8 text-xl"></i>
-              <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
+            <div className="flex gap-2 ml-1 my-4">
+              <i className="ri-map-pin-2-fill text-4xl sm:text-3xl"></i>
+              <span className="font-medium text-[16px] sm:text-[14px] mt-2">
                 {eventData.tempat}
               </span>
-              <img src={Chair} alt="Location" className="w-5 lg:w-8 ml-auto" />
-              <span className="font-medium text-[14px] lg:text-[16px] mt-1 lg:mt-2">
+              <img
+                src={Chair}
+                alt="Location"
+                className="text-4xl sm:text-3xl ml-auto"
+              />
+              <span className="font-medium text-[16px] sm:text-[14px] mt-2 mr-2">
                 {eventData.available_slot} Kursi
               </span>
             </div>
+
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
             <div className="lecturer flex gap-2 ml-2">
               <img
