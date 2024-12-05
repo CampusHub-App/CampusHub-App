@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 function EditEvent() {
-  const [step, setStep] = useState(1); // Step of the form (1 or 2)
+  const [step, setStep] = useState(1);
   const [event_img, setEventImg] = useState();
   const [speaker_img, setSpeakerImg] = useState();
   const [eventsPreview, setEventsPreview] = useState();
@@ -33,17 +33,6 @@ function EditEvent() {
       setEventImg(fileUrl);
     }
   };
-
-  async function fetchFile(url) {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const file = new File([blob], "filename.jpg", { type: blob.type });
-      return file;
-    } catch (error) {
-      return null;
-    }
-  }
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -85,25 +74,6 @@ function EditEvent() {
     if (step === 2) setStep(1);
   };
 
-  async function handleDataFetch(data) {
-    if (data.foto_event) {
-      const eventFile = await fetchFile(data.foto_event);
-      if (eventFile) {
-        setEventImg(eventFile);
-      } else {
-        console.log("Failed to fetch event image");
-      }
-    }
-  
-    if (data.foto_pembicara) {
-      const speakerFile = await fetchFile(data.foto_pembicara);
-      if (speakerFile) {
-        setSpeakerImg(speakerFile);
-        console.log("Speaker file", speakerFile);
-      }
-    }
-  }
-
   const handlePreview = () => {
     navigate(`/my-events/${id}/preview`, {
       state: {
@@ -135,7 +105,6 @@ function EditEvent() {
         const data = await response.json();
 
         if (response.ok) {
-          handleDataFetch(data);
           setEventsPreview(data.foto_event);
           setSpeakerPreview(data.foto_pembicara);
           setCategory(data.kategori_id);
@@ -147,8 +116,8 @@ function EditEvent() {
           setSpeaker(data.pembicara);
           setRole(data.role);
           setSlot(data.available_slot);
-          setVenue(data.location);
-          setIsOffline(data.isOffline);
+          setVenue(data.tempat);
+          setIsOffline(data.tempat ? true : false);
         } else {
           alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
         }

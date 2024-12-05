@@ -7,6 +7,7 @@ import Chair from "../assets/image/chair.svg";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
+import { form } from "framer-motion/client";
 
 const PreviewEdit = () => {
   const [eventData, setEventData] = useState(null);
@@ -98,7 +99,6 @@ const PreviewEdit = () => {
       }
 
       const formData = new FormData();
-      formData.append("event_img", event_img);
       formData.append("category", category);
       formData.append("title", title);
       formData.append("date", date);
@@ -108,8 +108,9 @@ const PreviewEdit = () => {
       formData.append("speaker", speaker);
       formData.append("role", role);
       formData.append("slot", slot);
-      formData.append("location", location);
-      formData.append("speaker_img", speaker_img);
+      {isOffline && formData.append("location", location);}
+      {event_img && formData.append("event_img", event_img);}
+      {speaker_img && formData.append("speaker_img", speaker_img);}
 
       const response = await fetch(
         `https://campushub.web.id/api/events/${id}/edit`,
