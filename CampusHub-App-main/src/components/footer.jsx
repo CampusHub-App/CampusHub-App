@@ -11,9 +11,9 @@ const Footer = () => {
   const location = useLocation();
 
   const isLandingPage = location.pathname === "/";
-  const isHomePage = location.pathname === "/Homepage";
-  const isDetailEventPage = location.pathname === "/Homepage";
-  const isAdminPage = location.pathname === "/Adminpage";
+  const isHomePage = location.pathname === "/home";
+
+  const isAdminPage = location.pathname === "/admin";
 
   const handleScrollToTop = () => {
     window.scrollTo({
@@ -37,7 +37,7 @@ const Footer = () => {
                       ? "/home"
                       : isAdminPage
                       ? "/admin"
-                      : "/home"
+                      : "/"
                   }
                   onClick={handleScrollToTop}
                 >
@@ -147,7 +147,7 @@ const Footer = () => {
                         ? "/home"
                         : isAdminPage
                         ? "/admin"
-                        : "/home"
+                        : "/"
                     }
                     onClick={handleScrollToTop}
                   >

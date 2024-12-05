@@ -7,7 +7,9 @@ import circle from "../assets/Image/adminimage/circleadmin.svg";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
+import { Link as ScrollLink } from "react-scroll";
+import Footer from "../components/footer.jsx";
+import Footeradmin from "../components/footeradmin.jsx";
 const pageVariants = {
   initial: { y: "100%" },
   animate: { y: 0 },
@@ -33,7 +35,11 @@ function Adminpage() {
       <div className="bg-[#003266] w-full">
         <nav className="p-5 bg-white">
           <div className="flex justify-between items-center px-[62px] sm:px-0 tengah:px-[62px]">
-            <img src={logo} alt="Logo" className="sm:max-w-[150px] md:max-w-[229px]" />
+            <img
+              src={logo}
+              alt="Logo"
+              className="sm:max-w-[150px] md:max-w-[229px]"
+            />
             <ul className="hidden lg:flex gap-[40px] text-[#003266] font-medium text-[20px]">
               <li>
                 <a href="#">Home</a>
@@ -42,15 +48,20 @@ function Adminpage() {
                 <a href="#">MyEvents</a>
               </li>
               <li>
-                <a href="#">About Us</a>
+                <ScrollLink
+                  to="aboutus"
+                  smooth={true}
+                  duration={800}
+                  className=" flex justify-center cursor-pointer"
+                >
+                  <p>About Us</p>
+                </ScrollLink>
               </li>
             </ul>
             <div className="flex items-center gap-3">
-            <Link to="/profile"> <img
-                src={profile}
-                alt="Profile"
-                className=" hidden sm:block"
-              />
+              <Link to="/profile">
+                {" "}
+                <img src={profile} alt="Profile" className=" hidden sm:block" />
               </Link>
               <button
                 onClick={toggleMenu}
@@ -132,8 +143,19 @@ function Adminpage() {
           </main>
         </div>
       </div>
-      <img src={circle5} alt="Circle dekorasi" className="absolute right-0 top-96 sm:hidden md:block" />
-      <img src={circle} alt="Dekorasi lingkaran" className="absolute left-0 bottom-[-300px] sm:hidden xl:block" />
+      <img
+        src={circle5}
+        alt="Circle dekorasi"
+        className="absolute right-0 top-96 sm:hidden md:block"
+      />
+      <img
+        src={circle}
+        alt="Dekorasi lingkaran"
+        className="absolute left-0 bottom-[320px] sm:hidden xl:block"
+      />
+      <div className="relative z-10" id="aboutus">
+        <Footer />
+      </div>
     </motion.div>
   );
 }

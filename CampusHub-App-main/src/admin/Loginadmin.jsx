@@ -58,12 +58,7 @@ function Loginadmin() {
             localStorage.setItem('token', data.access_token); // Simpan access_token
             localStorage.setItem('token_type', data.token_type); // Simpan tipe token
           }
-          if (data.role === 'admin') {
-            navigate('/admin/dashboard');
-          } else {
-            alert('Anda bukan admin!');
-            navigate('/Welcome'); // Kembali ke halaman utama
-          }
+          
           navigate('/admin');
         } else {
           console.error('Login failed:', response.status);

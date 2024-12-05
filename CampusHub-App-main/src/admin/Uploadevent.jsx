@@ -13,6 +13,8 @@ function Uploadevent() {
   const [time, setTime] = useState("");
   const [description, setDescription] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [loading, setLoading] = useState(false); 
+  const [message, setMessage] = useState("");
 
   function getFile(event) {
     const selectedFile = event.target.files[0];
@@ -27,6 +29,45 @@ function Uploadevent() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    // Membuat FormData untuk mengirim file dan data
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("desc", description);
+    formData.append("date", date);
+    formData.append("start_time", time); // Anda bisa menambahkan waktu selesai jika ada
+    formData.append("event_img", file); // Gambar yang diupload
+    formData.append("speaker", "Maruf Amin"); // Contoh hardcoded
+    formData.append("speaker_img", file); // Gambar pembicara
+    formData.append("role", "Wakil Presiden RI");
+    formData.append("location", "Samantha Krida");
+    formData.append("category", category);
+    formData.append("slot", "10");
+
+    try {
+      const response = await fetch("https://campushub.web.id/api/events", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      setMessage("Acara berhasil diunggah!");
+      console.log("Response:", result);
+    } catch (error) {
+      setMessage("Gagal mengunggah acara. Silakan coba lagi.");
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
