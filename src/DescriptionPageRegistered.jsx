@@ -19,6 +19,7 @@ const DescriptionPageRegistered = () => {
   const [pageAnimation, setPageAnimation] = useState("page-enter");
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,7 +27,7 @@ const DescriptionPageRegistered = () => {
       navigate("/welcome", { replace: true });
       return;
     }
-    
+
     const fetchEventData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -61,6 +62,7 @@ const DescriptionPageRegistered = () => {
         );
 
         const kodeData = await kode.json();
+        setData(kodeData);
 
         if (!kode.ok) {
           setMessage(kodeData.message);
@@ -107,7 +109,6 @@ const DescriptionPageRegistered = () => {
 
   return (
     <div className="detail-event h-screen">
-
       <Navbar />
 
       <div className={`container ${pageAnimation} pt-10 mx-auto`}>
@@ -120,9 +121,38 @@ const DescriptionPageRegistered = () => {
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/my-events" state={{ activeTab: "Registered" }}>
-                Registered
-              </Link>
+              <li>
+                <Link
+                  to="/my-events"
+                  state={{
+                    activeTab: (() => {
+                      switch (data.status) {
+                        case "registered":
+                          return "Registered";
+                        case "attended":
+                          return "Attended";
+                        case "absent":
+                          return "Absent";
+                        default:
+                          return "Unknown";
+                      }
+                    })(),
+                  }}
+                >
+                  {(() => {
+                    switch (data.status) {
+                      case "registered":
+                        return "Registered";
+                      case "attended":
+                        return "Attended";
+                      case "absent":
+                        return "Absent";
+                      default:
+                        return "Unknown";
+                    }
+                  })()}
+                </Link>
+              </li>
             </li>
           </ol>
         </div>

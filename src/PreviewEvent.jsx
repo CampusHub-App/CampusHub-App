@@ -5,16 +5,23 @@ import Ellipse2 from "./assets/image/Ellipse2.svg";
 import "./css/PreviewEvent.css";
 import Calendar from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
+import PopUpGagal from "./components/PopUpGagal";
 
 const PreviewEvent = () => {
   const { id } = useParams();
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [gagalPopup, setGagalPopup] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [registered, setRegistered] = useState(false);
   const navigate = useNavigate();
 
+  const onCLose = () => {
+    setGagalPopup(false);
+  }
+  
   // Ambil data event berdasarkan ID
   useEffect(() => {
     const fetchEventData = async () => {
@@ -61,6 +68,7 @@ const PreviewEvent = () => {
       );
 
       const data = await response.json();
+      setRegistered(data);
 
       if (response.ok) {
         setShowPopup(true);
@@ -68,10 +76,10 @@ const PreviewEvent = () => {
           navigate(`/my-events/${eventData.id}/kode-unik`);
         }, 2000);
       } else {
-        alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
+        setGagalPopup(true);
       }
     } catch (err) {
-      alert("Terjadi kesalahan saat booking. Silakan coba lagi.");
+      setGagalPopup(true);
     }
   };
 
@@ -243,7 +251,9 @@ const PreviewEvent = () => {
           </div>
         </div>
       </div>
-      {showPopup && <PopUpCheckout />}
+      {showPopup && <PopUpCheckout isVisible={showPopup} onClose={() => setShowPopup(false)} />}
+      {gagalPopup && <PopUpGagal isVisible={gagalPopup} onClose={onCLose} message={registered.message}/>}
+
       <div className="fixed bottom-0 right-0 -z-10">
         <img src={Ellipse2} alt="Background" className="w-[300px]" />
       </div>

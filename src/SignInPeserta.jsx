@@ -1,10 +1,12 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import circle from "./assets/image/circle3.svg";
 import circle2 from "./assets/image/circle4.svg";
 import logo from "./assets/image/logo2.svg";
 import { useEffect } from "react";
+import PopUpGagal from "./components/PopUpGagal";
+import PopUpBerhasil from "./components/PopUpBerhasil";
+import { useState } from "react";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -13,9 +15,11 @@ const pageVariants = {
 };
 
 function Signinpeserta() {
+  const [showPopup, setShowPopup] = useState(false);
+  const [showGagal, setShowGagal] = useState(false);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/", { replace: true });
@@ -82,25 +86,20 @@ function Signinpeserta() {
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error response:", errorData);
-        throw new Error(
-          `Error ${response.status}: ${
-            errorData.message || response.statusText
-          }`
-        );
-      }
-
       const responseData = await response.json();
-      console.log("Response data:", responseData);
+      setData(responseData.message);
+
+      if (response.ok) {
+        setShowPopup(true);
+      } else {
+        setShowGagal(true);
+      }
 
       setTimeout(() => {
         navigate(`/user/login?redirect=${redirectPath}`);
       }, 1000);
     } catch (error) {
-      console.error("Registrasi gagal:", error);
-      setErrorMessage(`Registrasi gagal: ${error.message}`);
+      setShowGagal(true);
     } finally {
       setLoading(false);
     }
@@ -256,6 +255,21 @@ function Signinpeserta() {
         alt=""
         className="absolute max-w-[284px] max-h-[284px] top-0 right-0 sm:hidden tengah:block"
       />
+
+      {showPopup && (
+        <PopUpBerhasil
+          isVisible={showPopup}
+          onClose={() => setShowPopup(false)}
+          message={data}
+        />
+      )}
+      {showGagal && (
+        <PopUpGagal
+          isVisible={showGagal}
+          onClose={() => setShowGagal(false)}
+          message={data}
+        />
+      )}
 
       <div className="tengah:w-7/12 sm:w-1/2 bg-[#003266] flex items-center justify-center">
         <img src={logo} alt="" />

@@ -54,7 +54,7 @@ const PopUpCancel = ({ setShowPopUp, bookingId }) => {
       );
 
       if (response.ok) {
-        navigate(`/my-events/${id}/cancel`);
+        window.location.reload();
       } else {
         const data = await response.json();
         alert(data.message);
