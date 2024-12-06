@@ -4,12 +4,17 @@ import Ellipse from "../assets/image/Ellipse.svg";
 import Ellipse2 from "../assets/image/Ellipse2.svg";
 import "../css/KodeUnik.css";
 import { useParams } from "react-router-dom";
+import PopUpGagal from "../components/PopUpGagal";
+import PopUpBerhasil from "../components/PopUpBerhasil";
 
 const KodeUnik = () => {
   const [code, setCode] = useState(["", "", "", ""]);
   const [fadeClass, setFadeClass] = useState("fade-in");
   const navigate = useNavigate();
   const { id } = useParams();
+  const [showPopup, setShowPopup] = useState(false);
+  const [showGagal, setShowGagal] = useState(false);
+  const [datas, setDatas] = useState(null);
 
   const handleNavigation = () => {
     setFadeClass("fade-out");
@@ -34,11 +39,12 @@ const KodeUnik = () => {
     );
 
     const data = await response.json();
+    setDatas(data.message);
+
     if (response.ok) {
-      console.log("Check in success:", data);
-      navigate(`/my-events/${id}/participants`);
+      setShowPopup(true);
     } else {
-      console.error("Check in failed:", data);
+      setShowGagal(true);
     }
   };
 
@@ -153,6 +159,20 @@ const KodeUnik = () => {
           className="w-[200px] sm:w-[50px] lg:w-[300px]"
         />
       </div>
+      {showPopup && (
+        <PopUpBerhasil
+          isVisible={showPopup}
+          onClose={() => setShowPopup(false)}
+          message={datas}
+        />
+      )}
+      {showGagal && (
+        <PopUpGagal
+          isVisible={showGagal}
+          onClose={() => setShowGagal(false)}
+          message={datas}
+        />
+      )}
     </div>
   );
 };

@@ -3,23 +3,20 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import Poster from "./assets/image/Poster.svg";
 import Ellipse from "./assets/image/Ellipse.svg";
 import Lecturer from "./assets/image/lecturer.svg";
-import PopUpCancel from "./components/PopUpCancel";
-import "./css/DescriptionPageRegistered.css";
+import "./css/DescriptionPageCancel.css";
 import Date from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
 import Navbar from "./components/Navbar";
 
-const DescriptionPageRegistered = () => {
-  const { id } = useParams();
+const DescriptionPageAbsent = () => {
   const [eventData, setEventData] = useState(null);
+  const [isCrossVisible, setIsCrossVisible] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [code, setCode] = useState([null]);
-  const [showPopUp, setShowPopUp] = useState(false);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
+  const { id } = useParams();
+
   const navigate = useNavigate();
-  const [message, setMessage] = useState("");
-  const [data, setData] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,7 +24,7 @@ const DescriptionPageRegistered = () => {
       navigate("/welcome", { replace: true });
       return;
     }
-
+    
     const fetchEventData = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -50,25 +47,6 @@ const DescriptionPageRegistered = () => {
 
         const data = await response.json();
         setEventData(data);
-
-        const kode = await fetch(
-          `https://campushub.web.id/api/events/${id}/kode-unik`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const kodeData = await kode.json();
-        setData(kodeData);
-
-        if (!kode.ok) {
-          setMessage(kodeData.message);
-        }
-
-        setCode(kodeData.kode_unik.split(""));
         setLoading(false);
       } catch (error) {
         setError(message);
@@ -77,21 +55,21 @@ const DescriptionPageRegistered = () => {
     };
 
     fetchEventData();
+    setTimeout(() => {
+      setIsCrossVisible(true);
+    }, 1000);
   }, []);
 
   const handleBack = () => {
     setPageAnimation("page-exit");
-    setTimeout(() => navigate(`/my-events`), 500);
-  };
-
-  const handleCancel = () => {
-    setShowPopUp(true);
+    setTimeout(() => navigate("/my-events"), 400);
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="loader w-16 h-16 border-blue-500 border-t-transparent"></div>
+      <div className="flex items-center justify-center h-screen">
+        <div className="loader w-16 h-16 border-4 border-customBlue border-t-transparent rounded-full animate-spin"></div>
+        <p className="ml-4 text-lg font-medium">Loading...</p>
       </div>
     );
   }
@@ -110,19 +88,18 @@ const DescriptionPageRegistered = () => {
   return (
     <div className="detail-event h-screen">
       <Navbar />
-
       <div className={`container ${pageAnimation} pt-10 mx-auto`}>
-        <div className="breadcrumb pt-auto flex ml-2 pb-6 lg:pb-10">
-          <ol className="list-none flex text-black text-sm lg:text-medium">
-          <li>
+        <div className="breadcrumb pt-auto flex ml-2 pb-10 text-sm lg:text-base">
+          <ol className="list-none flex text-black text-medium">
+            <li>
               <Link to="/my-events" className="hover:underline">
                 MyEvents
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/my-events" state={{ activeTab: "Registered" }}>
-                Registered
+              <Link to="/my-events" state={{ activeTab: "Absent" }}>
+                Absent
               </Link>
             </li>
           </ol>
@@ -191,53 +168,31 @@ const DescriptionPageRegistered = () => {
               </p>
             </div>
           </div>
-          <div className="booking w-full lg:w-4/12 h-1/2 px-6 py-6 mt-6 lg:mt-0 lg:mx-8 bg-white shadow-lg rounded-2xl flex flex-col">
-            <div className="uniq-code bg-[#027FFF] mb-4 justify-center flex items-center lg:px-6 sm:px-0 py-5 rounded-xl">
-              <div className="uniq-code-output flex gap-4">
-                {code.map((char, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    maxLength={1}
-                    value={char}
-                    readOnly
-                    className="w-12 h-10 lg:h-14 text-center text-lg lg:text-2xl font-bold border border-gray-400 rounded-md"
-                  />
-                ))}
-              </div>
-            </div>
 
-            <div className="confirmation-message flex flex-col items-center py-8">
-              <span className="font-medium text-[16px] lg:text-[20px] text-center py-2">
-                Terdaftar!
+          <div className="booking lg:w-4/12 h-full mt-8 lg:mt-0 lg:ml-8 px-6 py-6 bg-white shadow-lg rounded-2xl">
+            <div className="confirmation-message flex flex-col items-center py-4">
+              <span className="font-medium text-[16px] lg:text-[20px]">
+                Anda Tidak Hadir
               </span>
-              <p className="font-regular text-[12px] lg:text-[16px] text-center py-2">
-                Tunjukan kode unik ini kepada panitia atau narahubung terkait
+              <br />
+              <p className="text-[14px] lg:text-[16px] text-center">
+                  Acara ini telah berlangsung dan Anda tidak hadir. Silahkan cek event lainnya.
               </p>
             </div>
-            <div className="checkout flex flex-col">
-              <button
-                className="bg-[#027FFF] font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-white text-[14px] lg:text-[16px]"
-                onClick={handleBack}
-              >
-                Kembali
-              </button>
-              <button
-                className="bg-transparent border-2 border-[#027FFF] font-regular w-full h-10 lg:h-11 my-2 rounded-lg text-medium text-black text-[14px] lg:text-[16px] hover:bg-red-300 hover:border-red-500"
-                onClick={handleCancel}
-              >
-                Batalkan
-              </button>
-            </div>
+            <button
+              className="bg-customBlue w-full h-10 lg:h-11 rounded-lg text-[14px] lg:text-[16px] text-white"
+              onClick={handleBack}
+            >
+              Kembali
+            </button>
           </div>
         </div>
       </div>
-      {showPopUp && <PopUpCancel setShowPopUp={setShowPopUp} />}
       <div className="fixed bottom-0 left-0 -z-10">
-        <img src={Ellipse} alt="Background" className="w-24 lg:w-[300px]" />
+        <img src={Ellipse} alt="Background" className="w-40 lg:w-[300px]" />
       </div>
     </div>
   );
 };
 
-export default DescriptionPageRegistered;
+export default DescriptionPageAbsent;
