@@ -117,7 +117,7 @@ function EditEvent() {
           setRole(data.role);
           setSlot(data.available_slot);
           setVenue(data.tempat);
-          setIsOffline(data.tempat ? true : false);
+          setIsOffline(data.tempat !== "Online");
         } else {
           alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
         }
