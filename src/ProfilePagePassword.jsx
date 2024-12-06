@@ -240,6 +240,7 @@ const ProfilePagePassword = () => {
                     <div className="save-button flex flex-col lg:flex-row gap-4 items-center justify-center py-6 w-full">
                       <button
                         type="button"
+                        onClick={() => navigate("/account/profile")}
                         className="bg-transparent border-2 border-customBlue font-medium w-full sm:w-1/3 h-11 my-2 rounded-lg text-medium text-black text-[16px] hover:shadow-lg transition duration-30"
                       >
                         Kembali
