@@ -111,7 +111,7 @@ const DetailEvent = () => {
               alt="Poster Event"
             />
           </div>
-          <div className="description text-left mx-8 mt-4 md:mt-0 md:ml-8">
+          <div className="description text-left mx-8 mt-4 md:mt-0 md:ml-8 w-1/2">
             <span className="bg-[#027FFF] font-regular px-8 py-1 rounded-full text-white text-[14px] sm:text-[12px]">
               {eventData.category_name}
             </span>
