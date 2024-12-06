@@ -71,7 +71,6 @@ const PreviewEvent = () => {
         alert(`Booking gagal: ${data.message || "Coba lagi nanti."}`);
       }
     } catch (err) {
-      console.error("Error booking the event:", err);
       alert("Terjadi kesalahan saat booking. Silakan coba lagi.");
     }
   };
