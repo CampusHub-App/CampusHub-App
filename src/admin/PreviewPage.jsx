@@ -141,25 +141,25 @@ const PreviewPage = () => {
         <div className="breadcrumb pt-auto flex ml-2 pb-10 text-sm lg:text-base">
           <ol className="list-none flex text-black text-medium">
             <li>
-              <Link to="/my-events" className="hover:underline">
+              <Link>
                 Home
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/my-events" state={{ activeTab: "Cancelled" }}>
+              <Link>
                 Upload Event
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/my-events" state={{ activeTab: "Cancelled" }}>
+              <Link>
                 Detail Event
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link to="/my-events" state={{ activeTab: "Cancelled" }}>
+              <Link>
                 Preview
               </Link>
             </li>
