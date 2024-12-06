@@ -164,7 +164,7 @@ const Footer = () => {
                   </ScrollLink>
                 </li>
                 <li>
-                  <Link to="/my-event" onClick={handleScrollToTop}>
+                  <Link to="/my-events" onClick={handleScrollToTop}>
                     MyEvent
                   </Link>
 
