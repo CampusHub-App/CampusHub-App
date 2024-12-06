@@ -73,7 +73,7 @@ const KodeUnik = () => {
   }
 
   return (
-    <div className="unique-code h-screen sm:h-[1024px] mx-4 sm:mx-12 lg:mx-20 flex items-center justify-center">
+    <div className="unique-code h-screen mx-4 sm:mx-12 lg:mx-20 flex items-center justify-center">
       <div className={`container w-full sm:w-3/4 lg:w-1/2 h-auto sm:h-11/12 py-6 bg-white shadow-lg rounded-2xl flex flex-col items-center ${fadeClass}`}>
         <div className="content-box flex flex-col items-center py-8 px-6 sm:px-14">
           <h1 className="font-semibold text-[32px] sm:text-[40px] lg:text-[48px] text-center py-2">Kode Tiket Anda</h1>

@@ -83,10 +83,21 @@ const MyEvents = () => {
     .filter((event) =>
       event.judul.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .filter((event) =>
-      statusFilter === "All"
-        ? true
-        : event.status.toLowerCase() === statusFilter.toLowerCase()
+    .filter((event) => {
+      switch (statusFilter.toLowerCase()) {
+        case "registered":
+          return event.status.toLowerCase() === "registered";
+        case "cancelled":
+          return event.status.toLowerCase() === "cancelled";
+        case "attended":
+          return event.status.toLowerCase() === "attended";
+        case "absent":
+          return event.status.toLowerCase() === "absent";
+        case "all":
+          return true;
+        default:
+          return false;
+      }}
     );
 
   const sortedEvents = [...filteredEvents].sort((a, b) => {
@@ -105,6 +116,12 @@ const MyEvents = () => {
   const canceledCount = events.filter(
     (event) => event.status.toLowerCase() === "cancelled"
   ).length;
+  const attendedCount = events.filter(
+    (event) => event.status.toLowerCase() === "attended"
+  ).length;
+  const absentCount = events.filter(
+    (event) => event.status.toLowerCase() === "absent"
+  ).length
 
   return (
     <motion.div
@@ -198,6 +215,22 @@ const MyEvents = () => {
                     onClick={() => handleStatusFilter("Cancelled")}
                   >
                     Canceled ({canceledCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      statusFilter === "Attended" ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleStatusFilter("Attended")}
+                  >
+                    Attended ({attendedCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      statusFilter === "Absent" ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleStatusFilter("Absent")}
+                  >
+                    Absent ({absentCount})
                   </li>
                 </ul>
               </div>

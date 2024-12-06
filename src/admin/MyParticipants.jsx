@@ -84,11 +84,22 @@ const MyParticipants = () => {
     .filter((event) =>
       event.fullname.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .filter((event) =>
-      statusFilter === "All"
-        ? true
-        : event.status.toLowerCase() === statusFilter.toLowerCase()
-    );
+    .filter((event) => {
+      switch (statusFilter.toLowerCase()) {
+        case "registered":
+          return event.status.toLowerCase() === "registered";
+        case "cancelled":
+          return event.status.toLowerCase() === "cancelled";
+        case "attended":
+          return event.status.toLowerCase() === "attended";
+        case "absent":
+          return event.status.toLowerCase() === "absent";
+        case "all":
+          return true;
+        default:
+          return false;
+      }
+    });
 
   const sortedEvents = [...filteredEvents].sort((a, b) => {
     if (sortOption === "date") {
@@ -106,6 +117,12 @@ const MyParticipants = () => {
   const canceledCount = events.filter(
     (event) => event.status.toLowerCase() === "cancelled"
   ).length;
+  const attendedCount = events.filter(
+    (event) => event.status.toLowerCase() === "attended"
+  ).length;
+  const absentCount = events.filter(
+    (event) => event.status.toLowerCase() === "absent"
+  ).length
 
   return (
     <motion.div
@@ -129,6 +146,7 @@ const MyParticipants = () => {
             <div className="content-box flex flex-col">
               <div className="page-features flex flex-wrap justify-between px-4 sm:px-6 lg:px-20 pt-16">
                 <h1 className="text-3xl font-bold">MyParticipants</h1>
+
                 <div className="features flex flex-wrap gap-4 items-center mt-4 lg:mt-0 w-full sm:w-auto">
                   <div className="search flex-1 max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl px-4 py-2 border border-gray-300 rounded-lg flex items-center">
                     <input
@@ -171,6 +189,12 @@ const MyParticipants = () => {
                       </div>
                     )}
                   </div>
+                  <button
+                    className="bg-blue-500 text-white px-4 py-2 w-[10rem] rounded-lg"
+                    onClick={() => navigate(`/my-events/${id}/check-in`)}
+                  >
+                    Check In
+                  </button>
                 </div>
               </div>
 
@@ -199,6 +223,22 @@ const MyParticipants = () => {
                     onClick={() => handleStatusFilter("Cancelled")}
                   >
                     Canceled ({canceledCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      statusFilter === "Attended" ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleStatusFilter("Attended")}
+                  >
+                    Attended ({attendedCount})
+                  </li>
+                  <li
+                    className={`cursor-pointer ${
+                      statusFilter === "Absent" ? "font-bold underline" : ""
+                    }`}
+                    onClick={() => handleStatusFilter("Absent")}
+                  >
+                    Absent ({absentCount})
                   </li>
                 </ul>
               </div>
@@ -242,7 +282,7 @@ const MyParticipants = () => {
                     </div>
                   ))
                 ) : (
-                  <div>No events found.</div>
+                  <div>No participants found.</div>
                 )}
               </div>
             </div>

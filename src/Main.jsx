@@ -30,6 +30,7 @@ import SignInPeserta from './SignInPeserta.jsx';
 import MyParticipants from './admin/MyParticipants.jsx';
 import EditEvent from './admin/EditEvent.jsx';
 import PreviewEdit from './admin/PreviewEdit.jsx';
+import CheckIn from './admin/CheckInPage.jsx';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const isAdmin = user?.is_admin === true;
@@ -123,6 +124,10 @@ const router = createBrowserRouter([
   {
     path: "/my-events/:id/preview",
     element: <PreviewEdit />,
+  },
+  {
+    path: "/my-events/:id/check-in",
+    element: <CheckIn />,
   },
 ]);
 
