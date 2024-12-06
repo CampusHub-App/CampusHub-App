@@ -3,6 +3,7 @@ import circle2 from "./assets/image/circle4.svg";
 import logo from "./assets/image/logo2.svg";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import PopUpGagal from "./components/PopUpGagal";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -23,6 +24,9 @@ const whiteVariants = {
 };
 
 function Loginpeserta() {
+
+  const [showGagal, setShowGagal] = useState(false);
+  const [datas, setDatas] = useState(null);
 
   useEffect(() => {
 
@@ -67,21 +71,24 @@ function Loginpeserta() {
             },
             body: JSON.stringify({ email, password, remember }),
           }
+
         );
 
+        const data = await response.json();
+        setDatas(data.message);
+
         if (response.ok) {
-          const data = await response.json();
 
           if (data.access_token) {
             localStorage.setItem("token", data.access_token);
             localStorage.setItem("token_type", data.token_type);
           }
         } else {
-          alert("Login gagal, periksa kembali email atau password Anda.");
+          showGagal(true);
           setIsLoading(false);
         }
       } catch (error) {
-        alert("Terjadi kesalahan saat login.");
+        setShowGagal(true);
         setIsLoading(false);
       }
 
@@ -272,6 +279,14 @@ function Loginpeserta() {
         />
         <img src={logo} alt="" />
       </motion.div>
+
+      {showGagal && (
+        <PopUpGagal
+          isVisible={showGagal}
+          onClose={() => setShowGagal(false)}
+          message={datas}
+        />
+      )}
     </motion.div>
   );
 }

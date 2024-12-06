@@ -253,7 +253,6 @@ const MyParticipants = () => {
                         animationDelay: `${index * 100}ms`,
                         animationFillMode: "forwards",
                       }}
-                      onClick={() => navigate(`/my-events/${event.id}/view`)}
                     >
                       <div className="event-data flex items-center">
                         <img
@@ -276,9 +275,6 @@ const MyParticipants = () => {
                           </span>
                         </div>
                       </div>
-                      <Link to={`/my-events/${event.id}/view`}>
-                        <i className="ri-more-fill text-4xl"></i>
-                      </Link>
                     </div>
                   ))
                 ) : (

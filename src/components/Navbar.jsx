@@ -63,6 +63,7 @@ const Navbar = () => {
       case "/events/upload":
       case `/my-events/${id}/view`:
       case `/events/${id}/view`:
+      case `/my-events/${id}/participants`:
       case `/my-participants/${id}/view`:
       case "/events/preview":
         return "bg-[#003266]";
@@ -80,6 +81,7 @@ const Navbar = () => {
       case `/my-events/${id}/view`:
       case `/events/${id}/view`:
       case `/my-participants/${id}/view`:
+      case `/my-events/${id}/participants`:
       case "/events/preview":
         return "text-white";
       default:
@@ -96,6 +98,7 @@ const Navbar = () => {
       case `/events/${id}/view`:
       case `/my-events/${id}/view`:
       case `/my-participants/${id}/view`:
+      case `/my-events/${id}/participants`:
       case "/events/preview":
         return logo2;
       default:
@@ -112,6 +115,7 @@ const Navbar = () => {
       case `/events/${id}/view`:
       case `/my-events/${id}/view`:
       case `/my-participants/${id}/view`:
+      case `/my-events/${id}/participants`:
       case "/events/preview":
         return "border-white/70 ";
       default:
@@ -127,6 +131,7 @@ const Navbar = () => {
       case "/events/upload":
       case `/events/${id}/view`:
       case `/my-events/${id}/view`:
+      case `/my-events/${id}/participants`:
       case `/my-participants/${id}/view`:
       case "/events/preview":
         return "text-white";
@@ -200,7 +205,13 @@ const Navbar = () => {
                 </button>
               </Link>
               <Link to="/user/register">
-                <button className={`hover:scale-105 transition-all duration-300 ${bordersignup(location.pathname)} border-2 rounded-[10px] ${textsignup(location.pathname)} sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]`}>
+                <button
+                  className={`hover:scale-105 transition-all duration-300 ${bordersignup(
+                    location.pathname
+                  )} border-2 rounded-[10px] ${textsignup(
+                    location.pathname
+                  )} sm:text-[15px] font-medium sm:w-[80px] sm:h-[30px] md:w-[155px] md:h-[46px] md:text-[20px] tengah:w-[120px] tengah:h-[36px] tengah:text-[17px]`}
+                >
                   Sign Up
                 </button>
               </Link>

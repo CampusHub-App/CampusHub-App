@@ -3,6 +3,7 @@ import circle2 from "../assets/image/circle4.svg";
 import logo from "../assets/image/logo2.svg";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import PopUpGagal from "../components/PopUpGagal";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -23,6 +24,9 @@ const whiteVariants = {
 };
 
 function Loginadmin() {
+
+  const [showGagal, setShowGagal] = useState(false);
+  const [datas, setDatas] = useState(null);
 
   useEffect(() => {
 
@@ -69,9 +73,10 @@ function Loginadmin() {
           }
         );
 
+        const data = await response.json();
+        setDatas(data.message);
+
         if (response.ok) {
-          const data = await response.json();
-          console.log("API Response:", data); // Debugging untuk memastikan respons
 
           // Simpan token dan tipe token
           if (data.access_token) {
@@ -99,13 +104,11 @@ function Loginadmin() {
             }, 1000);
           }
         } else {
-          console.error("Login failed:", response.status);
-          alert("Login gagal, periksa kembali email atau password Anda.");
+          showGagal(true);
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("Error:", error);
-        alert("Terjadi kesalahan saat login.");
+        setShowGagal(true);
         setIsLoading(false);
       }
     }
@@ -249,6 +252,14 @@ function Loginadmin() {
           </div>
         </form>
       </motion.div>
+
+      {showGagal && (
+        <PopUpGagal
+          isVisible={showGagal}
+          onClose={() => setShowGagal(false)}
+          message={datas}
+        />
+      )}
 
       <motion.div
         className="w-7/12 sm:w-1/2 bg-[#003266] flex items-center justify-center"
