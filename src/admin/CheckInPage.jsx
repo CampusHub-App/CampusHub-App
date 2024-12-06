@@ -46,6 +46,8 @@ const KodeUnik = () => {
     } else {
       setShowGagal(true);
     }
+
+    setCode(["", "", "", ""]);
   };
 
   useEffect(() => {
