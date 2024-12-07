@@ -1,12 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 
-const PopUpUpdate = ({id}) => {
+const PopUpDeleteEvent = ({ setShowPopUp, id }) => {
   const bookingRef = useRef(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [status, setStatus] = useState(null);
-  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     setIsVisible(true);
@@ -23,27 +22,14 @@ const PopUpUpdate = ({id}) => {
     };
   }, []);
 
-  useEffect(() => {
-
-  if (status === "success") {
-    const timeout = setTimeout(() => {
-      setIsExiting(true); // Mulai efek transisi keluar
-    }, 1400); // Tunda 2 detik sebelum transisi keluar dimulai
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000); // Reload halaman setelah 2 detik
-      
-
-    return () => clearTimeout(timeout); // Membersihkan timeout jika status berubah lagi
-  }
-}, [status]);
-
   const triggerClose = () => {
     setIsExiting(true);
+    setTimeout(() => {
+      setShowPopUp(false);
+    }, 2000);
   };
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (id) => {
     setIsProcessing(true);
     try {
       const response = await fetch(
@@ -63,11 +49,9 @@ const PopUpUpdate = ({id}) => {
         setStatus("success");
       } else {
         setStatus("error");
-        console.error(data);
       }
     } catch (error) {
       setStatus("error");
-      console.error(error);
     } finally {
       setIsProcessing(false);
     }
@@ -110,7 +94,8 @@ const PopUpUpdate = ({id}) => {
                 Apakah kamu yakin?
               </span>
               <p className="font-regular text-[20px] text-center px-10 py-2">
-                Kamu akan menghapus seluruh data terkait event ini, klik kembali jika kamu berubah pikiran.
+                Kamu akan menghapus seluruh data terkait event ini, klik kembali
+                jika kamu berubah pikiran.
               </p>
             </div>
             <div className="myevent-button flex flex-col py-2">
@@ -121,7 +106,7 @@ const PopUpUpdate = ({id}) => {
                 Kembali
               </button>
               <button
-                onClick={handleUpdate}
+                onClick={() => handleUpdate(id)}
                 disabled={isProcessing}
                 className={`bg-transparent border-2 ${
                   isProcessing
@@ -204,7 +189,7 @@ const PopUpUpdate = ({id}) => {
               </svg>
             </div>
             <span className="mt-4 font-medium text-[20px] text-center">
-              {message}
+              Gagal Menghapus Event!
             </span>
           </div>
         )}
@@ -213,4 +198,4 @@ const PopUpUpdate = ({id}) => {
   );
 };
 
-export default PopUpUpdate;
+export default PopUpDeleteEvent;

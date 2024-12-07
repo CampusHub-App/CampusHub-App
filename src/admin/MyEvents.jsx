@@ -24,15 +24,6 @@ const MyEvents = () => {
     exit: { opacity: 0.6 },
   };
 
-  const handlePopupClose = () => {
-    setIsExiting(true); // Mulai animasi keluar
-    setTimeout(() => {
-      setshowConfirm(false); // Hapus popup setelah animasi selesai
-      setSelectedEventId(null);
-      setIsExiting(false); // Reset status animasi
-    }, 2200); // Durasi animasi keluar dalam milidetik
-  };
-
   const handleDelete = (e, id) => {
     e.stopPropagation();
     setSelectedEventId(id);
@@ -53,11 +44,19 @@ const MyEvents = () => {
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (showConfirm && !dropdownRef.current?.contains(event.target)) {
-        handlePopupClose();
+      if (
+        showConfirm &&
+        !dropdownRef.current?.contains(event.target) &&
+        !event.target.closest(".ri-delete-bin-line") // Allow clicks on the delete icon
+      ) {
+        setIsExiting(true);
+        setTimeout(() => {
+          setshowConfirm(false);
+        }, 300);
+        setSelectedEventId(null);
       }
     };
-  
+
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
@@ -313,7 +312,7 @@ const MyEvents = () => {
           </div>
         )}
         {showConfirm && (
-          <PopUpDeleteEvent id={selectedEventId} onClose={handlePopupClose} isExiting={isExiting} />
+          <PopUpDeleteEvent id={selectedEventId} isExiting={isExiting} />
         )}
       </div>
     </motion.div>
