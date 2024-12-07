@@ -3,21 +3,40 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import Menu from "../assets/image/menu.svg";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
+import PopUpDeleteEvent from "../components/PopUpDeleteEvent";
 
 const MyEvents = () => {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isExiting, setIsExiting] = useState(false);
   const [sortOption, setSortOption] = useState("date");
   const [statusFilter, setStatusFilter] = useState("All");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
   const dropdownRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState("All");
   const location = useLocation();
+  const [showConfirm, setshowConfirm] = useState(false);
   const pageVariants = {
     initial: { opacity: 0.6 },
     animate: { opacity: 1 },
     exit: { opacity: 0.6 },
+  };
+
+  const handlePopupClose = () => {
+    setIsExiting(true); // Mulai animasi keluar
+    setTimeout(() => {
+      setshowConfirm(false); // Hapus popup setelah animasi selesai
+      setSelectedEventId(null);
+      setIsExiting(false); // Reset status animasi
+    }, 2200); // Durasi animasi keluar dalam milidetik
+  };
+
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
+    setSelectedEventId(id);
+    setshowConfirm(true);
   };
 
   const navigate = useNavigate();
@@ -31,6 +50,19 @@ const MyEvents = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (showConfirm && !dropdownRef.current?.contains(event.target)) {
+        handlePopupClose();
+      }
+    };
+  
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [showConfirm]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -260,12 +292,17 @@ const MyEvents = () => {
                           </span>
                         </div>
                       </div>
-                      <Link
-                        to={`/my-events/${event.id}/edit`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <i className="ri-edit-box-line text-4xl"></i>
-                      </Link>
+                      <div className="gap-2 flex">
+                        <Link
+                          to={`/my-events/${event.id}/edit`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <i className="ri-edit-box-line text-4xl hover:text-customBlue animations-all duration-300"></i>
+                        </Link>
+                        <Link onClick={(e) => handleDelete(e, event.id)}>
+                          <i className="ri-delete-bin-line text-4xl hover:text-red-500 animations-all duration-300"></i>
+                        </Link>
+                      </div>
                     </div>
                   ))
                 ) : (
@@ -274,6 +311,9 @@ const MyEvents = () => {
               </div>
             </div>
           </div>
+        )}
+        {showConfirm && (
+          <PopUpDeleteEvent id={selectedEventId} onClose={handlePopupClose} isExiting={isExiting} />
         )}
       </div>
     </motion.div>

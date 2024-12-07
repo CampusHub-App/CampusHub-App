@@ -7,7 +7,6 @@ import { Link as ScrollLink } from "react-scroll";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { text } from "framer-motion/client";
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
