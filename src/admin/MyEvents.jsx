@@ -6,6 +6,20 @@ import Navbar from "../components/Navbar";
 import PopUpDeleteEvent from "../components/PopUpDeleteEvent";
 
 const MyEvents = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    if (!user.is_admin) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    navigate("/welcome?redirect=/my-events", { replace: true });
+    return;
+  }
+
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("date");

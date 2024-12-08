@@ -5,16 +5,27 @@ import { motion } from "framer-motion";
 import Footer from "./components/Footer";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 function Webinarpage() {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      if (user.is_admin) {
+        navigate("/", { replace: true });
+        return;
+      }
+    }
+
     setIsLoading(true); // Set state untuk mulai loading
     fetch("https://campushub.web.id/api/events/webinar") // URL API
       .then((response) => {

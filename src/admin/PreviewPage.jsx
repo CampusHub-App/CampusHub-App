@@ -8,6 +8,13 @@ import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const PreviewPage = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    if (!user.is_admin) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }
   const [eventData, setEventData] = useState(null);
   const [error, setError] = useState(null);
   const [pageAnimation, setPageAnimation] = useState("page-enter");

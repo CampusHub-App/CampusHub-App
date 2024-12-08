@@ -8,6 +8,14 @@ import PopUpGagal from "../components/PopUpGagal";
 import PopUpBerhasil from "../components/PopUpBerhasil";
 
 const KodeUnik = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    if (!user.is_admin) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }
+  
   const [code, setCode] = useState(["", "", "", ""]);
   const [fadeClass, setFadeClass] = useState("fade-in");
   const navigate = useNavigate();

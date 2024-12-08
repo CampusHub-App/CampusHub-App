@@ -154,21 +154,9 @@ const Footer = () => {
                   </Link>
                 </li>
                 <li>
-                  <ScrollLink
-                    to="kategori"
-                    smooth={true}
-                    duration={800}
-                    className="cursor-pointer"
-                  >
-                    <p>Kategori</p>
-                  </ScrollLink>
-                </li>
-                <li>
                   <Link to="/my-events" onClick={handleScrollToTop}>
                     MyEvent
                   </Link>
-
-                 
                 </li>
                 <li>
                   <Link to="#footer" onClick={handleScrollToTop}>

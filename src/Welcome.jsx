@@ -6,6 +6,7 @@ import circle from "./assets/image/circle.svg";
 import admin from "./assets/image/admin.svg";
 import circle2 from "./assets/image/circle2.svg";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -15,6 +16,7 @@ const pageVariants = {
 
 function Welcome() {
 
+  const navigate = useNavigate();
   useEffect(() => {
 
     const token = localStorage.getItem("token");

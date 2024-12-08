@@ -8,6 +8,13 @@ import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 const MyParticipants = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    if (!user.is_admin) {
+      navigate("/", { replace: true });
+      return;
+    }
+  }
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("date");

@@ -4,6 +4,7 @@ import logo from "./assets/image/logo2.svg";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import PopUpGagal from "./components/PopUpGagal";
+import { useNavigate } from "react-router-dom";
 
 const pageVariants = {
   initial: { opacity: 0 },
@@ -26,6 +27,7 @@ const whiteVariants = {
 function Loginpeserta() {
   const [showGagal, setShowGagal] = useState(false);
   const [datas, setDatas] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");

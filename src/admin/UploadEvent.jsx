@@ -27,6 +27,14 @@ function Uploadevent() {
   const { state } = useLocation(); 
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      if (!user.is_admin) {
+        navigate("/", { replace: true });
+        return;
+      }
+    }
+
     if (state) {
       setCategory(state.category || "");
       setTitle(state.title || "");
