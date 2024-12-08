@@ -6,15 +6,9 @@ import "../css/KodeUnik.css";
 import { useParams } from "react-router-dom";
 import PopUpGagal from "../components/PopUpGagal";
 import PopUpBerhasil from "../components/PopUpBerhasil";
+import { useLocation } from "react-router-dom";
 
 const KodeUnik = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user) {
-    if (!user.is_admin) {
-      navigate("/", { replace: true });
-      return;
-    }
-  }
   
   const [code, setCode] = useState(["", "", "", ""]);
   const [fadeClass, setFadeClass] = useState("fade-in");
@@ -23,6 +17,23 @@ const KodeUnik = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showGagal, setShowGagal] = useState(false);
   const [datas, setDatas] = useState(null);
+  const lokasi = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate(`/welcome?redirect=${encodeURIComponent(lokasi.pathname)}`);
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      if (!user.is_admin) {
+        navigate("/", { replace: true });
+        return;
+      }
+    }
+  }, []);
 
   const handleNavigation = () => {
     setFadeClass("fade-out");

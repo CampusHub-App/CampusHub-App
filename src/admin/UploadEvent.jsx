@@ -26,12 +26,19 @@ function Uploadevent() {
   const { state } = useLocation();
   const initialStep = state?.step || 1;
   const [step, setStep] = useState(initialStep); // Step of the form (1 or 2)
+  const lokasi = useLocation();
 
   useEffect(() => {
     setStep(initialStep);
   }, [initialStep]);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate(`/welcome?redirect=${encodeURIComponent(lokasi.pathname)}`);
+      return;
+    }
+
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       if (!user.is_admin) {
@@ -39,7 +46,9 @@ function Uploadevent() {
         return;
       }
     }
+  }, []);
 
+  useEffect(() => {
     if (state) {
       setCategory(state.data.category || "");
       setTitle(state.data.title || "");

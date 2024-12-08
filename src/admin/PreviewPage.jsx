@@ -8,23 +8,25 @@ import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const PreviewPage = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user) {
-    if (!user.is_admin) {
-      navigate("/", { replace: true });
-      return;
-    }
-  }
   const [eventData, setEventData] = useState(null);
-  const [error, setError] = useState(null);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
   const navigate = useNavigate();
+  const lokasi = useLocation();
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/welcome", { replace: true });
+      navigate(`/welcome?redirect=${encodeURIComponent(lokasi.pathname)}`);
       return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      if (!user.is_admin) {
+        navigate("/", { replace: true });
+        return;
+      }
     }
   }, []);
 
@@ -45,26 +47,7 @@ const PreviewPage = () => {
     setTimeout(goBack, 400);
   };
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-center">
-          <h1 className="text-red-500 text-2xl font-semibold">Error</h1>
-          <p className="text-red-700 text-lg">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  const lokasi = useLocation();
-
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate(`/welcome?redirect=${encodeURIComponent(lokasi.pathname)}`);
-      return;
-    }
-
     if (lokasi.state) {
       setEventData(lokasi.state);
     } else {

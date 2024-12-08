@@ -9,24 +9,25 @@ import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
 
 const PreviewEdit = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user) {
-    if (!user.is_admin) {
-      navigate("/", { replace: true });
-      return;
-    }
-  }
   const [eventData, setEventData] = useState(null);
-  const [error, setError] = useState(null);
   const [pageAnimation, setPageAnimation] = useState("page-enter");
   const navigate = useNavigate();
   const { id } = useParams();
+  const lokasi = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/welcome", { replace: true });
+      navigate(`/welcome?redirect=${encodeURIComponent(lokasi.pathname)}`);
       return;
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      if (!user.is_admin) {
+        navigate("/", { replace: true });
+        return;
+      }
     }
   }, []);
 
@@ -43,36 +44,18 @@ const PreviewEdit = () => {
     setTimeout(() => window.history.back(), 400);
   };
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-center">
-          <h1 className="text-red-500 text-2xl font-semibold">Error</h1>
-          <p className="text-red-700 text-lg">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  const lokasi = useLocation();
-
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/welcome", { replace: true });
-      return;
-    }
-
     // If no event data is passed, handle fallback
     if (lokasi.state) {
       setEventData(lokasi.state);
     } else {
-      setError("No event data found.");
+      navigate(`/my-events/${id}/edit`, { replace: true });
     }
   }, [lokasi.state, navigate]);
 
   if (!eventData) {
-    return <div>Loading...</div>;
+    navigate(`/my-events/${id}/edit`, { replace: true });
+    return;
   }
 
   // Ensure eventData is safely destructured
@@ -114,9 +97,15 @@ const PreviewEdit = () => {
       formData.append("speaker", speaker);
       formData.append("role", role);
       formData.append("slot", slot);
-      {isOffline && formData.append("location", location);}
-      {event_img && formData.append("event_img", event_img);}
-      {speaker_img && formData.append("speaker_img", speaker_img);}
+      {
+        isOffline && formData.append("location", location);
+      }
+      {
+        event_img && formData.append("event_img", event_img);
+      }
+      {
+        speaker_img && formData.append("speaker_img", speaker_img);
+      }
 
       const response = await fetch(
         `https://campushub.web.id/api/events/${id}/edit`,
@@ -150,25 +139,29 @@ const PreviewEdit = () => {
         <div className="breadcrumb pt-auto flex ml-2 pb-10 text-sm lg:text-base">
           <ol className="list-none flex text-black text-medium">
             <li>
-              <Link>
-                My Events
-              </Link>
+              <Link to={"/my-events"}>My Events</Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>
+              <Link to={`/my-events/${id}/edit`} state={{ step: 1, data: eventData }}>
                 Update Event
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>
+              <Link to={`/my-events/${id}/edit`} state={{ step: 2, data: eventData }}>
                 Detail Event
               </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>
+              <Link
+                to="#"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default navigation behavior
+                  window.location.reload(); // Force reload
+                }}
+              >
                 Preview
               </Link>
             </li>
