@@ -9,7 +9,6 @@ import PopUpBerhasil from "../components/PopUpBerhasil";
 import { useLocation } from "react-router-dom";
 
 const KodeUnik = () => {
-  
   const [code, setCode] = useState(["", "", "", ""]);
   const [fadeClass, setFadeClass] = useState("fade-in");
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ const KodeUnik = () => {
   const [showGagal, setShowGagal] = useState(false);
   const [datas, setDatas] = useState(null);
   const lokasi = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -43,30 +43,37 @@ const KodeUnik = () => {
   };
 
   const handleCheckIn = async () => {
-    const response = await fetch(
-      `https://campushub.web.id/api/my-events/${id}/check-in`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          kode: code.join(""),
-        }),
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `https://campushub.web.id/api/my-events/${id}/check-in`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            kode: code.join(""),
+          }),
+        }
+      );
+
+      const data = await response.json();
+      setDatas(data.message);
+
+      if (response.ok) {
+        setShowPopup(true);
+      } else {
+        setShowGagal(true);
       }
-    );
-
-    const data = await response.json();
-    setDatas(data.message);
-
-    if (response.ok) {
-      setShowPopup(true);
-    } else {
+    } catch (error) {
+      setDatas("Koneksi bermasalah, silahkan coba lagi");
       setShowGagal(true);
+    } finally {
+      setCode(["", "", "", ""]);
+      setIsLoading(false);
     }
-
-    setCode(["", "", "", ""]);
   };
 
   useEffect(() => {
@@ -156,8 +163,37 @@ const KodeUnik = () => {
             className="bg-[#027FFF] border-2 border-white font-regular w-3/4 sm:w-1/2 lg:w-1/2 h-10 sm:h-11 my-1 sm:my-2 rounded-lg text-medium text-white text-[14px] sm:text-[16px]"
             onClick={handleCheckIn}
           >
-            Check In
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin h-7 w-7 text-white-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="white"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="none"
+                    stroke="white"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    d="M22 12a10 10 0 01-10 10"
+                  ></path>
+                </svg>
+              </div>
+            ) : (
+              "Masuk"
+            )}
           </button>
+
           <button
             className="bg-transparent border-2 border-[#027FFF] font-regular w-3/4 sm:w-1/2 lg:w-1/2 h-10 sm:h-11 my-1 sm:my-2 rounded-lg text-medium text-black text-[14px] sm:text-[16px]"
             onClick={handleNavigation}
