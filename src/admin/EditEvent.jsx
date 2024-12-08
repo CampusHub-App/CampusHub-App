@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
-function EditEvent() {
+function EditEvent({tab}) {
   const user = JSON.parse(localStorage.getItem("user"));
   if (user) {
     if (!user.is_admin) {
@@ -14,7 +14,7 @@ function EditEvent() {
       return;
     }
   }
-  const [step, setStep] = useState(1);
+  const [step, setStep] = tab ? tab : useState(1);
   const [event_img, setEventImg] = useState();
   const [speaker_img, setSpeakerImg] = useState();
   const [eventsPreview, setEventsPreview] = useState();

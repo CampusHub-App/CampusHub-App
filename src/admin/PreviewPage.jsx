@@ -37,7 +37,7 @@ const PreviewPage = () => {
   };
 
   const goBack = () => {
-    navigate("/events/upload", {state: eventData});
+    navigate("/events/upload", { state: { data: eventData } });
   };
 
   const handleBack = () => {
@@ -61,23 +61,23 @@ const PreviewPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/welcome", { replace: true });
+      navigate(`/welcome?redirect=${encodeURIComponent(lokasi.pathname)}`);
       return;
     }
 
-    // If no event data is passed, handle fallback
     if (lokasi.state) {
       setEventData(lokasi.state);
     } else {
-      setError("No event data found.");
+      navigate("/events/upload", { replace: true });
+      return;
     }
   }, [lokasi.state, navigate]);
 
   if (!eventData) {
-    return <div>Loading...</div>;
+    navigate("/events/upload", { replace: true });
+    return;
   }
 
-  // Ensure eventData is safely destructured
   const {
     eventsPreview,
     speakerPreview,
@@ -149,19 +149,31 @@ const PreviewPage = () => {
         <div className="breadcrumb pt-auto flex ml-2 pb-10 text-sm lg:text-base">
           <ol className="list-none flex text-black text-medium">
             <li>
-              <Link>Home</Link>
+              <Link to={"/"}>Home</Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>Upload Event</Link>
+              <Link to={"/events/upload"} state={{ step: 1, data: eventData }}>
+                Upload Event
+              </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>Detail Event</Link>
+              <Link to={"/events/upload"} state={{ step: 2, data: eventData }}>
+                Detail Event
+              </Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>Preview</Link>
+              <Link
+                to="#"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default navigation behavior
+                  window.location.reload(); // Force reload
+                }}
+              >
+                Preview
+              </Link>
             </li>
           </ol>
         </div>
