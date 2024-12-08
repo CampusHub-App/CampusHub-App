@@ -5,7 +5,6 @@ import instagram from "../assets/image/Instagram.svg";
 import Linkedin from "../assets/image/Linkedin.svg";
 import tiktok from "../assets/image/TikTok.svg";
 import x from "../assets/image/X.svg";
-import { Link as ScrollLink } from "react-scroll";
 
 const Footer = () => {
   const location = useLocation();

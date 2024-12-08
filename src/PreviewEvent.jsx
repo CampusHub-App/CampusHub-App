@@ -6,6 +6,7 @@ import "./css/PreviewEvent.css";
 import Calendar from "./assets/image/date.svg";
 import Chair from "./assets/image/chair.svg";
 import PopUpGagal from "./components/PopUpGagal";
+import Navbar from "./components/Navbar";
 
 const PreviewEvent = () => {
   const { id } = useParams();
@@ -103,9 +104,10 @@ const PreviewEvent = () => {
   }
 
   return (
-    <div className="preview-event h-[1024px] pt-10 mx-4 lg:mx-20 relative">
+    <div className="preview-event h-screen relative">
+      <Navbar />
       <div
-        className={`preview-event-container ${isLoaded ? "loaded" : ""} ${
+        className={`pt-10 mx-4 lg:mx-20 preview-event-container ${isLoaded ? "loaded" : ""} ${
           isExiting ? "exiting" : ""
         }`}
       >

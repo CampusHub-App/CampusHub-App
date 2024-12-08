@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import logo from "../assets/image/logo.svg";
 import logo2 from "../assets/image/logo2.svg";
 import { Link } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -17,16 +16,21 @@ const Navbar = () => {
   const { id } = useParams();
 
   const aboutus = () => {
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
+    const aboutUsElement = document.getElementById("footer");
 
-    setTimeout(() => {
-      const aboutUsElement = document.getElementById("footer");
-      if (aboutUsElement) {
+    if (!aboutUsElement) {
+      navigate("/");
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
+      }, 200);
+    } else {
+      setTimeout(() => {
         aboutUsElement.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 200);
+      }, 100);
+    }
   };
 
   useEffect(() => {
@@ -64,7 +68,13 @@ const Navbar = () => {
       case `/events/${id}/view`:
       case `/my-events/${id}/participants`:
       case `/my-participants/${id}/view`:
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/kode-unik`:
       case "/events/preview":
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/edit`:
+      case `/my-events/${id}/preview`:
+      case `/my-events/${id}/check-in`:
         return "bg-[#003266]";
       default:
         return "bg-white";
@@ -79,9 +89,15 @@ const Navbar = () => {
       case "/events/upload":
       case `/my-events/${id}/view`:
       case `/events/${id}/view`:
-      case `/my-participants/${id}/view`:
       case `/my-events/${id}/participants`:
+      case `/my-participants/${id}/view`:
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/kode-unik`:
       case "/events/preview":
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/edit`:
+      case `/my-events/${id}/preview`:
+      case `/my-events/${id}/check-in`:
         return "text-white";
       default:
         return "text-[#003266]";
@@ -94,11 +110,17 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
-      case `/events/${id}/view`:
       case `/my-events/${id}/view`:
-      case `/my-participants/${id}/view`:
+      case `/events/${id}/view`:
       case `/my-events/${id}/participants`:
+      case `/my-participants/${id}/view`:
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/kode-unik`:
       case "/events/preview":
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/edit`:
+      case `/my-events/${id}/preview`:
+      case `/my-events/${id}/check-in`:
         return logo2;
       default:
         return logo;
@@ -111,11 +133,17 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
-      case `/events/${id}/view`:
       case `/my-events/${id}/view`:
-      case `/my-participants/${id}/view`:
+      case `/events/${id}/view`:
       case `/my-events/${id}/participants`:
+      case `/my-participants/${id}/view`:
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/kode-unik`:
       case "/events/preview":
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/edit`:
+      case `/my-events/${id}/preview`:
+      case `/my-events/${id}/check-in`:
         return "border-white/70 ";
       default:
         return "border-[#027FFF]";
@@ -128,11 +156,17 @@ const Navbar = () => {
       case "/account/profile":
       case "/account/password":
       case "/events/upload":
-      case `/events/${id}/view`:
       case `/my-events/${id}/view`:
+      case `/events/${id}/view`:
       case `/my-events/${id}/participants`:
       case `/my-participants/${id}/view`:
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/kode-unik`:
       case "/events/preview":
+      case `/events/${id}/preview`:
+      case `/my-events/${id}/edit`:
+      case `/my-events/${id}/preview`:
+      case `/my-events/${id}/check-in`:
         return "text-white";
       default:
         return "text-[#027FFF]";
@@ -154,7 +188,7 @@ const Navbar = () => {
           />
         </Link>
         <ul
-          className={`hidden lg:flex space-x-8 items-center ${txtcolor(
+          className={`hidden mr-[12rem] lg:flex space-x-8 items-center ${txtcolor(
             location.pathname
           )} text-[20px] font-medium`}
         >
@@ -250,14 +284,12 @@ const Navbar = () => {
               <Link to="/my-events">MyEvent</Link>
             </li>
             <li>
-              <ScrollLink
-                to="aboutus"
-                smooth={true}
-                duration={800}
-                className="cursor-pointer"
+              <button
+                onClick={aboutus}
+                className="transition-all duration-3000 hover:scale-105 cursor-pointer"
               >
-                <p>About Us</p>
-              </ScrollLink>
+                About Us
+              </button>
             </li>
           </ul>
         </div>
