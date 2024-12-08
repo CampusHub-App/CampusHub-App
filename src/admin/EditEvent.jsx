@@ -4,6 +4,7 @@ import upload from "../assets/image/adminimage/upload.svg";
 import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function EditEvent() {
   const [step, setStep] = useState(1);
@@ -58,12 +59,19 @@ function EditEvent() {
 
   const isFormValid = () => {
     return (
-      eventsPreview && category && title && date && end_time > start_time && desc
+      eventsPreview &&
+      category &&
+      title &&
+      date &&
+      end_time > start_time &&
+      desc
     );
   };
 
   const isSecondStepValid = () => {
-    return speakerPreview && speaker && role && slot && (!isOffline || location);
+    return (
+      speakerPreview && speaker && role && slot && (!isOffline || location)
+    );
   };
 
   const handleNext = () => {
@@ -128,12 +136,28 @@ function EditEvent() {
     };
 
     FetchEvent();
-  } , []);
+  }, []);
+
+  const pageVariants = {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.95 },
+  };
 
   return (
     <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white">
       <Navbar />
 
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={{
+          opacity: { duration: 1.4, ease: "easeInOut" }, // Smooth fade-in/out
+          scale: { duration: 1, ease: "easeInOut" }, // Smooth scaling
+        }}
+      >
       <div className="p-5">
         <div className="flex flex-col px-[62px]  pt-10">
           {step === 1 ? (
@@ -536,6 +560,7 @@ function EditEvent() {
           )}
         </div>
       </div>
+      </motion.div>
     </div>
   );
 }

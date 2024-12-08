@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import upload from "../assets/image/adminimage/upload.svg";
 import Navbar from "../components/Navbar";
+import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 function Uploadevent() {
   const [step, setStep] = useState(1); // Step of the form (1 or 2)
@@ -21,6 +24,27 @@ function Uploadevent() {
   const [slot, setSlot] = useState("");
   const [location, setVenue] = useState("");
   const navigate = useNavigate();
+  const { state } = useLocation(); 
+
+  useEffect(() => {
+    if (state) {
+      setCategory(state.category || "");
+      setTitle(state.title || "");
+      setDate(state.date || "");
+      setStartTime(state.start_time || "");
+      setEndTime(state.end_time || "");
+      setDes(state.desc || "");
+      setIsOffline(state.isOffline || false);
+      setEventImg(state.event_img || "");
+      setSpeakerImg(state.speaker_img || "");
+      setEventsPreview(state.eventsPreview || "");
+      setSpeakerPreview(state.speakerPreview || "");
+      setSpeaker(state.speaker || "");
+      setRole(state.role || "");
+      setSlot(state.slot || "");
+      setVenue(state.location || "");
+    }
+  }, [state]);
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -93,9 +117,26 @@ function Uploadevent() {
     });
   };
 
+  const pageVariants = {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.95 },
+  };
+
   return (
     <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white">
       <Navbar />
+
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={pageVariants}
+        transition={{
+          opacity: { duration: 1.4, ease: "easeInOut" }, // Smooth fade-in/out
+          scale: { duration: 1, ease: "easeInOut" }, // Smooth scaling
+        }}
+      >
 
       <div className="p-5">
         <div className="flex flex-col px-[62px]  pt-10">
@@ -499,6 +540,7 @@ function Uploadevent() {
           )}
         </div>
       </div>
+      </motion.div>
     </div>
   );
 }

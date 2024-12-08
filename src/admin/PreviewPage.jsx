@@ -29,9 +29,13 @@ const PreviewPage = () => {
     5: "Sertifikasi",
   };
 
+  const goBack = () => {
+    navigate("/events/upload", {state: eventData});
+  };
+
   const handleBack = () => {
     setPageAnimation("page-exit");
-    setTimeout(() => navigate("/my-events"), 400);
+    setTimeout(goBack, 400);
   };
 
   if (error) {
@@ -109,16 +113,13 @@ const PreviewPage = () => {
       formData.append("location", location);
       formData.append("speaker_img", speaker_img); // If speaker_img is also a file
 
-      const response = await fetch(
-        `https://campushub.web.id/api/events`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`https://campushub.web.id/api/events`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       const data = await response.json();
 
@@ -141,27 +142,19 @@ const PreviewPage = () => {
         <div className="breadcrumb pt-auto flex ml-2 pb-10 text-sm lg:text-base">
           <ol className="list-none flex text-black text-medium">
             <li>
-              <Link>
-                Home
-              </Link>
+              <Link>Home</Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>
-                Upload Event
-              </Link>
+              <Link>Upload Event</Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>
-                Detail Event
-              </Link>
+              <Link>Detail Event</Link>
             </li>
             <li className="mx-2"> &gt; </li>
             <li>
-              <Link>
-                Preview
-              </Link>
+              <Link>Preview</Link>
             </li>
           </ol>
         </div>
@@ -181,7 +174,7 @@ const PreviewPage = () => {
               {title}
             </h1>
             <div className="border-b-2 border-[#003266] w-full lg:w-[486px] my-4"></div>
- 
+
             <div className="flex gap-2 ml-2">
               <img src={Date} alt="Calendar" className="text-4xl sm:text-3xl" />
               <span className="font-medium text-[16px] sm:text-[14px] mt-2">

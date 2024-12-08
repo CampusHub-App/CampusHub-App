@@ -1,11 +1,17 @@
 import React, { useRef, useEffect, useState } from "react";
 
-const PopUpDeleteEvent = ({ setShowPopUp, id }) => {
+const PopUpDeleteEvent = ({ setShowPopUp, id, onSuccess, onBack, onFailure }) => {
   const bookingRef = useRef(null);
   const [isExiting, setIsExiting] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [status, setStatus] = useState(null);
+  const [localId, setLocalId] = useState(null);
+  const [message, setMessage] = useState();
+
+  useEffect(() => {
+    setLocalId(id); // Salin nilai ID dari props ke state lokal
+  }, [id]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -26,14 +32,16 @@ const PopUpDeleteEvent = ({ setShowPopUp, id }) => {
     setIsExiting(true);
     setTimeout(() => {
       setShowPopUp(false);
-    }, 2000);
+    }, 400);
+    onBack();
   };
 
-  const handleUpdate = async (id) => {
+  const handleUpdate = async () => {
+    const currentId = localId;
     setIsProcessing(true);
     try {
       const response = await fetch(
-        `https://campushub.web.id/api/events/${id}`,
+        `https://campushub.web.id/api/events/${currentId}`,
         {
           method: "DELETE",
           headers: {
@@ -47,11 +55,41 @@ const PopUpDeleteEvent = ({ setShowPopUp, id }) => {
 
       if (response.ok) {
         setStatus("success");
+        setTimeout(() => {
+          setIsExiting(true)
+        }, 1600);
+        setTimeout(() => {
+          setShowPopUp(false);
+        }, 2000);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2100);
+        setTimeout(() => {
+          onSuccess();
+        }, 2200);
       } else {
         setStatus("error");
+        setTimeout(() => {
+          setIsExiting(true)
+        }, 1600);
+        setTimeout(() => {
+          setShowPopUp(false);
+        }, 2000);
+        setTimeout(() => {
+          onFailure();
+        }, 2200);
       }
     } catch (error) {
       setStatus("error");
+      setTimeout(() => {
+        setIsExiting(true)
+      }, 1600);
+      setTimeout(() => {
+        setShowPopUp(false);
+      }, 2000);
+      setTimeout(() => {
+        onFailure();
+      }, 2200);
     } finally {
       setIsProcessing(false);
     }
@@ -165,7 +203,7 @@ const PopUpDeleteEvent = ({ setShowPopUp, id }) => {
                 />
               </svg>
             </div>
-            <span className="mt-4 font-medium text-[20px] text-center">
+            <span className="mt-4 font-medium text-[20px] text-center text-green-500">
               Event Berhasil Dihapus!
             </span>
           </div>
@@ -188,9 +226,10 @@ const PopUpDeleteEvent = ({ setShowPopUp, id }) => {
                 />
               </svg>
             </div>
-            <span className="mt-4 font-medium text-[20px] text-center">
+            <span className="mt-4 font-medium text-[20px] text-center text-red-500">
               Gagal Menghapus Event!
             </span>
+            <p className="text-center text-[16px] text-red-500">{message}</p>
           </div>
         )}
       </div>

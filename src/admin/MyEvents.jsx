@@ -8,7 +8,6 @@ import PopUpDeleteEvent from "../components/PopUpDeleteEvent";
 const MyEvents = () => {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isExiting, setIsExiting] = useState(false);
   const [sortOption, setSortOption] = useState("date");
   const [statusFilter, setStatusFilter] = useState("All");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -32,6 +31,27 @@ const MyEvents = () => {
 
   const navigate = useNavigate();
 
+  const onSuccess = () => {
+    setTimeout(() => {
+      setshowConfirm(false);
+    }, 2000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2100);
+  };
+
+  const onBack = () => {
+    setTimeout(() => {
+      setshowConfirm(false);
+    }, 400);
+  };
+
+  const onFailure = () => {
+    setTimeout(() => {
+      setshowConfirm(false);
+    }, 3000);
+  };
+
   useEffect(() => {
     if (location.state?.activeTab) {
       setStatusFilter(location.state.activeTab);
@@ -41,27 +61,6 @@ const MyEvents = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (
-        showConfirm &&
-        !dropdownRef.current?.contains(event.target) &&
-        !event.target.closest(".ri-delete-bin-line") // Allow clicks on the delete icon
-      ) {
-        setIsExiting(true);
-        setTimeout(() => {
-          setshowConfirm(false);
-        }, 300);
-        setSelectedEventId(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [showConfirm]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -312,7 +311,13 @@ const MyEvents = () => {
           </div>
         )}
         {showConfirm && (
-          <PopUpDeleteEvent id={selectedEventId} isExiting={isExiting} />
+          <PopUpDeleteEvent
+            id={selectedEventId}
+            setShowPopUp={setshowConfirm}
+            onSuccess={onSuccess}
+            onBack={onBack}
+            onFailure={onFailure}
+          />
         )}
       </div>
     </motion.div>

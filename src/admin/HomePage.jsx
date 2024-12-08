@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const pageVariants = {
-  initial: { y: "100%" },
-  animate: { y: 0 },
-  exit: { y: "-100%" },
+  initial: { opacity: 0.4 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0.4 },
 };
 
 function Adminpage() {
@@ -20,7 +20,7 @@ function Adminpage() {
       animate="animate"
       exit="exit"
       variants={pageVariants}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 1.6, ease: "easeInOut" }}
     >
       <Navbar />
 

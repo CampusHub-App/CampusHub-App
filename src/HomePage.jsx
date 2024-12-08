@@ -16,9 +16,9 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
 const pageVariants = {
-  initial: { opacity: 0.6 },
+  initial: { opacity: 0.4 },
   animate: { opacity: 1 },
-  exit: { opacity: 0.6 },
+  exit: { opacity: 0.4 },
 };
 
 function Homepage() {
@@ -59,7 +59,7 @@ function Homepage() {
       animate="animate"
       exit="exit"
       variants={pageVariants}
-      transition={{ duration: 1.6 }}
+      transition={{ duration: 1.6, ease: "easeInOut" }}
     >
       <Navbar />
 

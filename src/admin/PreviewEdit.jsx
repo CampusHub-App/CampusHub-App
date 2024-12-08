@@ -7,7 +7,6 @@ import Chair from "../assets/image/chair.svg";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
-import { form } from "framer-motion/client";
 
 const PreviewEdit = () => {
   const [eventData, setEventData] = useState(null);
@@ -34,7 +33,7 @@ const PreviewEdit = () => {
 
   const handleBack = () => {
     setPageAnimation("page-exit");
-    setTimeout(() => navigate("/my-events"), 400);
+    setTimeout(() => window.history.back(), 400);
   };
 
   if (error) {
