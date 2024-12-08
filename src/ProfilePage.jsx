@@ -6,6 +6,8 @@ import PopUpLogout from "./components/PopUpLogOut.jsx";
 import Navbar from "./components/Navbar.jsx";
 import "./css/ProfilePagePersonalInfo.css";
 import { motion } from "framer-motion";
+import PopUpBerhasil from "./components/PopUpBerhasil";
+import PopUpGagal from "./components/PopUpGagal";
 
 const ProfilePagePersonalInfo = () => {
   const [activePage, setActivePage] = useState("info-personal");
@@ -14,6 +16,12 @@ const ProfilePagePersonalInfo = () => {
   const [showLogoutPopUp, setShowLogoutPopUp] = useState(false);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [image, setImage] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [datas, setDatas] = useState(null);
+  const [showBerhasil, setShowBerhasil] = useState(false);
+  const [showGagal, setShowGagal] = useState(false);
 
   const pageVariants = {
     initial: { opacity: 0.8 },
@@ -21,14 +29,15 @@ const ProfilePagePersonalInfo = () => {
     exit: { opacity: 0.8 },
   };
 
-  useEffect(() => {
+  const isFormValid = user?.fullname && user?.email && user?.nomor_telepon;
 
+  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/welcome", { replace: true });
       return;
     }
-    
+
     const user = localStorage.getItem("user");
     if (user) {
       setUser(JSON.parse(user));
@@ -40,6 +49,76 @@ const ProfilePagePersonalInfo = () => {
 
   const handlePageChange = (page) => {
     setActivePage(page);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file); // Save the file to state
+      const imageUrl = URL.createObjectURL(file); // Create a temporary URL for the file
+      setSelectedImage(imageUrl); // Update the state to display the new image
+    }
+  };
+
+  const handleUpdate = async () => {
+    setIsProcessing(true);
+    const formData = new FormData();
+    formData.append("name", user.fullname);
+    formData.append("email", user.email);
+    formData.append("phone", user.nomor_telepon);
+    if (selectedImage) {
+      formData.append("photo", image);
+    }
+    
+    try {
+      const response = await fetch("https://campushub.web.id/api/user", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+
+      const datar = await response.json();
+
+      if (response.ok) {
+        try {
+          const response = await fetch("https://campushub.web.id/api/user", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            localStorage.removeItem("user");
+            localStorage.setItem("user", JSON.stringify(data));
+            setDatas("Profil berhasil diubah");
+            setShowBerhasil(true);
+            setTimeout(() => {
+              window.location.reload();
+            }, 2800);
+          } else {
+            setDatas(data.message);
+            setShowGagal(true);
+          }
+        } catch (error) {
+          setDatas("Koneksi bermasalah, silahkan coba lagi");
+          setShowGagal(true);
+        } finally {
+          setIsProcessing(false);
+        }
+      } else {
+        setDatas(datar.message);
+        setShowGagal(true);
+      }
+    } catch (error) {
+      setDatas("Koneksi bermasalah, silahkan coba lagi");
+      setShowGagal(true);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -62,7 +141,7 @@ const ProfilePagePersonalInfo = () => {
                     Info Personal
                   </span>
                   <span className="description text-regular text-[14px] lg:text-[18px]">
-                    Anda dapat melihat foto profil dan informasi pribadi di
+                    Anda dapat mengubah foto profil dan informasi pribadi di
                     sini.
                   </span>
                 </div>
@@ -72,25 +151,37 @@ const ProfilePagePersonalInfo = () => {
               </div>
               <div className="content flex flex-col sm:flex-row justify-between gap-8">
                 <div className="profile flex flex-col lg:flex-row lg:items-start justify-center lg:justify-between lg:w-10/12 py-10">
-                  <div className="profile-picture w-[120px] lg:w-2/12 mx-auto lg:mx-0 rounded-full">
-                    {isLoading ? (
-                      <img
-                        src={`https://eu.ui-avatars.com/api/?name=User}&size=250`}
-                        alt="Foto Profil"
-                        className="w-full aspect-square rounded-full object-cover"
+                  <div className="profile-picture w-[120px] lg:w-2/12 mx-auto rounded-full relative group">
+                    <img
+                      src={
+                        selectedImage ||
+                        user.photo ||
+                        `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(
+                          user.fullname
+                        )}&size=250`
+                      }
+                      alt="Foto Profil"
+                      className="w-full aspect-square rounded-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 rounded-full cursor-pointer">
+                      <label htmlFor="upload-photo" className="cursor-pointer">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="w-6 h-6 text-white"
+                        >
+                          <path d="M16.862 3.487a2.5 2.5 0 0 1 3.536 3.536l-10.37 10.37a1.5 1.5 0 0 1-.635.377l-4.657 1.33a.75.75 0 0 1-.92-.92l1.33-4.657a1.5 1.5 0 0 1 .377-.635l10.37-10.37Zm2.475 2.12a1 1 0 0 0-1.414-1.414l-10.37 10.37a.5.5 0 0 0-.126.212l-.92 3.222 3.222-.92a.5.5 0 0 0 .212-.126l10.37-10.37Z" />
+                        </svg>
+                      </label>
+                      <input
+                        id="upload-photo"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageChange}
                       />
-                    ) : (
-                      <img
-                        src={
-                          user.photo ||
-                          `https://eu.ui-avatars.com/api/?name=${encodeURIComponent(
-                            user.fullname || "User"
-                          )}&size=250`
-                        }
-                        alt="Foto Profil"
-                        className="w-full aspect-square rounded-full object-cover"
-                      />
-                    )}
+                    </div>
                   </div>
 
                   <div className="form flex flex-col w-full lg:w-10/12 gap-12 mt-6 lg:mt-0">
@@ -124,7 +215,20 @@ const ProfilePagePersonalInfo = () => {
                             Nama
                           </label>
                           <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
-                            <span>{user ? user.fullname : "Memuat..."}</span>
+                            <input
+                              type="text"
+                              id="name"
+                              name="name"
+                              className=" transition duration-300 w-full focus:outline-none"
+                              placeholder="Masukkan Nama"
+                              value={user?.fullname || ""}
+                              onChange={(e) =>
+                                setUser((prev) => ({
+                                  ...prev,
+                                  fullname: e.target.value,
+                                }))
+                              }
+                            />
                           </div>
                         </div>
                         <div className="relative">
@@ -136,7 +240,20 @@ const ProfilePagePersonalInfo = () => {
                               Alamat Email
                             </label>
                             <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
-                              <span>{user ? user.email : "Memuat..."}</span>
+                              <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                className=" transition duration-300 w-full focus:outline-none"
+                                placeholder="Masukkan Email"
+                                value={user?.email || ""}
+                                onChange={(e) =>
+                                  setUser((prev) => ({
+                                    ...prev,
+                                    email: e.target.value,
+                                  }))
+                                }
+                              />
                             </div>
                           </div>
                         </div>
@@ -149,11 +266,73 @@ const ProfilePagePersonalInfo = () => {
                           </label>
                           <div className="input-box p-3 border-2 border-[#027FFF] rounded-lg hover:shadow-lg transition duration-300 px-4 py-2 w-full focus:ring focus:ring-blue-200 focus:outline-none">
                             <span>
-                              {user ? user.nomor_telepon : "Memuat..."}
+                              <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                                className=" transition duration-300 w-full focus:outline-none"
+                                placeholder="Masukkan Nomor Telepon"
+                                value={user?.nomor_telepon || ""}
+                                onChange={(e) =>
+                                  setUser((prev) => ({
+                                    ...prev,
+                                    nomor_telepon: e.target.value,
+                                  }))
+                                }
+                              />
                             </span>
                           </div>
                         </div>
                       </div>
+                    </div>
+                    <div className="save-button flex flex-col lg:flex-row gap-4 items-center justify-center py-6 w-full">
+                      <button
+                        type="button"
+                        onClick={() => navigate("/")}
+                        className="bg-transparent border-2 border-customBlue font-medium w-full sm:w-1/3 h-11 my-2 rounded-lg text-medium text-black text-[16px] hover:shadow-lg transition duration-30"
+                      >
+                        Kembali
+                      </button>
+                      <button
+                        type="submit"
+                        onClick={handleUpdate}
+                        className={`${
+                          isFormValid
+                            ? "bg-[#027FFF] border-2 border-white font-medium w-full sm:w-1/3 h-11 my-2 rounded-lg text-medium text-white text-[16px] hover:shadow-lg transition duration-30"
+                            : "bg-[#A2A2A2] cursor-not-allowed border-2 border-white font-medium w-full sm:w-1/3 h-11 my-2 rounded-lg text-medium text-white text-[16px] transition duration-30"
+                        }`}
+                        disabled={!isFormValid}
+                      >
+                        {isProcessing ? (
+                          <div className="flex items-center justify-center">
+                            <svg
+                              className="animate-spin h-5 w-5 text-white-500"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                                strokeLinecap="round"
+                                d="M22 12a10 10 0 01-10 10"
+                              ></path>
+                            </svg>
+                          </div>
+                        ) : (
+                          "Ubah Profil"
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -219,6 +398,8 @@ const ProfilePagePersonalInfo = () => {
           </div>
           {showDeletePopUp && <PopUpDelete setShowPopUp={setShowDeletePopUp} />}
           {showLogoutPopUp && <PopUpLogout setShowPopUp={setShowLogoutPopUp} />}
+          {showBerhasil && ( <PopUpBerhasil isVisible={setShowBerhasil} message={datas} onClose={() => setShowBerhasil(false)}/>)}
+          {showGagal && ( <PopUpGagal isVisible={setShowGagal} message={datas} onClose={() => setShowGagal(false)}/>)}
         </div>
       </div>
     </motion.div>

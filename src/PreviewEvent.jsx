@@ -86,7 +86,7 @@ const PreviewEvent = () => {
   const handleExit = () => {
     setIsExiting(true);
     setTimeout(() => {
-      navigate(`/events/${eventData.id}/view`);
+      navigate(-2);
     }, 500);
   };
 

@@ -66,7 +66,7 @@ function KuliahTamuPage() {
       <div className="font-sans flex flex-col box-border mx-auto w-full">
         <div className="bg-[#EAF4FF] border-transparent rounded-t-[100px] flex flex-col items-center justify-center">
           <h1 className="font-semibold  text-[#003266] mt-[80px] mb-[80px] flex sm:text-[32px] md:text-[48px]">
-            Jelajahi Webinar
+            Jelajahi Kuliah Tamu
           </h1>
           <div className="flex flex-wrap justify-center">
             {isLoading ? (

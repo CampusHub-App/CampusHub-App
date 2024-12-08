@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Ellipse from "../assets/image/Ellipse.svg";
+import Ellipse2 from "../assets/image/Ellipse2.svg";
 import "../css/DescriptionPageCancel.css";
 import Date from "../assets/image/date.svg";
 import Chair from "../assets/image/chair.svg";
@@ -250,8 +250,8 @@ const PreviewEdit = () => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 -z-10">
-        <img src={Ellipse} alt="Background" className="w-40 lg:w-[300px]" />
+      <div className="fixed bottom-0 right-0 -z-10">
+        <img src={Ellipse2} alt="Background" className="w-40 lg:w-[300px]" />
       </div>
     </div>
   );

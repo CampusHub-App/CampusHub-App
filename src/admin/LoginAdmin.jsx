@@ -123,7 +123,7 @@ function Loginadmin() {
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className="w-5/12 sm:w-1/2 flex flex-col justify-center items-center mb-32 text-balance bg-white sm:px-1"
+        className="w-5/12 sm:w-1/2 flex flex-col justify-center items-center mb-16 text-balance bg-white sm:px-1"
         initial="initial"
         animate="animate"
         exit="exit"

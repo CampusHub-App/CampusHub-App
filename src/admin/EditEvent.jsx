@@ -183,7 +183,7 @@ function EditEvent() {
   };
 
   return (
-    <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white">
+    <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white overflow-hidden">
       <Navbar />
 
       <motion.div

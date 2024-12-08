@@ -153,7 +153,7 @@ function Uploadevent() {
   };
 
   return (
-    <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white">
+    <div className="font-sans flex flex-col box-border mx-auto w-full relative bg-white overflow-hidden">
       <Navbar />
 
       <motion.div
@@ -541,7 +541,7 @@ function Uploadevent() {
                       <button
                         type="button"
                         className="w-full border-[#027FFF] border-2 text-[#003266] text-[20px] max-w-[279px] h-[46px] rounded-lg"
-                        onClick={step === 1 ? () => navigate("/") : handleBack} // Step 1: No action, Step 2: Go back
+                        onClick={step === 1 ? () => navigate("/") : handleBack}
                       >
                         {step === 1 ? "Batal" : "Kembali"}
                       </button>
@@ -553,7 +553,7 @@ function Uploadevent() {
                             ? "bg-[#027FFF]"
                             : "bg-[#A2A2A2]"
                         }`}
-                        onClick={step === 1 ? handleNext : handlePreview} // Step 1: Next, Step 2: Preview
+                        onClick={step === 1 ? handleNext : handlePreview}
                         disabled={
                           (step === 1 && !isFormValid()) ||
                           (step === 2 && !isSecondStepValid())

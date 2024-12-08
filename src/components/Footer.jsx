@@ -22,22 +22,14 @@ const Footer = () => {
   };
 
   return (
-    <div className="footer bg-[#003266] w-full transition all" id="footer">
+    <div className="relative footer bg-[#003266] w-full transition all z-10" id="footer">
       <div className="w-full">
         <div className="content-box mx-20">
           <div className="footer-box flex sm:flex-col lg:flex-row gap-72 sm:gap-y-20 mx-auto">
             <div className="about-us">
               <div className="logo mt-24 pb-8">
                 <Link
-                  to={
-                    isLandingPage
-                      ? "/"
-                      : isHomePage
-                      ? "/home"
-                      : isAdminPage
-                      ? "/admin"
-                      : "/home"
-                  }
+                  to={"/"}
                   onClick={handleScrollToTop}
                 >
                   <img src={logo} alt="Logo" />

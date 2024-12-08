@@ -179,12 +179,9 @@ const Navbar = () => {
 
         <div className="flex justify-center gap-x-3 items-center">
           {isLoading ? (
-            <div className="sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap pl-[12rem]"></div>
+            <div className="sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap pl-[3rem]"></div>
           ) : userData ? (
-            <Link
-              to="/account/profile"
-              className="sm:flex gap-x-[20px] sm:gap-x-[10px] item-center text-nowrap pl-[12rem]"
-            >
+            <Link to="/account/profile">
               <img
                 src={
                   userData.photo ||
@@ -241,7 +238,11 @@ const Navbar = () => {
       </div>
       {isMenuOpen && !isLoading && (
         <div className="lg:hidden mt-4">
-          <ul className="flex flex-col space-y-4 text-[#003266] text-[20px] font-medium">
+          <ul
+            className={`flex flex-col space-y-4 ${txtcolor(
+              location.pathname
+            )} text-[20px] font-medium`}
+          >
             <li>
               <Link to="/">Home</Link>
             </li>
