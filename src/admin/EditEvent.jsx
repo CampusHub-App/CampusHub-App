@@ -355,7 +355,7 @@ function EditEvent() {
                     <button
                       type="button"
                       className="w-full border-[#027FFF] border-2 text-[#003266] text-[20px] max-w-[279px] h-[46px] rounded-lg"
-                      onClick={step === 1 ? () => navigate("/") : handleBack} // Step 1: No action, Step 2: Go back
+                      onClick={step === 1 ? () => navigate("/my-events") : handleBack} // Step 1: No action, Step 2: Go back
                     >
                       {step === 1 ? "Batal" : "Kembali"}
                     </button>
@@ -513,7 +513,7 @@ function EditEvent() {
                           type="text"
                           placeholder="Isi Alamat"
                           className="border border-[#027FFF] rounded-lg p-3 w-[54rem]"
-                          value={location}
+                          value={location !== "Online" ? location : ""}
                           onChange={(e) => setVenue(e.target.value)}
                           required
                         />

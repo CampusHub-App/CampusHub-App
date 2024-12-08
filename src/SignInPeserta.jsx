@@ -99,6 +99,7 @@ function Signinpeserta() {
         navigate(`/user/login?redirect=${redirectPath}`);
       }, 1000);
     } catch (error) {
+      setData("Koneksi Timeout, Silahkan Coba Lagi");
       setShowGagal(true);
     } finally {
       setLoading(false);
@@ -174,29 +175,35 @@ function Signinpeserta() {
             />
           </div>
 
-          <div className="mb-6 w-full max-w-[420px] relative">
+          <div className="mb-6 relative w-full max-w-[420px]">
             <label
               htmlFor="password"
               className="block mb-2 text-[20px] font-medium text-[#003266]"
             >
               Password
             </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              className="w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your password here"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            <span
-              onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 top-7 text-[50px] flex items-center cursor-pointer text-[#003266]"
-            >
-              👁
-            </span>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                className="w-full h-[59px] px-4 pr-12 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your password here"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <span
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-4 flex items-center cursor-pointer text-[#003266]"
+              >
+                {showPassword ? (
+                  <i className="ri-eye-line text-2xl"></i>
+                ) : (
+                  <i className="ri-eye-close-line text-2xl"></i>
+                )}
+              </span>
+            </div>
           </div>
 
           <div className="mb-6 w-full max-w-[420px]">

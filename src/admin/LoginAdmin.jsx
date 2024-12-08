@@ -24,19 +24,16 @@ const whiteVariants = {
 };
 
 function Loginadmin() {
-
   const [showGagal, setShowGagal] = useState(false);
   const [datas, setDatas] = useState(null);
 
   useEffect(() => {
-
     const token = localStorage.getItem("token");
     if (token) {
       navigate("/", { replace: true });
       return;
     }
   }, []);
-
 
   const params = new URLSearchParams(location.search);
   const redirectPath = params.get("redirect") || "/";
@@ -77,7 +74,6 @@ function Loginadmin() {
         setDatas(data.message);
 
         if (response.ok) {
-
           // Simpan token dan tipe token
           if (data.access_token) {
             localStorage.setItem("token", data.access_token); // Simpan access_token
@@ -108,6 +104,7 @@ function Loginadmin() {
           setIsLoading(false);
         }
       } catch (error) {
+        setDatas("Koneksi Timeout, Silahkan Coba Lagi");
         setShowGagal(true);
         setIsLoading(false);
       }
@@ -167,22 +164,28 @@ function Loginadmin() {
             >
               Password
             </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              className=" w-full h-[59px] px-4 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter your password here"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <span
-              onClick={togglePasswordVisibility}
-              className="absolute inset-y-0 right-0 top-7 text-[50px] flex items-center cursor-pointer text-[#003266]"
-            >
-              👁
-            </span>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                className="w-full h-[59px] px-4 pr-12 py-2 border-2 border-[#003266] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your password here"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <span
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-4 flex items-center cursor-pointer text-[#003266]"
+              >
+                {showPassword ? (
+                  <i className="ri-eye-line text-2xl"></i>
+                ) : (
+                  <i className="ri-eye-close-line text-2xl"></i>
+                )}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center justify-between w-full mb-6 max-w-[420px]">
