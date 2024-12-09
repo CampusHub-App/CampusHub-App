@@ -91,13 +91,12 @@ function Signinpeserta() {
 
       if (response.ok) {
         setShowPopup(true);
+        setTimeout(() => {
+          navigate(`/user/login?redirect=${redirectPath}`);
+        }, 1000);
       } else {
         setShowGagal(true);
       }
-
-      setTimeout(() => {
-        navigate(`/user/login?redirect=${redirectPath}`);
-      }, 1000);
     } catch (error) {
       setData("Koneksi Timeout, Silahkan Coba Lagi");
       setShowGagal(true);

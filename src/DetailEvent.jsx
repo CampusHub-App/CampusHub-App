@@ -23,7 +23,7 @@ const DetailEvent = () => {
           `https://campushub.web.id/api/events/${id}/view`
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch event data");
+          navigate("/");
         }
         const data = await response.json();
         setEventData(data);
